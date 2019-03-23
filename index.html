@@ -61,7 +61,6 @@
         <div class="mobileNavR">登录</div>
         <ul class="mobileNavLists displayNone"></ul>
     </div>
-
     <!-- content -->
     <div class="wrapper content">
         <div class="main">
@@ -252,7 +251,6 @@
             </div>
         </div>
     </div>
-
     <!-- footer -->
     <div class="container footer"></div>
     <!-- mobile login-->
@@ -260,7 +258,6 @@
         <div class="login_del">x</div>
         <li class="userNameBox"><b></b><input type="text" class="userName mobileuserName"></li>
         <li class="userPasBox"><b></b><input type="password" class="userPas mobileuserPas"></li>
-
         <li><span class="login_err mobilelogin_err">账号或密码不对!</span><input type="button" value="登录" id="submit_mobile" class="cursor"></li>
     </ul>
     <div class="loginBox_mobile loginBox_mobile_out  displayNone">
@@ -316,7 +313,7 @@
             url: favorite_Url+'login',
             success: function(data, type) {
                 console.log(data);
-                if(data.status_code == 200){
+                if(data.status_code === 200){
                     $(".login_Account span").html(data.data.Account);
                     $(".login_RealName span").html(data.data.RealName);
                     $.cookie('userId', data.data.UserId,{path: '/'});

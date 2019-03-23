@@ -3083,21 +3083,26 @@ height: 100%;
     margin-top:-25px;
 }
 .specialPracticelist{
+    width: 20% !important;
     display: inline-block;
-    width: auto;
+    /*width: auto;*/
     height: 40px;
-    background: #033A70;
-    margin-right:20px;
+    background: #ffffff !important;
+    /*margin-right:20px;*/
     margin-bottom:20px;
     padding: 0 15px;
-    text-align: center;
+    /*text-align: center;*/
     line-height: 40px;
     font-size: 16px;
-    color: #fff;
+    border-bottom: 1px dashed #ccc !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow:ellipsis;
 }
+
 .specialPracticelist a{
     font-size: 16px;
-    color: #fff;
+    color: #000000;
 }
 .specialPracticelist:hover,#specialPracticeButton:hover{
     cursor: pointer;

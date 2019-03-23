@@ -52,6 +52,7 @@ var jQuery = $ || {};
                 url: exam_Url + url,
                 crossDomain: true == !(document.all),
                 success: function(data, type) {
+                    // console.log(data.data);
                     if (data.data) {
                         var mydata = eval('(' + $.cookie('myData') + ')');
                         if(mydata.Photograph){
@@ -101,14 +102,52 @@ var jQuery = $ || {};
         //处理数据
         var processData = function(data){
             oldData = data;
+            console.log(oldData);
             $.each(data, function(index, item) {
-                if(!item.UserAnswerId){
-                    nullData.push(item);
-                }else if(item.AnswerId != item.UserAnswerId){
-                    noData.push(item);
-                }else{
-                    yesData.push(item);
-                }
+
+                    if(item.Type == 1 || item.Type == 3){
+                        if(!item.UserAnswerId){
+                            nullData.push(item);
+                        }else
+                        if(item.UserAnswerId !== item.AnswerId){
+                            noData.push(item);
+                        }else{
+                            yesData.push(item);
+                        }
+                        // console.log(item)
+                    }
+                    if(item.Type == 2){
+                        if(!item.UserAnswerId){
+                            nullData.push(item);
+                        }else{
+                            var AnswerID = item.AnswerId.split('|');
+                            var UserID = item.UserAnswerId.split('|');
+                            // console.log(UserID);
+                            if(AnswerID.sort().toString()!==UserID.sort().toString()){
+                                noData.push(item);
+                            }else {
+                                yesData.push(item);
+                            }
+                        }
+                    }
+
+
+                // if(!item.UserAnswerId){
+                //     nullData.push(item);
+                //     // console.log(nullData);
+                // }else
+                //     // var UserID = item.UserAnswerId.split('|');
+                //     // // console.log(item.UserID);
+                //     // var AnswerID = item.UserAnswerId.split('|');
+                //
+                // if(item.UserAnswerId !== item.AnswerId){
+                //     noData.push(item);
+                //     // console.log(noData);
+                // }else{
+                //     yesData.push(item);
+                // }
+
+
             })
             nowData = oldData;
             //总数
@@ -124,6 +163,8 @@ var jQuery = $ || {};
             //初始点击事件
             lookClick();
         }
+
+
         //初始点击事件
         var lookClick = function(){
             var ele = $('.lookTestLeft li');
@@ -248,13 +289,37 @@ var jQuery = $ || {};
                 }
                 var isActive = '';
                 var UserAnswerIdArr = '';
+                if(data.Type == 1 || data.Type == 3){
+                    if(!data.UserAnswerId){
+                        isActive = 'null';
+                    }else
+                    if(data.UserAnswerId !== data.AnswerId){
+                        isActive = 'no';
+                    }else{
+                        isActive = 'yes';
+                    }
+                }
+                if(data.Type == 2){
+                    if(!data.UserAnswerId){
+                        isActive = 'null';
+                    }else{
+                        var AnswerID = data.AnswerId.split('|');
+                        var UserID = data.UserAnswerId.split('|');
+                        // console.log(UserID);
+                        if(AnswerID.sort().toString()!==UserID.sort().toString()){
+                            isActive = 'no';
+                        }else {
+                            isActive = 'yes';
+                        }
+                    }
+                }
                 if(!data.UserAnswerId){
-                    isActive = 'null';
+                    // isActive = 'null';
                 }else if(data.AnswerId != data.UserAnswerId){
-                    isActive = 'no';
+                    // isActive = 'no';
                     UserAnswerIdArr = data.UserAnswerId.split('|');
                 }else{
-                    isActive = 'yes';
+                    // isActive = 'yes';
                     UserAnswerIdArr = data.UserAnswerId.split('|');
                 }
                 var title = '<div class="lookTestQuestionsTitle">'+selectCon+'<span><strong>'+key+'.</strong>'+data.Title+' ['+thisScore+'分]</span></div>';
@@ -263,8 +328,10 @@ var jQuery = $ || {};
                 var yesAnswers = '';
                 var isSelectActive = '';
                 $.each(data.ListViewTPQuesionOptions, function(index, item){
-                    if(item.IsAnswer){
+                    // console.log(item);
+                    if(item.IsAnswer == 1){
                         yesAnswers += orderA[index]+',';
+
                     }
                     for(var j=0;j<UserAnswerIdArr.length;j++){
 
@@ -278,6 +345,7 @@ var jQuery = $ || {};
                     orderCon += '<li data-id="'+item.Id+'"><label class="cursor '+isSelectActive+'"><b>'+orderA[index]+'</b><span>'+item.OptionName+'</span></label></li>';
                 });
                 yesAnswers = yesAnswers.slice(0,-1);
+                // console.log(yesAnswers);
                 orderCon = '<ul class="container lookTestQuestions_answer">'+orderCon+'</ul><div class="lookTestQuestionsVal">答案：'+yesAnswers+'</div>';
                 var html = '<li class="lookTestQuestionsList '+isActive+'">'+title+orderCon+'</li>';
                 return html;

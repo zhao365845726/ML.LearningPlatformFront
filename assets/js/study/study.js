@@ -11,9 +11,9 @@ var jQuery = $ || {};
 			html_con = '',//总内容
 			zoomUrl = '',
 			monitorexamBtnType = "1";//模拟练习题库的标准（1按顺序，2随机，3错题，4分类）
-		var title = decodeURI(window.location.search.split('=')[2]);//获取？后面的参数，并防止乱码
+        var title = decodeURI(window.location.search.split('=')[2]);//获取？后面的参数，并防止乱码
 		var urlId = window.location.search.substr(1).split('&')[0].split('=')[1];
-		var param = {
+        var param = {
 				navid : urlId,
 			    PageIndex : 1,
 				pagesize : 8
@@ -82,7 +82,8 @@ var jQuery = $ || {};
 				crossDomain: true == !(document.all),
 				success: function(data, type) {
 					/*左侧*/
-					html_l ='<li class="displayNone mycards"><a href="/compoents/study/personalinfo.html">我的资料</a></li>';
+                    // console.log(data);
+                    html_l ='<li class="displayNone mycards"><a href="/compoents/study/personalinfo.html">我的资料</a></li>';
 					$.each(data.data.lst_viewnavcategory, function(index, item) {
 						isActive = item.Name == leftName ? 'active' : '';
 						html_l += '<li class="'+isActive+' " data-id="'+item.CourseId+'"><a href="javascript:;">'+item.Name+'</a></li>';
@@ -95,9 +96,9 @@ var jQuery = $ || {};
 					/*初始课件园地的按条件查询事件*/
 					StudyOptionClick();
 					/*初始模拟练习的分类*/
-					simulationPracticeClassification();
+					// simulationPracticeClassification();
 					/*初始模拟练习的按条件查询事件*/
-					monitorexamClick();
+					// monitorexamClick();
 				}
 			});
 
@@ -148,16 +149,14 @@ var jQuery = $ || {};
 					formalexamlist();
 					break;
 				case '模拟练习':
-					url = 'monitorexamlist';
-					zoomUrl = exam_Url + url;
-					param = {
-						UserId : $.cookie("userId"),
-						PageIndex : 1,
-						PageSize : 8
-					};
-					$(".simulationExerciseSearch #selectSystem").val('');
-					$(".simulationExerciseSearch #selectSystem").attr('data-num','');
-					$(".simulationExerciseSearch").show();
+					url = 'speciallist';
+                    zoomUrl = practiseUrl() + url;
+                    param = {
+                        "CategoryName": "",
+                        PageIndex : 1,
+                        PageSize : 20
+                    };
+                    $(".specialPractice").show();
 					monitorexamlist();
 					break;
 				case '每日一题':
@@ -231,7 +230,8 @@ var jQuery = $ || {};
 				dataType: 'json',
 				crossDomain: true == !(document.all),
 				success: function(data, type) {
-					if(data.data) {
+                    // console.log(data);
+                    if(data.data) {
 						data.data.lst_favoritecourse && $.each(data.data.lst_favoritecourse, function (index, item) {
 							 if(item.Name && item.ClassifyName && item.CreateTime){
 								 var state = '<a href="/compoents/study/course_show.html?id=' + item.CourseId + '">开始学习</a>';
@@ -262,6 +262,7 @@ var jQuery = $ || {};
 				}
 			})
 		}
+		//2effe14a-ef5c-45e1-9468-c8710fa12783
 		//我的考试
 		var formalexamlist = function(){
 			html_con = '<li class="course_title"><span class="mytest1"><i></i>试卷名称</span><span class="mytest5">考试开始时间</span><span class="mytest5">考试结束时间</span><span class="mytest6">用时</span><span class="mytest2">成绩</span><span class="mytest4">考试状态</span></li>';
@@ -272,8 +273,8 @@ var jQuery = $ || {};
 				dataType: 'json',
 				crossDomain: true == !(document.all),
 				success: function(data, type) {
-					
-					if(data.data) {
+                    // console.log(data);
+                    if(data.data) {
 						var curDate1 = new Date(Date.parse(data.obj.CurrentTime.replace(/-/g,"/"))); //当前时间
 						$.each(data.data, function (index, item) {
 							if(item.Name && item.ExamDuration && item.NumberOfTopics) {
@@ -360,331 +361,46 @@ var jQuery = $ || {};
 				break;
 			}
 		}
-		//模拟练习[按顺序]
+		//模拟练习
 		var monitorexamlist = function(){
-			html_con = '<li class="course_title"><span class="monitest1"><i></i>试卷名称</span><span class="monitest2">时长</span><span class="monitest3">题量</span><span class="monitest4">次数</span><span class="monitest6">考试开始时间</span><span class="monitest6">考试结束时间</span><span class="monitest7">用时</span><span class="monitest2">成绩</span><span class="monitest5">考试状态</span></li>';
-			$.ajax({
-				type: 'POST',
-				data: param,
-				url: zoomUrl,
-				dataType: 'json',
-				crossDomain: true == !(document.all),
-				success: function(data, type) {
-					if(data.data) {
-						var curDate1 = new Date(Date.parse(data.obj.CurrentTime.replace(/-/g,"/"))); //当前时间
-						$.each(data.data, function (index, item) {
-							if(item.Name && item.ExamDuration && item.NumberOfTopics && item.AttemptNumber) {
-								var state = '';
-								var yclass = '';
-								var IsFingerprintLogin = '';
-								if(item.IsFingerprintLogin){
-									IsFingerprintLogin = "1";
-								}else{
-									IsFingerprintLogin = "0";
-								}
-								if(item.TestState == 2){
-                                  state = '<a href="/compoents/study/testLook.html?UserTPLibId=' + item.Id + '" class="test_href" target="_blank">查看试卷</a>';
-                               }else{
-                                   var statusTest = true;//开始考试时间大于现在时间，或者开考时间没值
-                                  if(item.StartTestTime){
-                                    var StartTestTime1 = new Date(Date.parse(item.StartTestTime.replace(/-/g,"/")));
-                                  	if(StartTestTime1 > curDate1){
-                                  		state = '考试未开始';
-                                  		statusTest = false;
-                                  	}
-					              }
-					              if(statusTest){  
-					                  var statusV = statusVal(item.TestState);
-	                                   if(item.StopTestTime){
-	                                   	var stopTestTime = new Date(Date.parse(item.StopTestTime.replace(/-/g,"/")));
-		                                if(stopTestTime > curDate1){
-											state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1" onclick="isFinger(this);">'+statusV.name+'</a>';
-		                                }else{
-		                                     state = '考试过期';
-		                                }
-	                                   }else{
-                                          state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1" onclick="isFinger(this);">'+statusV.name+'</a>';
-	                                   }
-	                                }   
-                               }
-                                var StartTestTimeP = '--';
-								var StopTestTimeP = '--';
-								if(item.StartTestTime){
-                                   StartTestTimeP = item.StartTestTime;
-								}
-								if(item.StopTestTime){
-                                   StopTestTimeP = item.StopTestTime;
-								}
-                                var whentime = 0;
-                                if(item.ExamDuration*60 <= item.TimeConsuming){
-                                	whentime = item.ExamDuration+'分0秒';
-                                }else{
-                                	var timeM = parseInt(item.TimeConsuming / 60);
-									var timeS = item.TimeConsuming % 60;
-									whentime = timeM+'分'+timeS+'秒';
-                                }
-								html_con += '<li><span class="monitest1"><i></i>' + item.Name + '</span><span class="monitest2">' + item.ExamDuration + '分</span><span class="monitest3">' + item.NumberOfTopics + '</span><span class="monitest4">' + item.AttemptNumber + '</span><span class="monitest6">' + StartTestTimeP + '</span><span class="monitest6">' + StopTestTimeP + '</span><span class="monitest7">'+whentime+'</span><span class="monitest2">'+item.SumScore+'</span><span class="monitest5">' + state + '</span></li>';
-							}
-						})
-					}
-					$('.myCourse').html(html_con);
-					if(firstPage){
-						/*初始页码*/
-						page(Math.ceil(data.data.TotalCount/8));
-						firstPage = false;
-					}else{
-						/*页码*/
-						$("#pageBar").whjPaging("setPage", currPages, Math.ceil(data.obj.TotalCount / 8));
-					}
-				}
-			})
-		}
-		//模拟练习[随机]
-		var monitorexamRandomlist = function(){
-			html_con = '<li class="course_title"><span class="monitest1"><i></i>试卷名称</span><span class="monitest2">时长</span><span class="monitest3">题量</span><span class="monitest4">次数</span><span class="monitest6">考试开始时间</span><span class="monitest6">考试结束时间</span><span class="monitest7">用时</span><span class="monitest2">成绩</span><span class="monitest5">考试状态</span></li>';
-			$.ajax({
-				type: 'POST',
-				data: param,
-				url: zoomUrl,
-				dataType: 'json',
-				crossDomain: true == !(document.all),
-				success: function(data, type) {		
-					if(data.data) {
-						var curDate1 = new Date(Date.parse(data.obj.CurrentTime.replace(/-/g,"/"))); //当前时间
-						$.each(data.data, function (index, item) {
-							if(item.Name && item.ExamDuration && item.NumberOfTopics && item.AttemptNumber) {
-								var state = '';
-								var yclass = '';
-								var IsFingerprintLogin = '';
-								if(item.IsFingerprintLogin){
-									IsFingerprintLogin = "1";
-								}else{
-									IsFingerprintLogin = "0";
-								}
-								if(item.TestState == 2){
-                                  state = '<a href="/compoents/study/testLook.html?UserTPLibId=' + item.Id + '" class="test_href" target="_blank">查看试卷</a>';
-                                }else{
-	                                var statusTest = true;//开始考试时间大于现在时间，或者开考时间没值
-                                  if(item.StartTestTime){
-                                    var StartTestTime1 = new Date(Date.parse(item.StartTestTime.replace(/-/g,"/")));
-                                  	if(StartTestTime1 > curDate1){
-                                  		state = '考试未开始';
-                                  		statusTest = false;
-                                  	}
-					              }
-					               if(statusTest){  
-					                  var statusV = statusVal(item.TestState);
-	                                   if(item.StopTestTime){
-	                                   	var stopTestTime = new Date(Date.parse(item.StopTestTime.replace(/-/g,"/")));
-		                                if(stopTestTime > curDate1){
-											state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1" onclick="isFinger(this);">'+statusV.name+'</a>';
-		                                }else{
-		                                     state = '考试过期';
-		                                }
-	                                   }else{
-                                          state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1" onclick="isFinger(this);">'+statusV.name+'</a>';
-	                                   }
-	                                }   
-                                }
-                                var StartTestTimeP = '--';
-								var StopTestTimeP = '--';
-								if(item.StartTestTime){
-                                   StartTestTimeP = item.StartTestTime;
-								}
-								if(item.StopTestTime){
-                                   StopTestTimeP = item.StopTestTime;
-								}
-                                var whentime = 0;
-                                if(item.ExamDuration*60 <= item.TimeConsuming){
-                                	whentime = item.ExamDuration+'分0秒';
-                                }else{
-                                	var timeM = parseInt(item.TimeConsuming / 60);
-									var timeS = item.TimeConsuming % 60;
-									whentime = timeM+'分'+timeS+'秒';
-                                }
-								html_con += '<li><span class="monitest1"><i></i>' + item.Name + '</span><span class="monitest2">' + item.ExamDuration + '分</span><span class="monitest3">' + item.NumberOfTopics + '</span><span class="monitest4">' + item.AttemptNumber + '</span><span class="monitest6">' + StartTestTimeP + '</span><span class="monitest6">' + StopTestTimeP + '</span><span class="monitest7">'+whentime+'</span><span class="monitest2">'+item.SumScore+'</span><span class="monitest5">' + state + '</span></li>';
-							}
-						})
-					}
-					$('.myCourse').html(html_con);
-					if(firstPage){
-						/*初始页码*/
-						page(Math.ceil(data.data.TotalCount/8));
-						firstPage = false;
-					}else{
-						/*页码*/
-						$("#pageBar").whjPaging("setPage", currPages, Math.ceil(data.obj.TotalCount / 8));
-					}
-				}
-			})
-		}
-		//模拟练习按钮
-		var monitorexamClick = function(){
-			var ele = $('.monitorexamClick');
-			ele && ele.length > 0 && $.each(ele, function(index, item) {
-				var _t = this,url = '';
-				$(_t).on('click', function() {
-					$(_t).addClass('active').siblings().removeClass('active');
+            html_con = '';
+            $.ajax({
+                type: 'POST',
+                data: param,
+                url: zoomUrl,
+                dataType: 'json',
+                crossDomain: true == !(document.all),
+                success: function(data, type) {
+                    // console.log(data.data);
+                    if(data.data) {
+                        $.each(data.data, function (index, item) {
+                            html_con += '<li class="specialPracticelist"><a href="javascript:void(0);" num="'+item.Total+'" id="'+item.CategoryId+'">'+item.Name+'('+item.Total+')</a></li>';
+                        })
+                    }
+                    $('.myCourse').html(html_con);
+                    $(".myCourse li").on("click","a",function () {
+                        var theId = $(this).attr("id");
+                        var theNum = $(this).attr("num");
+                        var thUrl1 = '/compoents/study/practice_show.html?CategoryId='+theId+'&num='+theNum+'&type='+1;
+                        var thUrl2 = '/compoents/study/practice_show.html?CategoryId='+theId+'&num='+theNum+'&type='+2;
+                        var thUrl3 = '/compoents/study/practice_show.html?CategoryId='+theId+'&num='+theNum+'&type='+3;
+                        $(".alertsure a").attr("href",thUrl1).text("顺序");
+                        $(".alertsure1 a").attr("href",thUrl2).text("随机");
+                        $(".alertsure2 a").attr("href",thUrl3).text("模拟考试");
+                        $("#alertl").css("display","block");
+                    });
+                    if(firstPage){
+                        /*初始页码*/
+                        page(Math.ceil(data.obj.TotalCount/20));
+                        firstPage = false;
+                    }else{
+                        /*页码*/
+                        $("#pageBar").whjPaging("setPage", currPages, Math.ceil(data.obj.TotalCount / 20));
+                    }
+                }
+            })
+		};
 
-					currPages = 1;
-					html_con = '';
-					var typeBtn = $(_t).attr('data-num');
-					switch(typeBtn){
-						case "1":
-						    monitorexamBtnType = "1";
-						    url = 'monitorexamlist';
-			                zoomUrl = exam_Url + url;
-			                $('.myCourse').html('');
-			                $('.errorCenterQuestion').html('');
-						    monitorexamlist();
-							break;
-						case "2":
-						    monitorexamBtnType = "2";
-						    url = 'monitorexamrandomlist';
-			                zoomUrl = exam_Url + url;
-			                 $('.myCourse').html('');
-			                $('.errorCenterQuestion').html('');
-						    monitorexamRandomlist();
-							break;
-						case "3":
-						    monitorexamBtnType = "3";
-						    url = 'errorquestionlist';
-			                zoomUrl = ajax_url + url;
-						     $('.myCourse').html('');
-			                $('.errorCenterQuestion').html('');
-						   $("#pageBar").whjPaging("setPage", 0, 0);
-						    errorcenterlist();
-							break;
-						case "4":
-							 if($(".classifyQuestionBank #selectSystem").val()){
-							 	monitorexamBtnType = "4";
-							 	url = 'paperclassificationlist';
-							 	zoomUrl = exam_Url + url;
-							 	$('.myCourse').html('');
-			                    $('.errorCenterQuestion').html('');
-								param.Id = $(".classifyQuestionBank #selectSystem").val();
-				                simulationPracticeClassificationList();
-							 }
-							break;
-					}
-				});
-			});
-		}
-		//模拟练习分类
-		var simulationPracticeClassification = function(){
-			var html = '';
-			html = '<option value="">==请选择==</option>';
-			$.ajax({
-				type: 'POST',
-				data: {},
-				url: exam_Url + 'paperclassification',
-				dataType: 'json',
-				crossDomain: true == !(document.all),
-				success: function(data, type) {
-                    if(data) {
-						$.each(data, function (index, item) {
-                           html += '<option value="' + item.Id + '">' + item.Name + '</option>';
-						})
-					}
-					$(".classifyQuestionBank #selectSystem").html(html);	
-				}
-			})
-		}
-		//模拟练习分类列表
-		 var simulationPracticeClassificationList = function(){
-			html_con = '<li class="course_title"><span class="monitest1"><i></i>试卷名称</span><span class="monitest2">时长</span><span class="monitest3">题量</span><span class="monitest4">次数</span><span class="monitest6">考试开始时间</span><span class="monitest6">考试结束时间</span><span class="monitest7">用时</span><span class="monitest2">成绩</span><span class="monitest5">考试状态</span></li>';
-			$.ajax({
-				type: 'POST',
-				data: param,
-				url: zoomUrl,
-				dataType: 'json',
-				crossDomain: true == !(document.all),
-				success: function(data, type) {				
-					if(data.data) {
-						var curDate1 = new Date(Date.parse(data.obj.CurrentTime.replace(/-/g,"/"))); //当前时间
-						$.each(data.data, function (index, item) {
-							if(item.Name && item.ExamDuration && item.NumberOfTopics && item.AttemptNumber) {
-								var state = '';
-								var yclass = '';
-								var IsFingerprintLogin = '';
-								if(item.IsFingerprintLogin){
-									IsFingerprintLogin = "1";
-								}else{
-									IsFingerprintLogin = "0";
-								}
-								if(item.TestState == 2){
-                                  state = '<a href="/compoents/study/testLook.html?UserTPLibId=' + item.Id + '" class="test_href" target="_blank">查看试卷</a>';
-                                }else{
-	                               var statusTest = true;//开始考试时间大于现在时间，或者开考时间没值
-                                  if(item.StartTestTime){
-                                    var StartTestTime1 = new Date(Date.parse(item.StartTestTime.replace(/-/g,"/")));
-                                  	if(StartTestTime1 > curDate1){
-                                  		state = '考试未开始';
-                                  		statusTest = false;
-                                  	}
-					              }
-					              if(statusTest){  
-					                  var statusV = statusVal(item.TestState);
-	                                   if(item.StopTestTime){
-	                                   	var stopTestTime = new Date(Date.parse(item.StopTestTime.replace(/-/g,"/")));
-		                                if(stopTestTime > curDate1){
-											state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1" onclick="isFinger(this);">'+statusV.name+'</a>';
-		                                }else{
-		                                     state = '考试过期';
-		                                }
-	                                   }else{
-                                          state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1" onclick="isFinger(this);">'+statusV.name+'</a>';
-	                                   }
-	                                }   
-                                }
-                                 
-                                var StartTestTimeP = '--';
-								var StopTestTimeP = '--';
-								if(item.StartTestTime){
-                                   StartTestTimeP = item.StartTestTime;
-								}
-								if(item.StopTestTime){
-                                   StopTestTimeP = item.StopTestTime;
-								}
-                                var whentime = 0;
-                                if(item.ExamDuration*60 <= item.TimeConsuming){
-                                	whentime = item.ExamDuration+'分0秒';
-                                }else{
-                                	var timeM = parseInt(item.TimeConsuming / 60);
-									var timeS = item.TimeConsuming % 60;
-									whentime = timeM+'分'+timeS+'秒';
-                                }
-								html_con += '<li><span class="monitest1"><i></i>' + item.Name + '</span><span class="monitest2">' + item.ExamDuration + '分</span><span class="monitest3">' + item.NumberOfTopics + '</span><span class="monitest4">' + item.AttemptNumber + '</span><span class="monitest6">' + StartTestTimeP + '</span><span class="monitest6">' + StopTestTimeP + '</span><span class="monitest7">'+whentime+'</span><span class="monitest2">'+item.SumScore+'</span><span class="monitest5">' + state + '</span></li>';
-							}
-						})
-					}
-					$('.myCourse').html(html_con);
-					if(firstPage){
-						/*初始页码*/
-						page(Math.ceil(data.data.TotalCount/8));
-						firstPage = false;
-					}else{
-						/*页码*/
-						$("#pageBar").whjPaging("setPage", currPages, Math.ceil(data.obj.TotalCount / 8));
-					}
-				}
-			})
-		}
-		//错误中心
-		var errorcenterlist= function(){
-			$.ajax({
-				type: 'POST',
-				data: {UserId: $.cookie('userId')},
-				url: zoomUrl,
-				dataType: 'json',
-				crossDomain: true == !(document.all),
-				success: function(data, type) {
-					if(data.data) {
-						errorCenterQuestions.init(data);
-					}
-				}
-			})
-		}
 		//每日一题
 		var everydayquestionlist = function(){
 			html_con = '<li class="course_title"><span class="everydaytest1"><i></i>日期</span><span class="everydaytest2">完成状况</span><span class="everydaytest3">试卷状态</span></li>';
@@ -893,10 +609,10 @@ var jQuery = $ || {};
 				dataType: 'json',
 				crossDomain: true == !(document.all),
 				success: function(data, type) {
-					console.log(data.data);
+					// console.log(data.data);
 					if(data.data) {
 						$.each(data.data, function (index, item) {
-							html_con += '<div class="specialPracticelist"><a href="/compoents/study/practice_show.html?CategoryId=' + item.CategoryId + '&num='+item.Total+'">'+item.Name+'('+item.Total+')</a></div>';
+							html_con += '<li class="specialPracticelist"><a href="/compoents/study/practice_show.html?CategoryId=' + item.CategoryId + '&num='+item.Total+'">'+item.Name+'('+item.Total+')</a></li>';
 						})
 					}
 					$('.myCourse').html(html_con);
@@ -1065,6 +781,11 @@ var jQuery = $ || {};
 			Friendlink();
 		};
 		init();
+
+
+
+
+
 	})
 })(window, jQuery);
 //正式考试指纹登录
@@ -1093,3 +814,12 @@ function isFinger(obj){
 	   window.location.href = href;
 	}
 }
+// function js_method(){
+//     // var title = decodeURI(window.location.search.split('=')[2]);//获取？后面的参数，并防止乱码
+//     // var urlId = window.location.search.substr(1).split('&')[0].split('=')[1];
+
+// }
+// $(".myCourse li").on("a",function js_method(){
+// 	alert("aaa")
+//
+// })
