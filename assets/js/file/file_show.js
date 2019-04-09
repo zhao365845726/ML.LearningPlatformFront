@@ -7,7 +7,7 @@ var jQuery = $ || {};
 		var windowL = window.location.search.substr(1).split('&');
 		var urlId = windowL[0].split('=')[1];
 		var parentId = windowL[2].split('=')[1];
-		var navName = decodeURI(windowL[3].split('=')[1]);
+		// var navName = decodeURI(windowL[3].split('=')[1]);
 		//左侧导航及右侧内容
 		var sildeNav = function() {
 			var html_l = '',

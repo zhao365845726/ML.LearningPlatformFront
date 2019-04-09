@@ -15,10 +15,11 @@ var jQuery = $ || {};
 		var urlId = window.location.search.substr(1).split('&')[0].split('=')[1];
         var param = {
 				navid : urlId,
-			    PageIndex : 1,
+          PageIndex : 1,
 				pagesize : 8
 			};
-		//是否登录
+    // console.log(urlId);
+    //是否登录
 		var isLogin = function(){
 			var falg = $.cookie('userId');
 			if(falg){

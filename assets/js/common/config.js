@@ -1,33 +1,33 @@
 function ajaxUrl(){ //导航列表url
-    var url = 'http://api.learningplatform.ymstudio.xyz/api/content/';
+    var url = 'http://jmta.api.milisx.com/api/content/';
     return url;
 };
 function lecturerUrls(){ //导航列表url
-    var url = 'http://api.learningplatform.ymstudio.xyz/api/lecturer/';
+    var url = 'http://jmta.api.milisx.com/api/lecturer/\'';
     return url;
 };
 function isLoginUrl(){ //是否登陆
-    var url = 'http://api.learningplatform.ymstudio.xyz/api/user/islogin';
+    var url = 'http://jmta.api.milisx.com/api/user/islogin';
     return url;
 };
 function courseUrl(){ //课件
-    var url = 'http://api.learningplatform.ymstudio.xyz/api/course/';
+    var url = 'http://jmta.api.milisx.com/api/course/';
     return url;
 };
 function favoritecourseUrl(){ //赞，收藏
-    var url = 'http://api.learningplatform.ymstudio.xyz/api/user/';
+    var url = 'http://jmta.api.milisx.com/api/user/';
     return url;
 };
 function practiseUrl(){ //分项练习
-    var url = 'http://api.learningplatform.ymstudio.xyz/api/practise/';
+    var url = 'http://jmta.api.milisx.com/api/practise/';
     return url;
 };
 function examUrl(){ //考试
-    var url = 'http://api.learningplatform.ymstudio.xyz/api/exam/';
+    var url = 'http://jmta.api.milisx.com/api/exam/';
     return url;
 };
 
 function redisUrl(){ //清除缓存
-    var url = 'http://api.learningplatform.ymstudio.xyz/api/common/';
+    var url = 'http://jmta.api.milisx.com/api/common/';
     return url;
 };
