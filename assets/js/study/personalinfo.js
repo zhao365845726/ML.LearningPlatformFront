@@ -55,7 +55,7 @@ var jQuery = $ || {};
                     case '通知公告':
                         className = 'nav_intro';
                         num = item.Id;
-                        url = '/compoents/file/introduction.html?id=' + item.Id + '&title=' + item.Name;
+                        url = '/compoents/file/file.html?id=' + item.Id + '&title=' + item.Name;
                         break;
                     case '安全信息':
                         className = 'nav_file';

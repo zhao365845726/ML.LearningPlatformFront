@@ -27,7 +27,7 @@ var jQuery = $ || {};
 				dataType: 'json',
 				crossDomain: true == !(document.all),
 				success: function(data, type) {
-                    console.log(data);
+                    // console.log(data);
                     /*左侧*/
 					$.each(data.data.lst_viewnavcategory, function(index, item) {
 						// switch(title){
@@ -46,63 +46,19 @@ var jQuery = $ || {};
 					$('.sideBar_l').html(html_l);
 					$('.sideBarTitle').html(title);
 					/*右侧*/
-					sildeNavRight(data);
+
 					/*初始左侧导航点击事件*/
 					sildeNavClick();
+                    sildeNavRight(data);
 				}
 			});
-            $.ajax({
-                type: 'POST',
-                data: {
-                    "categoryid": "cba5aa3b-ac7c-40fc-badb-26b3c30c1a1f",
-                    "PageIndex": 1,
-                    "PageSize": 6
-                },
-                url: 'http://jmta.api.milisx.com/api/content/getcategoryarticlelist',
-                dataType: 'json',
-                crossDomain: true == !(document.all),
-                success: function(data, type) {
-                    console.log(data);
-                    /*右侧对应内容*/
-                    if(data.data.lst_categoryarticlelist){
-                        $.each(data.data.lst_categoryarticlelist, function(index, item) {
-                            var navName = $(".sideBar_l li.active a").html();
 
-                            var url = '/compoents/file/file_show.html?id='+item.Id+'&title='+title+'&parentId='+urlId+'&navName='+navName;
-                            html += '<li class="fileList"><a href="'+url+'">'+item.Title+'</a><b>'+item.CreateTime+'</b></li>';
-                        });
-                    }
-                    $('.introduction_con').html(html);
-                    if(!IsPC()){
-                        $(".sideBarTitle").html(navTitle);
-                        $(".sideBar_l").hide();
-                    }
-                    /*页码*/
-                    // $("#pageBar").show();
-                    // $("#pageBar").whjPaging("setPage", currPages, Math.ceil(data.data.articlecount/10));
-                }
-            });
 		};
 		var sildeNavRight = function(data){
-			switch(title){
-				case '机构简介':
-					var cateId = $(".sideBar_l li:eq(0)").attr('data-id');
-					introductionNavData(cateId);
-					break;
-				case '大师工作室':
 
-					var cateId = $(".sideBar_l li:eq(0)").attr('data-id');
-					introductionNavData(cateId);
-					break;
-				case '师资情况':
-					var cateId = $(".sideBar_l li:eq(1)").attr('data-id');
-					introductionNavData(cateId);
-					break;	
-				default :
-					// fileNavData(data);
-					break;
-			}
-		}
+			fileNavData(data);
+
+		};
 		//机构简介&&大师工作室简介右侧内容
 		var introductionNavData = function(cateId){
 			var intro_param = {
@@ -138,26 +94,28 @@ var jQuery = $ || {};
 			}
 			$("#pageBar").hide();
 		}
-		//除机构简介&&大师工作室简介右侧内容
-		// var fileNavData = function(data){
-		// 	var html = '';
-		// 	$.each(data.data.lst_navarticlelist, function(index, item) {
-		// 		var navName = $(".sideBar_l li.active a").html();
-		// 		var url = '/compoents/file/file_show.html?id='+item.Id+'&title='+title+'&parentId='+urlId+'&navName='+navName;
-		// 		html += '<li class="fileList"><a href="'+url+'">'+item.Title+'</a><b>'+item.CreateTime+'</b></li>';
-		// 	});
-		// 	$('.fileLists').html(html);
-		// 	/*页码*/
-		// 	$("#pageBar").show();
-		// 	page(Math.ceil(data.data.articlecount/10));
-		// }
+		// 除机构简介&&大师工作室简介右侧内容
+		 var fileNavData = function(data){
+             $(".introduction_con").hide();
+             $(".fileLists").show();
+			var html = '';
+			$.each(data.data.lst_navarticlelist, function(index, item) {
+				var navName = $(".sideBar_l li.active a").html();
+				var url = '/compoents/file/file_show.html?id='+item.Id+'&title='+title+'&parentId='+urlId+'&navName='+navName;
+				html += '<li class="fileList"><a href="'+url+'">'+item.Title+'</a><b>'+item.CreateTime+'</b></li>';
+			});
+			$('.fileLists').html(html);
+			/*页码*/
+			$("#pageBar").show();
+			page(Math.ceil(data.data.articlecount/10));
+		}
 		//初始左侧导航点击事件
 		var sildeNavClick = function() {
 			var ele = $('.sideBar_l li');
 			ele && ele.length > 0 && $.each(ele, function(index, item) {
 				var _t = this;
                 // console.log(ele.attr('data-id'));
-                fitId = ele.attr('data-id');
+
                 $(_t).on('click', function() {
 					$(_t).addClass('active').siblings().removeClass('active');
 					navTitle = $(_t).find('a').html();
@@ -196,13 +154,15 @@ var jQuery = $ || {};
 					listClick(param)
 				});
 			});
-            console.log(fitId)
+            // console.log(fitId)
 		};
 
 		var listClick = function(param){
             var url = "getcategoryarticlelist",
                 html = '';
             $(".introduction_con").show();
+            $(".fileLists").hide();
+            $(".introduction_con").empty();
             $.ajax({
                 type: 'POST',
                 data: param,
@@ -341,7 +301,7 @@ var jQuery = $ || {};
                     case '通知公告':
                         className = 'nav_intro';
                         num = item.Id;
-                        url = '/compoents/file/introduction.html?id=' + item.Id + '&title=' + item.Name;
+                        url = '/compoents/file/file.html?id=' + item.Id + '&title=' + item.Name;
                         break;
                     case '安全信息':
                         className = 'nav_file';
