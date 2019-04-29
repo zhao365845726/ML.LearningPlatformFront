@@ -126,7 +126,7 @@ var jQuery = $ || {};
 			};//[轮播，通知公告，安全培训，素质提升，精品课程，竞赛鉴定，文件制度，疑问解答，活动掠影]
 		//导航渲染
 		var navDom = function(data) {
-			var html='',url = '',isActive,className = '',num = '',more1 ='',more2='',more3='';
+			var html='',url = '',isActive,className = '',num = '',more1 ='',more2='',more3='',more4='';
 			$.each(data, function(index, item) {
 				if(Number(item.ShowMark)) {
 					switch (item.Name) {
@@ -155,6 +155,7 @@ var jQuery = $ || {};
 							className = 'nav_quality';
 							num = item.Id;
 							url = '/compoents/file/file.html?id=' + item.Id + '&title=' + item.Name;
+							more4= '/compoents/file/file.html?id=' + item.Id + '&title=' + item.Name;
 							break;
 						case '在线学习':
 							className = 'nav_study';
@@ -177,7 +178,7 @@ var jQuery = $ || {};
 					isActive = item.Name == '首页' ? 'active' : '';
 					//拼接dom;
 					html += '<li class="' + isActive + ' ' + className + '" id_num="' + num + '"><a href="' + url + '">' + item.Name + '</a></li>';
-                    $(".safety_more").attr('href',more2);$(".quality_more").attr('href',more3);$(".nore1").attr('href',more1)
+                    $(".safety_more").attr('href',more2);$(".quality_more").attr('href',more3);$(".nore1").attr('href',more1);$('.warnmore').attr('href',more4)
 
 				}else{
 					//拼接dom;
@@ -244,7 +245,7 @@ var jQuery = $ || {};
 			safetytraining(data.lst_safetytraining);
 			qualityimprovement(data.lst_qualityimprovement);
 			// documentsystem(data.lst_documentsystem);
-		}
+		};
 		//最新消息banner
 		var remmendnews = function(data) {
 			var url,html = '';
@@ -260,7 +261,7 @@ var jQuery = $ || {};
 			var url,html = '';
 			data && $.each(data, function(index, item) {
 				/*拼接dom*/
-				url = '/compoents/file/file_show.html?id='+item.Id+'&title='+item.title
+				url = '/compoents/notice/notice_show.html?id='+item.Id+'&title=最新消息&parentId=';
 				html +='<li><a href="'+url+'">'+item.Title+'</a></li>';
 			});
 			$('.noticeMsg').html(html);
@@ -270,7 +271,7 @@ var jQuery = $ || {};
 			var url,html = '';
 			data && $.each(data, function(index, item) {
 				/*拼接dom*/
-				url = 'compoents/file/file_show.html?id='+item.Id+'&title=安全培训&parentId='+safetytrain_navid;
+				url = '/compoents/notice/notice_show.html?id='+item.Id+'&title=最新消息&parentId=';
 				html += '<li><a href="'+url+'">'+item.Title+'</a><b>'+item.CreateTime+'</b></li>';
 			});
 			$('.column_safety').html(html);
@@ -282,7 +283,7 @@ var jQuery = $ || {};
 			var url,html = '';
 			data && $.each(data, function(index, item) {
 				/*拼接dom*/
-				url = '/compoents/file/file_show.html?id='+item.Id+'&title=素质提升&parentId='+quality_navid;
+				url = '/compoents/notice/notice_show.html?id='+item.Id+'&title=最新消息&parentId=';
 				html += '<li><a href="'+url+'">'+item.Title+'</a><b>'+item.CreateTime+'</b></li>';
 			});
 			$('.column_quality').html(html);

@@ -26,26 +26,39 @@ var jQuery = $ || {};
 						 $(".article_time").html(dataTpl.CreateTime);
 						 $(".article_source").html(dataTpl.Source);
 						$('.content_con .keyword').show();
-						if(parentId){
-							if(parentId == 1){/*公告内容页*/
-								$(".article_title1 a").attr('href','/compoents/notice/notice.html?id=&title='+title).html(title);
-							}else if(parentId == 2){/*活动掠影内容页*/
-								$(".article_title1 a").attr('href','/compoents/notice/activity.html?id=&title='+title).html(title);
-							}
-							else{/*文章内容页*/
-								$(".article_title1 a").attr('href','/compoents/file/file.html?id='+parentId+'&title='+title).html(title);
-							}
-						}else{
-							$(".article_title1").hide();
-						}
-						if(dataTpl.Enclosure){
-							var accessory= dataTpl.Enclosure.split('/');
-							var accessoryLength = accessory.length;
-                           article_all = dataTpl.Body + '<div>附件：<a  target="_blank" href="'+dataTpl.Enclosure+'" download="' + accessory[accessoryLength - 1] + '">' + accessory[accessoryLength - 1] + '</a></div>'
-						}else{
-							article_all = dataTpl.Body;
-						}
-						$(".content_decoration").html(article_all);
+						// if(parentId){
+						// 	if(parentId == 1){/*公告内容页*/
+						// 		$(".article_title1 a").attr('href','/compoents/notice/notice.html?id=&title='+title).html(title);
+						// 	}else if(parentId == 2){/*活动掠影内容页*/
+						// 		$(".article_title1 a").attr('href','/compoents/notice/activity.html?id=&title='+title).html(title);
+						// 	}
+						// 	else{/*文章内容页*/
+						// 		$(".article_title1 a").attr('href','/compoents/file/file.html?id='+parentId+'&title='+title).html(title);
+						// 	}
+						// }else{
+						// 	$(".article_title1").hide();
+						// }
+						// if(dataTpl.Enclosure){
+						// 	var accessory= dataTpl.Enclosure.split('/');
+						// 	var accessoryLength = accessory.length;
+                        //    article_all = dataTpl.Body + '<div>附件：<a  target="_blank" href="'+dataTpl.Enclosure+'" download="' + accessory[accessoryLength - 1] + '">' + accessory[accessoryLength - 1] + '</a></div>'
+						// }else{
+						// 	article_all = dataTpl.Body;
+						// }
+                        var a = dataTpl.Body;
+                        var arring = [];
+                        var prefix = 'http://jmta.admin.milisx.com';
+                        var newarring ='';
+                        var newarrings = [];
+                        a.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/gi, function (match, capture) {
+                            arring.push(capture);
+                            for (let i =0; i< arring.length;i ++ ) {
+                                newarring = prefix+arring[i];
+                                newarrings.push(newarring);
+                                a = a.replace(new RegExp(capture, 'g'), newarrings[i])
+                            }
+                        });
+						$(".content_decoration").html(a);
 						if(data.obj.PreviousArticleId){
 							$(".article_prev").attr('href','/compoents/notice/notice_show.html?id='+data.obj.PreviousArticleId+'&title='+title+'&parentId='+parentId).html(data.obj.PreviousArticleTitle);
 							$('.pageT').show();
