@@ -139,7 +139,7 @@ var jQuery = $ || {};
 			};//[轮播，通知公告，安全培训，素质提升，精品课程，竞赛鉴定，文件制度，疑问解答，活动掠影]
 		//导航渲染
 		var navDom = function(data) {
-			var html='',url = '',isActive,className = '',num = '';
+			var html='',url = '',isActive,className = '',num = '',more1 ='',more2='',more3='';
 			$.each(data, function(index, item) {
 				if(Number(item.ShowMark)) {
 					switch (item.Name) {
@@ -150,16 +150,19 @@ var jQuery = $ || {};
 							className = 'nav_intro';
 							num = item.Id;
                             url = '/compoents/file/file.html?id=' + item.Id + '&title=' + item.Name;
+                            more1= '/compoents/file/file.html?id=' + item.Id + '&title=' + item.Name;
 							break;
 						case '安全信息':
 							className = 'nav_file';
 							num = item.Id;
 							url = '/compoents/file/file.html?id=' + item.Id + '&title=' + item.Name;
+							more2 = '/compoents/file/file.html?id=' + item.Id + '&title=' + item.Name;
 							break;
 						case '文件精神':
 							className = 'nav_safety';
 							num = item.Id;
 							url = '/compoents/file/file.html?id=' + item.Id + '&title=' + item.Name;
+							more3 = '/compoents/file/file.html?id=' + item.Id + '&title=' + item.Name;
 							break;
 						case "警示教育":
 							className = 'nav_quality';
@@ -187,6 +190,7 @@ var jQuery = $ || {};
 					isActive = item.Name == '首页' ? 'active' : '';
 					//拼接dom;
 					html += '<li class="' + isActive + ' ' + className + '" id_num="' + num + '"><a href="' + url + '">' + item.Name + '</a></li>';
+                    $(".safety_more").attr('href',more2);$(".quality_more").attr('href',more3);$(".nore1").attr('href',more1)
 
 				}else{
 					//拼接dom;
@@ -284,7 +288,7 @@ var jQuery = $ || {};
 			});
 			$('.column_safety').html(html);
 			var more_href = $(".nav_file a").attr('href');
-			$(".safety_more").attr('href',more_href);
+			// $(".safety_more").attr('href',more_href);
 		};
 		//文件精神
 		var qualityimprovement = function(data) {
@@ -295,8 +299,8 @@ var jQuery = $ || {};
 				html += '<li><a href="'+url+'">'+item.Title+'</a><b>'+item.CreateTime+'</b></li>';
 			});
 			$('.column_quality').html(html);
-			var more_href = $(".nav_safety a").attr('href');
-			$(".quality_more").attr('href',more_href);
+			// var more_href = $(".nav_safety a").attr('href');
+			// $(".quality_more").attr('href',more_href);
 		};
 		//文件制度
 		var documentsystem = function(data) {
@@ -307,8 +311,8 @@ var jQuery = $ || {};
 				html += '<li><a href="'+url+'">'+item.Title+'</a><b>'+item.CreateTime+'</b></li>';
 			});
 			$('.documentsystem').html(html);
-			var more_href = $(".nav_file a").attr('href');
-			$(".file_more").attr('href',more_href);
+			// var more_href = $(".nav_file a").attr('href');
+			// $(".file_more").attr('href',more_href);
 		};
 		//活动掠影
 		var activities = function() {
