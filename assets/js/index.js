@@ -95,47 +95,34 @@ var jQuery = $ || {};
 			file_navid = '',
 			dataTpl = '',
 			data_p = {
-				"remmendnews": {
-					"PageIndex": 1,
-					"PageSize": 4
-				},
-				"notices": {
-					"PageIndex": 1,
-					"PageSize": 10
-				},
-				"safetytraining": {
-					"navid": "",
-					"PageIndex": 0,
-					"PageSize": 0
-				},
-				"qualityimprovement": {
-					"navid": "",
-					"PageIndex": 0,
-					"PageSize": 0
-				},
-				"excellentcourse": {
-					"PageIndex": 1,
-					"PageSize": 4
-				},
-				"competitionidentification": {
-					"navid": "",
-					"PageIndex": 0,
-					"PageSize": 0
-				},
-				"documentsystem": {
-					"navid": "",
-					"PageIndex": 0,
-					"PageSize": 0
-				},
-				"interrogativeanswers": {
-					"PageIndex": 1,
-					"PageSize": 5
-				},
-				"activities": {
-					"navid": "",
-					"PageIndex": 0,
-					"PageSize": 0
-				}
+                "remmendnews": {
+                    "PageIndex": 1,
+                    "PageSize": 6
+                },
+                "notices": {
+                    "navid": "e7e1b186-1e3e-480b-b495-1d310ccef9da",
+                    "PageIndex": 1,
+                    "PageSize": 6
+                },
+                "safetyinfo": {
+                    "navid": "a9ca415e-41b2-4662-9129-d580753d123f",
+                    "PageIndex": 1,
+                    "PageSize": 6
+                },
+                "filespirit": {
+                    "navid": "09a92fda-6732-4f02-9665-34adc1a8729b",
+                    "PageIndex": 1,
+                    "PageSize": 6
+                },
+                "excellentcourse": {
+                    "PageIndex": 1,
+                    "PageSize": 6
+                },
+                "activities": {
+                    "navid": "",
+                    "PageIndex": 1,
+                    "PageSize": 6
+                }
 			};//[轮播，通知公告，安全培训，素质提升，精品课程，竞赛鉴定，文件制度，疑问解答，活动掠影]
 		//导航渲染
 		var navDom = function(data) {
@@ -256,7 +243,7 @@ var jQuery = $ || {};
 			notices(data.lst_notices);
 			safetytraining(data.lst_safetytraining);
 			qualityimprovement(data.lst_qualityimprovement);
-			documentsystem(data.lst_documentsystem);
+			// documentsystem(data.lst_documentsystem);
 		}
 		//最新消息banner
 		var remmendnews = function(data) {
@@ -273,7 +260,7 @@ var jQuery = $ || {};
 			var url,html = '';
 			data && $.each(data, function(index, item) {
 				/*拼接dom*/
-				url = '/compoents/file/file_show.html?id='+item.Id+'&title='+title+'&parentId='+urlId+'&navName='+navName;
+				url = '/compoents/file/file_show.html?id='+item.Id+'&title='+item.title
 				html +='<li><a href="'+url+'">'+item.Title+'</a></li>';
 			});
 			$('.noticeMsg').html(html);
@@ -302,18 +289,7 @@ var jQuery = $ || {};
 			// var more_href = $(".nav_safety a").attr('href');
 			// $(".quality_more").attr('href',more_href);
 		};
-		//文件制度
-		var documentsystem = function(data) {
-			var url,html = '';
-			data && $.each(data, function(index, item) {
-				/*拼接dom*/
-				url = '/compoents/file/file_show.html?id='+item.Id+'&title=文件制度&parentId='+file_navid;
-				html += '<li><a href="'+url+'">'+item.Title+'</a><b>'+item.CreateTime+'</b></li>';
-			});
-			$('.documentsystem').html(html);
-			// var more_href = $(".nav_file a").attr('href');
-			// $(".file_more").attr('href',more_href);
-		};
+
 		//活动掠影
 		var activities = function() {
 			var param = {
