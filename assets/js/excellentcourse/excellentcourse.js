@@ -196,6 +196,11 @@ var jQuery = $ || {};
                             num = item.Id;
                             url = '/compoents/study/study.html?id=' + item.Id + '&title=' + item.Name;
                             break;
+                        case "安全培训":
+                            className = 'nav_quality';
+                            num = item.Id;
+                            url = '/compoents/file/file.html?id=' + item.Id + '&title=' + item.Name;
+                            break;
                         case "素质提升":
                             className = 'nav_work';
                             num = item.Id;

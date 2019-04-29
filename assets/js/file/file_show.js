@@ -97,7 +97,7 @@ var jQuery = $ || {};
                                 a = a.replace(new RegExp(capture, 'g'), newarrings[i])
                             }
                         });
-                        
+
 
                         $(".content_decoration").html(a);
 						var navName = $(".sideBar_l li.active a").html();
@@ -147,6 +147,11 @@ var jQuery = $ || {};
                             className = 'nav_study';
                             num = item.Id;
                             url = '/compoents/study/study.html?id=' + item.Id + '&title=' + item.Name;
+                            break;
+                        case "安全培训":
+                            className = 'nav_quality';
+                            num = item.Id;
+                            url = '/compoents/file/file.html?id=' + item.Id + '&title=' + item.Name;
                             break;
                         case "素质提升":
                             className = 'nav_work';
