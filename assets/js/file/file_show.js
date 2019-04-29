@@ -46,11 +46,12 @@ var jQuery = $ || {};
 				var _t = this;
 				$(_t).on('click', function() {
 					var title = $(_t).find('a').html();
-					title = title == '大师工作室简介' ? '大师工作室' : title;
+					// title = title == '大师工作室简介' ? '大师工作室' : title;
 					window.location.href = '/compoents/file/file.html?id='+parentId+'&title='+title;
 				});
 			});
 		};
+
 		//内容
 		var showContent = function(){
 			var url = "getarticledetail";
@@ -63,26 +64,42 @@ var jQuery = $ || {};
 				url: ajax_url + url,
 				crossDomain: true == !(document.all),
 				success: function(data, type) {
-					if (data.data) {
+                    // console.log(data);
+                    if (data.data) {
 						dataTpl = data.data;
                          $(".article_title").html(dataTpl.Title);
 						 $(".article_time").html(dataTpl.CreateTime);
 						 $(".article_source").html(dataTpl.Source);
 						 $('.content_con .keyword').show();
-						if(parentId){
-							/*文章内容页*/
-							$(".article_title1 a").attr('href','/compoents/file/file.html?id='+parentId+'&title='+title).html(title);
-						}else{
-							$(".article_title1").hide();
-						}
-						if(dataTpl.Enclosure){
-							var accessory= dataTpl.Enclosure.split('/');
-							var accessoryLength = accessory.length;
-                           article_all = dataTpl.Body + '<div>附件：<a  target="_blank"  href="'+dataTpl.Enclosure+'" download="' + accessory[accessoryLength - 1] + '">' + accessory[accessoryLength - 1] + '</a></div>'
-						}else{
-							article_all = dataTpl.Body;
-						}
-						$(".content_decoration").html(article_all);
+						// if(parentId){
+                        // 						// 	/*文章内容页*/
+                        // 						// 	$(".article_title1 a").attr('href','/compoents/file/file.html?id='+parentId+'&title='+title).html(title);
+                        // 						// }else{
+                        // 						// 	$(".article_title1").hide();
+                        // 						// }
+						// if(dataTpl.Enclosure){
+						// 	var accessory= dataTpl.Enclosure.split('/');
+						// 	var accessoryLength = accessory.length;
+                        //    article_all = dataTpl.Body + '<div>附件：<a  target="_blank"  href="'+dataTpl.Enclosure+'" download="' + accessory[accessoryLength - 1] + '">' + accessory[accessoryLength - 1] + '</a></div>'
+						// }else{
+						// 	article_all = dataTpl.Body;
+						// }
+						var a = dataTpl.Body;
+						var arring = [];
+						var prefix = 'http://jmta.admin.milisx.com';
+						var newarring ='';
+						var newarrings = [];
+                        a.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/gi, function (match, capture) {
+                            arring.push(capture);
+                            for (let i =0; i< arring.length;i ++ ) {
+                                newarring = prefix+arring[i];
+                                newarrings.push(newarring);
+                                a = a.replace(new RegExp(capture, 'g'), newarrings[i])
+                            }
+                        });
+                        
+
+                        $(".content_decoration").html(a);
 						var navName = $(".sideBar_l li.active a").html();
 						if(data.obj.PreviousArticleId){
 							$(".article_prev").attr('href','/compoents/file/file_show.html?id='+data.obj.PreviousArticleId+'&title='+title+'&parentId='+parentId+'&navName='+navName).html(data.obj.PreviousArticleTitle);

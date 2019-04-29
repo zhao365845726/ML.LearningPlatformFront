@@ -171,6 +171,11 @@ var jQuery = $ || {};
 							num = item.Id;
 							url = '/compoents/study/study.html?id=' + item.Id + '&title=' + item.Name;
 							break;
+                        case "安全培训":
+                            className = 'nav_quality';
+                            num = item.Id;
+                            url = '/compoents/file/file.html?id=' + item.Id + '&title=' + item.Name;
+                            break;
 						case "素质提升":
                             className = 'nav_work';
                             num = item.Id;
@@ -264,12 +269,12 @@ var jQuery = $ || {};
 			var url,html = '';
 			data && $.each(data, function(index, item) {
 				/*拼接dom*/
-				url = '/compoents/notice/notice_show.html?id='+item.Id+'&title=通知公告&parentId=1';
+				url = '/compoents/file/file_show.html?id='+item.Id+'&title='+title+'&parentId='+urlId+'&navName='+navName;
 				html +='<li><a href="'+url+'">'+item.Title+'</a></li>';
 			});
 			$('.noticeMsg').html(html);
 		};
-		//安全培训
+		//安全信息
 		var safetytraining = function(data) {
 			var url,html = '';
 			data && $.each(data, function(index, item) {
@@ -278,10 +283,10 @@ var jQuery = $ || {};
 				html += '<li><a href="'+url+'">'+item.Title+'</a><b>'+item.CreateTime+'</b></li>';
 			});
 			$('.column_safety').html(html);
-			var more_href = $(".nav_safety a").attr('href');
+			var more_href = $(".nav_file a").attr('href');
 			$(".safety_more").attr('href',more_href);
 		};
-		//素质提升
+		//文件精神
 		var qualityimprovement = function(data) {
 			var url,html = '';
 			data && $.each(data, function(index, item) {
@@ -290,7 +295,7 @@ var jQuery = $ || {};
 				html += '<li><a href="'+url+'">'+item.Title+'</a><b>'+item.CreateTime+'</b></li>';
 			});
 			$('.column_quality').html(html);
-			var more_href = $(".nav_quality a").attr('href');
+			var more_href = $(".nav_safety a").attr('href');
 			$(".quality_more").attr('href',more_href);
 		};
 		//文件制度

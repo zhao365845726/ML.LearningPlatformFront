@@ -170,7 +170,7 @@ var jQuery = $ || {};
                 dataType: 'json',
                 crossDomain: true == !(document.all),
                 success: function(data, type) {
-                    console.log(data);
+                    // console.log(data);
                     /*右侧对应内容*/
                     if(data.data.lst_categoryarticlelist){
                         $.each(data.data.lst_categoryarticlelist, function(index, item) {
