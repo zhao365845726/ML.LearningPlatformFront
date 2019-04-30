@@ -14,7 +14,7 @@ function login(){
         alert('请输入密码！');
         return false;
     }
-    login1(userName,userPas,title);
+    login1(userName,userPas);
 
 }
 function login1(account,password){

@@ -27,6 +27,7 @@
 	padding: 4px;
 	overflow: hidden;
 	border: 1px solid #c3c3c3;
+	position: relative;
 }
 .carouselBox{
 	width: 100%;
@@ -511,7 +512,7 @@ li.userPasBox b{
 	font-size: 18px;
 }
 .courseMsg{
-	margin: 26px 0;
+	margin-bottom: 26px;
 }
 .courseMsg li{
 	float: left;
@@ -519,6 +520,7 @@ li.userPasBox b{
 	height: 198px;
 	margin-left: 34px;
 	position: relative;
+	margin-top: 26px;
 }
 .courseMsg li:first-child{
 	margin-left: 0;
@@ -1117,4 +1119,7 @@ li.userPasBox b{
 	html,body{
 		font-size:10px;
 	}
+}
+.courseMsg li:nth-child(5){
+	margin-left: 0;
 }

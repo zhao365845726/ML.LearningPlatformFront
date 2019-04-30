@@ -1,53 +1,6 @@
 //轮播图
 var silde = {
-	carousel:function(box,lists,btns,breaktime,movetime) {
-		var breaktime=breaktime||3000;
-		var movetime=movetime||300;
-		var fla_t=true;
-		var num=0;
-		var list_w = lists.width();
-		var list_l = lists.length;
-		box.css("width",list_w*list_l);
-		lists.css("width",list_w);
-		function moveone() {
-			if(fla_t){
-				num++;
-				if(num==lists.length){
-					num=num-2;
-					box.animate({left:-num*lists.width()},movetime);
-					fla_t=false;
-				}else{
-					box.animate({left:-num*lists.width()},movetime);
-				}
-				btns.removeClass("active");
-				$(btns[num]).addClass("active");
-			}else{
-				num--;
-				if(num==-1){
-					num=num+2;
-					box.animate({left:-num*lists.width()},movetime);
-					fla_t=true;
-				}
-				else{
-					box.animate({left:-num*lists.width()},movetime);
-				}
-				btns.removeClass("active");
-				$(btns[num]).addClass("active");
-			}
-		}
-		var ts=setInterval(moveone,breaktime)
-		btns.hover(function  () {
-			clearInterval(ts);
-			box.stop();
-			var index=btns.index(this);
-			num=index;
-			box.animate({left:-num*lists.width()},movetime);
-			btns.removeClass("active");
-			$(btns[num]).addClass("active");
-		},function  () {
-			ts=setInterval(moveone,breaktime)
-		})
-	},//banner的轮播效果
+
 	marquee:function (box,list,left,right,num,movetime){
 		var num=num||1;
 		var aa=list;
@@ -154,8 +107,8 @@ var jQuery = $ || {};
 						case "警示教育":
 							className = 'nav_quality';
 							num = item.Id;
-							url = '/compoents/file/file.html?id=' + item.Id + '&title=' + item.Name;
-							more4= '/compoents/file/file.html?id=' + item.Id + '&title=' + item.Name;
+							url = '/compoents/file/introduction.html?id=' + item.Id + '&title=' + item.Name;
+							more4= '/compoents/file/introduction.html?id=' + item.Id + '&title=' + item.Name;
 							break;
 						case '在线学习':
 							className = 'nav_study';
@@ -205,25 +158,8 @@ var jQuery = $ || {};
 		//banner,通知，安全培训，素质提升，大师工作，制度文件渲染
 		var temlDom = function(){
 			var url = "gethomedata";
-			safetytrain_navid = $(".nav_safety").attr('id_num');
-			quality_navid = $(".nav_quality").attr('id_num');
-			file_navid = $(".nav_file").attr('id_num');
-			data_p.safetytraining = {
-				"navid":safetytrain_navid,
-				"PageIndex": 1,
-				"PageSize": 10
-			};
-			data_p.qualityimprovement = {
-				"navid":quality_navid,
-				"PageIndex": 1,
-				"PageSize": 10
-			};
-			data_p.documentsystem = {
-				"navid":file_navid,
-				"PageIndex": 1,
-				"PageSize": 10
-			};
-			console.log(data_p);
+
+			// console.log(data_p);
 			$.ajax({
 				type: "POST",
 				data: data_p,
@@ -244,7 +180,7 @@ var jQuery = $ || {};
 			notices(data.lst_notices);
 			safetytraining(data.lst_safetytraining);
 			qualityimprovement(data.lst_qualityimprovement);
-			// documentsystem(data.lst_documentsystem);
+            excellentcourse(data.lst_excellentcourse)
 		};
 		//最新消息banner
 		var remmendnews = function(data) {
@@ -254,7 +190,7 @@ var jQuery = $ || {};
 				url = '/compoents/notice/notice_show.html?id='+item.Id+'&title=最新消息&parentId=';
 				html += '<li class="carousel-item"><a href="'+url+'"><img src="'+item.CoverPhoto+'" alt=""><div class="shade">'+item.Title+'</div></a></li>';
 			});
-			$('.carousel-inner').html(html);
+			$('.m_unit').html(html);
 		};
 		//通知公告
 		var notices = function(data) {
@@ -290,142 +226,91 @@ var jQuery = $ || {};
 			// var more_href = $(".nav_safety a").attr('href');
 			// $(".quality_more").attr('href',more_href);
 		};
-
-		//活动掠影
-		var activities = function() {
-			var param = {
-				pageindex : 1,
-				pagesize : 6
-			};
-			var url = "getactivitylist";
-			var html = '';
-			$.ajax({
-				type: 'POST',
-				data: param,
-				url: ajax_url + url,
-				crossDomain: true == !(document.all),
-				dataType: 'json',
-				success: function(data, type) {
-					data.data.lst_activitylist && $.each(data.data.lst_activitylist, function(index, item) {
-						/*拼接dom*/
-						url = '/compoents/notice/notice_show.html?id='+item.Id+'&title=活动掠影&parentId=2';
-						html += '<li class="swiper-slide"><a href="'+url+'"><img src="'+item.CoverPhoto+'" alt=""><p>'+item.Title+'</p></a></li>';
-					});
-					$('.activities').html(html);
-					   /*若是PC端（活动掠影）轮播，否不轮播*/
-					if(IsPC()){
-						silde.marquee($(".slideLists"),$(".slideLists>li"),$(".btnLeft"),$(".btnRight"),1,3000);
-					}else{
-						var slideLists_h = $(".slideLists>li").height() + parseInt($(".slideLists>li").css("marginBottom"));
-						$(".activitySlide").css('height',slideLists_h*2);
-					}
-				}
-			});
-		};
 		//精品课程
-		var excellentcourse = function() {
-			var url = 'getcourselist';
-			var html = '';
-			var param = {
-				ClassifyId:'',
-				StudyOption:'',
-				PageIndex:1,
-				PageSize:4
-			};
-			var typeHtml = '';
-			$.ajax({
-				type: "POST",
-				data: param,
-				dataType: 'json',
-				url: course_Url+url,
-				crossDomain: true == !(document.all),
-				success: function(data, type) {
-					if (data.data) {
-						data.data.lst_course && $.each(data.data.lst_course, function(index, item) {
-							/*拼接dom*/
-							url = '/compoents/study/course_show.html?id='+item.Id;
-							if(item.StudyOption == 1){
-								typeHtml = '<i></i>';
-							}else{
-								typeHtml = '';
-							}
-							html += '<li><a href="'+url+'"><img src="'+item.CoverMap+'" alt=""><p><span>'+item.Name+'</span></p>'+typeHtml+'</a></li>';
-						});
-						$('.excellentcourse').html(html);
-					}
-				}
-			})
-		};
-		//大师工作室
-		var work = function(){
-			var navid = $(".nav_work").attr('id_num');
-			var param = {
-				navid : navid,
-				pageindex : 1,
-				pagesize : 10
-			};
-			var url = "getnavcategorylist";
-			var html = '';
-			$.ajax({
-				type: 'POST',
-				data: param,
-				url: ajax_url + url,
-				dataType: 'json',
-				crossDomain: true == !(document.all),
-				success: function(data, type) {
-					data.data.lst_navarticlelist && $.each(data.data.lst_navarticlelist, function(index, item) {
-						/*拼接dom*/
-						var url2 = '/compoents/file/file_show.html?id='+item.Id+'&title=大师工作室&parentId='+navid;
-						html += '<li class="fileList"><a href="'+url2+'">'+item.Title+'</a><b>'+item.CreateTime+'</b></li>';
-					});
-					$('.competitionidentification').html(html);
-				}
-			});
-			var more_href = $(".nav_work a").attr('href');
-			$(".work_more").attr('href',more_href);
-			$(".workHome").attr('href',more_href);
-		}
-		//疑问解答
-		var interrogativeanswers = function() {
-			var url = "getinterrogativeanswerlist";
-			var html = '';
-			var param = {
-				Keywords : '',
-				pageindex : 1,
-				pagesize : 10
-			};
-			$.ajax({
-				type: 'POST',
-				data: param,
-				url: ajax_url + url,
-				dataType: 'json',
-				crossDomain: true == !(document.all),
-				success: function(data, type) {
-					data.data.lst_interrogativeanswerlist && $.each(data.data.lst_interrogativeanswerlist, function(index, item) {
-						/*拼接dom*/
-						var url2 = '/compoents/interanswers/interanswers_show.html?id='+item.Id;
-						html += '<li><a href="'+url2+'"><p class="ask"><img src="assets/images/ask.png" alt="">'+item.QuestionTitle+'？</p><p class="answer"><img src="assets/images/answer.png" alt="">'+item.AnswerContent+'</p></a></li>';
-					});
-					$('.interrogativeanswers').html(html);
-				}
-			});
-		};
-		//资料下载，在线学习，证件查询链接
-		var dataLoad = function(){
-			var id = $('.nav_load').attr('id_num');
-			$(".download").attr('href','/compoents/load/load.html?id='+id);
-			var studyHref = $(".nav_study").attr('id_num');
-			$(".study").attr('href','/compoents/study/study.html?id='+studyHref+'&title=在线学习');
-		}
-		//在线学习子导航
-		var studySubnaudioVideo = function(){
-			var studyHref = $(".nav_study").attr('id_num');
-			var data = $(".login_out_studys a");
-			$.each(data, function(index, item) {
-				var title = $(item).html();
-				$(item).attr('href','/compoents/study/study.html?id='+studyHref+'&title='+title);
-			});
-		}
+		var excellentcourse = function (data) {
+				var url,html ='';
+            data && $.each(data, function(index, item) {
+                /*拼接dom*/
+                url = '/compoents/study/course_show.html?id='+item.Id;
+                if(item.StudyOption == 1){
+                   						typeHtml = '<i></i>';
+                  				}else{
+                 					typeHtml = '';
+                   				}
+                html += '<li><a href="'+url+'"><img src="'+item.CoverMap+'" alt=""><p><span>'+item.Name+'</span></p>'+typeHtml+'</a></li>';
+            });
+            $('.excellentcourse').html(html);
+        };
+		//活动掠影
+		// var activities = function() {
+		// 	var param = {
+		// 		pageindex : 1,
+		// 		pagesize : 6
+		// 	};
+		// 	var url = "getactivitylist";
+		// 	var html = '';
+		// 	$.ajax({
+		// 		type: 'POST',
+		// 		data: param,
+		// 		url: ajax_url + url,
+		// 		crossDomain: true == !(document.all),
+		// 		dataType: 'json',
+		// 		success: function(data, type) {
+		// 			data.data.lst_activitylist && $.each(data.data.lst_activitylist, function(index, item) {
+		// 				/*拼接dom*/
+		// 				url = '/compoents/notice/notice_show.html?id='+item.Id+'&title=活动掠影&parentId=2';
+		// 				html += '<li class="swiper-slide"><a href="'+url+'"><img src="'+item.CoverPhoto+'" alt=""><p>'+item.Title+'</p></a></li>';
+		// 			});
+		// 			$('.activities').html(html);
+		// 			   /*若是PC端（活动掠影）轮播，否不轮播*/
+		// 			if(IsPC()){
+		// 				silde.marquee($(".slideLists"),$(".slideLists>li"),$(".btnLeft"),$(".btnRight"),1,3000);
+		// 			}else{
+		// 				var slideLists_h = $(".slideLists>li").height() + parseInt($(".slideLists>li").css("marginBottom"));
+		// 				$(".activitySlide").css('height',slideLists_h*2);
+		// 			}
+		// 		}
+		// 	});
+		// };
+		//警示教育
+		// var excellentcourse = function() {
+		// 	var url = 'getcourselist';
+		// 	var html = '';
+		// 	var param = {
+		// 		ClassifyId:'',
+		// 		StudyOption:'',
+		// 		PageIndex:1,
+		// 		PageSize:4
+		// 	};
+		// 	var typeHtml = '';
+		// 	$.ajax({
+		// 		type: "POST",
+		// 		data: param,
+		// 		dataType: 'json',
+		// 		url: course_Url+url,
+		// 		crossDomain: true == !(document.all),
+		// 		success: function(data, type) {
+		// 			if (data.data) {
+		// 				data.data.lst_course && $.each(data.data.lst_course, function(index, item) {
+		// 					/*拼接dom*/
+		// 					url = '/compoents/study/course_show.html?id='+item.Id;
+		// 					if(item.StudyOption == 1){
+		// 						typeHtml = '<i></i>';
+		// 					}else{
+		// 						typeHtml = '';
+		// 					}
+		// 					html += '<li><a href="'+url+'"><img src="'+item.CoverMap+'" alt=""><p><span>'+item.Name+'</span></p>'+typeHtml+'</a></li>';
+		// 				});
+		// 				$('.excellentcourse').html(html);
+		// 			}
+		// 		}
+		// 	})
+		// };
+
+
+
+
+
 		//获取友情链接
 		var Friendlink = function(){
 			var param = {
@@ -500,13 +385,13 @@ var jQuery = $ || {};
 		};
 		var init_second = function(){
 			isLogin();
-			studySubnaudioVideo();
+			// studySubnaudioVideo();
 			temlDom();
-			activities();
+			// activities();
 			excellentcourse();
-			work();
-			dataLoad();
-			interrogativeanswers();
+			// work();
+			// dataLoad();
+			// interrogativeanswers();
 			seachFun();
 			seachMobileFun();
 			$('.footer').load('/compoents/common/footer.html');

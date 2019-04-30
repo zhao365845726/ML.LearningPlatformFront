@@ -30,7 +30,7 @@ var jQuery = $ || {};
                         case "警示教育":
                             className = 'nav_quality';
                             num = item.Id;
-                            url = '/compoents/file/file.html?id=' + item.Id + '&title=' + item.Name;
+                            url = '/compoents/file/introduction.html?id=' + item.Id + '&title=' + item.Name;
                             break;
                         case '在线学习':
                             className = 'nav_study';

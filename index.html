@@ -17,6 +17,52 @@
     <script>
         var falgIndex = true;
     </script>
+    <style>
+        .carousel{
+            padding: 0;
+        }
+        .carousel .m_unit{
+            width: 9000px;
+            position: relative;
+            top: 0;
+            left: 0;
+        }
+        .carousel .m_unit{
+            list-style: none;
+        }
+        .carousel .m_unit li{
+            float: left;
+            width: 1170px;
+            height: 360px;
+            overflow: hidden;
+        }
+        .carousel .m_unit li img{
+            width: 552px;
+            height: 370px;
+        }
+        .circles{
+            position: absolute;
+            bottom: 0;
+            right: 135px;
+            width: 150px;
+            height: 18px;
+        }
+        .circles ol{
+            list-style: none;
+        }
+        .circles ol li{
+            float: left;
+            width: 10px;
+            height: 10px;
+            margin-right: 10px;
+            border-radius: 50%;
+            background-color: grey;
+            cursor: pointer;
+        }
+        .circles ol li.cur{
+            background-color: #060c38;
+        }
+    </style>
 </head>
 <body>
     <!-- header -->
@@ -67,14 +113,16 @@
             <div class="mainLeft">
                 <div class="container mainLeftTop">
                     <div class="carousel">
-                        <div class="carouselBox ft-carousel" id="carousel_1">
-                            <ul class="slide carousel-inner"></ul>
-                            <ul class="slideBtn carousel-indicators">
-                                <li class="active"></li>
+                        <ul class="m_unit">
+
+                        </ul>
+                        <div class="circles">
+                            <ol>
+                                <li class="cur"></li>
                                 <li></li>
                                 <li></li>
                                 <li></li>
-                            </ul>
+                            </ol>
                         </div>
                     </div>
                     <div class="container hrefBtns_mobile">
@@ -182,8 +230,8 @@
         </div>
         <div class="container excellentCourse">
             <div class="courseTop">
-                <span class="courseTitle">警示教育</span>
-                <a href="/compoents/excellentcourse/excellentcourse.html" class="more warnmore">更多 >>&nbsp;</a>
+                <span class="courseTitle">精品课程</span>
+                <a href="" class="more warnmore">更多 >>&nbsp;</a>
             </div>
             <div class="container courseMsgs">
                 <ul class="container courseMsg excellentcourse"></ul>
@@ -260,6 +308,7 @@
 </body>
 <script src="assets/js/common/jquery-1.11.3.min.js" type="text/javascript"></script>
 <script src="assets/js/common/jquery.cookie.min.js" type="text/javascript"></script>
+<script src="assets/js/carousel.min.js"></script>
 <script src="assets/js/common/calendar.js" type="text/javascript"></script>
 <script src="assets/js/common/config.js" type="text/javascript"></script>
 <!--<script src="assets/js/common/finger.js" type="text/javascript"></script>-->
@@ -268,6 +317,7 @@
 <script type="text/javascript">
     /** pc端
      */
+
     var favorite_Url = favoritecourseUrl();
     function login(){
         var userName = $.trim($(".userName").val());
@@ -373,5 +423,52 @@
         }
     })
 })
+
+
+    var $carousel = $(".carousel");
+    var $m_unit = $(".m_unit");
+    var $imageLis = $(".m_unit li");
+    var $cilclesLis = $(".circles ol li");
+    $(".m_unit").append($imageLis.eq(0).clone());
+    var idx = 0;
+    var timer = setInterval(rightBtnHandler, 3000);
+    $carousel.mouseenter(function(){
+        clearInterval(timer);
+    });
+    $carousel.mouseleave(function(){
+        timer = setInterval(rightBtnHandler, 3000);
+    });
+    $(".rightBtn").click(rightBtnHandler);
+    function rightBtnHandler() {
+        if ($m_unit.is(":animated")) return;
+        idx++;
+        $m_unit.animate({"left": -1170 * idx}, 300, function () {
+            if (idx > 3) {
+                idx = 0;
+                $m_unit.css("left", 0);
+            }
+        });
+        changeCircle();
+    }
+    $(".leftBtn").click(function(){
+        if($m_unit.is(":animated")) return;
+        idx--;
+        if(idx < 0){
+            idx = 3;
+            $m_unit.css("left",-4 * 582);
+        }
+        $m_unit.animate({"left" : -582 * idx},300);
+        changeCircle();
+    });
+    $cilclesLis.click(function(){
+        idx = $(this).index();
+        $m_unit.animate({"left" : -582 * idx},300);
+        changeCircle();
+    });
+    function changeCircle(){
+        var n = idx <= 3 ? idx : 0;
+        $cilclesLis.eq(n).addClass("cur").siblings().removeClass("cur");
+    }
+
 </script>
 </html>
