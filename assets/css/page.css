@@ -103,3 +103,14 @@
     margin: 0.5rem 0px 0px 1.5rem;
     border-radius: 0.2rem;
 }
+#filter{
+    float: left;
+    width: 175px;
+    height: 32px;
+    margin-right: 30px;
+    border: 1px solid #033A70;
+    padding: 1px 2px
+}
+#filter option{
+    height: 35px;
+}

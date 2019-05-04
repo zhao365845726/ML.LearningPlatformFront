@@ -693,6 +693,28 @@ var jQuery = $ || {};
 				}
 			});
 		};
+		var selectDom = function () {
+			var selectUrl = 'http://jmta.api.milisx.com/api/category/questions';
+				var html = ''
+            $.ajax({
+                type: 'POST',
+                data: '',
+                url: selectUrl,
+                dataType: 'json',
+                crossDomain: true == !(document.all),
+                success: function(data, type) {
+                    if(data.data) {
+
+                        $.each(data.data, function (index, item) {
+                            console.log(data);
+                            html += '<option id='+item.Id+'>'+item.Name+'</option>'
+                        })
+                    }
+                    $("#filter").html(html)
+                }
+
+				})
+        }
         //导航渲染
 		var navDom = function(data) {
 			var html='',url = '',isActive,className = '',num = '';
@@ -764,6 +786,7 @@ var jQuery = $ || {};
 			})
 		};
 		var init_second = function(){
+            selectDom();
 			isLogin();
 			seachFun();
 			seachMobileFun();
