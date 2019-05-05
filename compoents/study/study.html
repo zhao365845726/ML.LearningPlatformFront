@@ -17,6 +17,16 @@
     <link rel="stylesheet" href="../../assets/css/jquery.mytooltip.css"/>
     <link rel="stylesheet" href="../../assets/css/style.css"/>
     <link rel="stylesheet" href="../../assets/css/styleMobile.css"/>
+    <style type="text/css">
+        #filter{
+            float: left;
+            width: 200px;
+           height: 32px;
+           border: 1px solid #033A70;
+           padding: 0 10px;
+           margin-right: 20px;
+        }
+    </style>
 </head>
 <body>
     <!--header-->
@@ -59,13 +69,13 @@
         <div class="main">
             <ul class="container studyName">
                 <img src="../../assets/images/ren.png" class="person_img">
-                <li>公司：<b class="person_Company"></b></li>
-                <li>部门：<b class="person_Dept"></b></li>
-                <li>账户：<b class="person_Account"></b></li>
+                <li class="ellipsis">公司：<b class="person_Company"></b></li>
+                <li class="ellipsis">部门：<b class="person_Dept"></b></li>
+                <li class="ellipsis">账户：<b class="person_Account"></b></li>
                 <li class="lgout right"><a href="/compoents/study/personalinfo.html">修改信息</a> <a href="/compoents/study/reset.html">修改密码</a> <a href="javascript:loginOut();">退出</a></li>
-                <li>姓名：<b class="person_Name"></b></li>
+                <li class="ellipsis">姓名：<b class="person_Name"></b></li>
                 <li>性别：<b class="person_Gender"></b></li>
-                <li>身份证号码：<b class="person_IDCard"></b></li>
+                <li class="ellipsis">身份证号码：<b class="person_IDCard"></b></li>
                 <li class="right">电话号：<b class="person_Mobile"></b></li>
             </ul>
             <div class="container sideBarBox">
@@ -97,14 +107,16 @@
                            <input type="button" value="确定" id="classifyQuestionBankBtn" class="cursor monitorexamClick" data-num="4"/>
                         </span>
                     </div>
+                   
                     <div class="specialPractice displayNone">
                         <select name="filter" id="filter">
-
+                            
                         </select>
                         <input type="text" name="" id="specialPracticeInput" placeholder="搜索">
                         <input type="button" name="" value="搜索" id="specialPracticeButton">
                     </div>
                     <ul class="myCourse myCourse2">
+
                     </ul>
                     <a href="" id="downloadtozip" class="displayNone"></a>
                     <div id="pageBar"></div>

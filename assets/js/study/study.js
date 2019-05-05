@@ -70,7 +70,7 @@ var jQuery = $ || {};
 			var url = "getnavcategorylist";
 			var leftName = '';
 			if(title == '在线学习' || title == '我的课程'){
-				leftName = '我的课程';
+				leftName = '模拟考试';
 			}else{
 				leftName = title;
 			}
@@ -138,7 +138,7 @@ var jQuery = $ || {};
 					};
 					minecourselist();
 					break;
-				case '我的考试':
+				case '每季一考':
 					var url = 'formalexamlist';
 					zoomUrl = exam_Url + url;
 					param = {
@@ -152,6 +152,7 @@ var jQuery = $ || {};
 					url = 'speciallist';
                     zoomUrl = practiseUrl() + url;
                     param = {
+                    	"ParentId":"",
                         "CategoryName": "",
                         PageIndex : 1,
                         PageSize : 20
@@ -205,7 +206,7 @@ var jQuery = $ || {};
 					};
 					lookexamlist();
 					break;
-				case '专项练习':
+				case '模拟考试':
 					var url = 'speciallist';
 					zoomUrl = practiseUrl() + url;
 					param = {
@@ -263,7 +264,7 @@ var jQuery = $ || {};
 			})
 		}
 		//2effe14a-ef5c-45e1-9468-c8710fa12783
-		//我的考试
+		//每季一考
 		var formalexamlist = function(){
 			html_con = '<li class="course_title"><span class="mytest1"><i></i>试卷名称</span><span class="mytest5">考试开始时间</span><span class="mytest5">考试结束时间</span><span class="mytest6">用时</span><span class="mytest2">成绩</span><span class="mytest4">考试状态</span></li>';
 			$.ajax({
@@ -599,9 +600,10 @@ var jQuery = $ || {};
 				}
 			})
 		}
-		//专项练习
+		//模拟考试
 		var specialPracticelist = function(){
 			html_con = '';
+			console.log(param);
 			$.ajax({
 				type: 'POST',
 				data: param,
@@ -609,7 +611,7 @@ var jQuery = $ || {};
 				dataType: 'json',
 				crossDomain: true == !(document.all),
 				success: function(data, type) {
-					// console.log(data.data);
+					 console.log(data.data);
 					if(data.data) {
 						$.each(data.data, function (index, item) {
 							html_con += '<li class="specialPracticelist"><a href="/compoents/study/practice_show.html?CategoryId=' + item.CategoryId + '&num='+item.Total+'">'+item.Name+'('+item.Total+')</a></li>';
@@ -627,13 +629,15 @@ var jQuery = $ || {};
 				}
 			})
 		}
-		//课件园地(进修选项)
+		//模拟考试
 		var StudyOptionClick = function(){
 			$("#specialPracticeButton").click(function() {
 				var specialPracticeInput = $.trim($("#specialPracticeInput").val());
+				var ParentId = $.trim($("#filter").val());
 				if (specialPracticeInput !== undefined) {
 					currPages = 1;
-					param.CategoryName = specialPracticeInput
+					param.ParentId = ParentId;
+					param.CategoryName = specialPracticeInput;
 					specialPracticelist();
 				}
 			})
@@ -653,7 +657,7 @@ var jQuery = $ || {};
 					param.PageIndex = currPage;
 					currPages = currPage;
 					switch (navTitle){
-						case '我的考试':
+						case '每季一考':
 							formalexamlist();
 							break;
 						case '模拟练习':
@@ -683,7 +687,7 @@ var jQuery = $ || {};
 						case '查看成绩':
 							lookexamlist();
 							break;
-						case '专项练习':
+						case '模拟考试':
 							specialPracticelist();
 							break;	
 						default :
@@ -693,28 +697,6 @@ var jQuery = $ || {};
 				}
 			});
 		};
-		var selectDom = function () {
-			var selectUrl = 'http://jmta.api.milisx.com/api/category/questions';
-				var html = ''
-            $.ajax({
-                type: 'POST',
-                data: '',
-                url: selectUrl,
-                dataType: 'json',
-                crossDomain: true == !(document.all),
-                success: function(data, type) {
-                    if(data.data) {
-
-                        $.each(data.data, function (index, item) {
-                            console.log(data);
-                            html += '<option id='+item.Id+'>'+item.Name+'</option>'
-                        })
-                    }
-                    $("#filter").html(html)
-                }
-
-				})
-        }
         //导航渲染
 		var navDom = function(data) {
 			var html='',url = '',isActive,className = '',num = '';
@@ -768,6 +750,27 @@ var jQuery = $ || {};
 			$('.nav').html(html);
 			$(".mobileNavLists").html(html);
 		}
+		var selectDom = function () {
+            var selectUrl = 'http://jmta.api.milisx.com/api/category/questions';
+                var html = '<option value="">全部</option>';
+				$.ajax({
+				type: 'POST',
+				data: '',
+				url: selectUrl,
+				dataType: 'json',
+				crossDomain: true == !(document.all),
+				success: function(data, type) {
+				if(data.data) {
+
+				$.each(data.data, function (index, item) {
+				html += '<option value='+item.Id+'>'+item.Name+'</option>'
+				})
+				}
+				$("#filter").html(html)
+				}
+
+	       })
+		}
 		//初始数据请求
 		var init = function() {
 			var url = "homenavigation";
@@ -786,18 +789,14 @@ var jQuery = $ || {};
 			})
 		};
 		var init_second = function(){
-            selectDom();
 			isLogin();
 			seachFun();
 			seachMobileFun();
+			selectDom();
 			$('.footer').load('/compoents/common/footer.html');
 			Friendlink();
 		};
 		init();
-
-
-
-
 
 	})
 })(window, jQuery);
