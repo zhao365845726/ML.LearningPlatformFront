@@ -152,7 +152,6 @@ var jQuery = $ || {};
 					url = 'speciallist';
                     zoomUrl = practiseUrl() + url;
                     param = {
-                    	"ParentId":"",
                         "CategoryName": "",
                         PageIndex : 1,
                         PageSize : 20
@@ -210,6 +209,7 @@ var jQuery = $ || {};
 					var url = 'speciallist';
 					zoomUrl = practiseUrl() + url;
 					param = {
+						"ParentId":"",
 						"CategoryName": "",
 						PageIndex : 1,
 						PageSize : 20
