@@ -3,7 +3,7 @@ function ajaxUrl(){ //导航列表url
     return url;
 };
 function lecturerUrls(){ //导航列表url
-    var url = 'http://jmta.api.milisx.com/api/lecturer/\'';
+    var url = 'http://jmta.api.milisx.com/api/lecturer/';
     return url;
 };
 function isLoginUrl(){ //是否登陆
@@ -29,5 +29,10 @@ function examUrl(){ //考试
 
 function redisUrl(){ //清除缓存
     var url = 'http://jmta.api.milisx.com/api/common/';
+    return url;
+};
+
+function categoryUrl(){ //清除缓存
+    var url = 'http://jmta.api.milisx.com/api/category/';
     return url;
 };

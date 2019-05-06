@@ -71,8 +71,10 @@ var jQuery = $ || {};
 			var leftName = '';
 			if(title == '在线学习' || title == '我的课程'){
 				leftName = '模拟考试';
+				navTitle = '模拟考试';
 			}else{
 				leftName = title;
+				navTitle = title;
 			}
 			$.ajax({
 				type: 'POST',
@@ -206,10 +208,12 @@ var jQuery = $ || {};
 					lookexamlist();
 					break;
 				case '模拟考试':
-					var url = 'speciallist';
-					zoomUrl = practiseUrl() + url;
+					var url = 'specialpractise';
+					zoomUrl = categoryUrl() + url;
+					console.log(zoomUrl);
+					var ParentId = $.trim($("#filter").val());
 					param = {
-						"ParentId":"",
+						"ParentId":ParentId,
 						"CategoryName": "",
 						PageIndex : 1,
 						PageSize : 20
@@ -656,6 +660,7 @@ var jQuery = $ || {};
 				callBack: function (currPage, pageSize) {
 					param.PageIndex = currPage;
 					currPages = currPage;
+					console.log(navTitle);
 					switch (navTitle){
 						case '每季一考':
 							formalexamlist();
@@ -688,6 +693,7 @@ var jQuery = $ || {};
 							lookexamlist();
 							break;
 						case '模拟考试':
+
 							specialPracticelist();
 							break;	
 						default :
@@ -752,7 +758,7 @@ var jQuery = $ || {};
 		}
 		var selectDom = function () {
             var selectUrl = 'http://jmta.api.milisx.com/api/category/questions';
-                var html = '<option value="">全部</option>';
+                var html = '';
 				$.ajax({
 				type: 'POST',
 				data: '',

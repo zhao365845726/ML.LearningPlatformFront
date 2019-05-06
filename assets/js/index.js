@@ -154,6 +154,7 @@ var jQuery = $ || {};
 			});
 			$('.nav').html(html);
 			$(".mobileNavLists").html(html);
+			fnAddHref();
 		};
 		//banner,通知，安全培训，素质提升，大师工作，制度文件渲染
 		var temlDom = function(){
@@ -365,6 +366,14 @@ var jQuery = $ || {};
 					}
 				})
 			}
+		}
+		// 登录后给按钮加链接
+		function fnAddHref() {
+			var url = $(".nav_study a").attr('href');
+            $(".simulationExercise").attr('href',url);
+            $(".myTest").attr('href',url.split("&")[0]+'&title=每季一考');
+            $(".aDailyTopic").attr('href',url.split("&")[0]+'&title=每日一题');
+            $(".achievements").attr('href',url.split("&")[0]+'&title=查看成绩');
 		}
 		//初始数据请求
 		var init = function() {
