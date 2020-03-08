@@ -1,7 +1,7 @@
 var jQuery = $ || {};
 (function(window, $, undefined) {
     $(document).ready(function() {
-    	var ajax_url,exam_Url,redis_Url,locationUrl,UserTitle,UserTPLibId,testType,storage = '',zoomArr = [],question = '',JudgeScore = 0,MultipleScore = 0,RadioScore = 0,questionType,orders,radios,checks,judges,nowCons,hh = 0,mm = 0,ss = 0,idt,next_prv_index = 0,setData = '',noZuo = 0,loadSetInterval,loadTime = 3,loadNum = 0;
+    	var ajax_url,exam_Url,redis_Url,locationUrl,UserTitle,UserTPLibId,testType,storage = '',zoomArr = [],question = '',FillBlankScore=0,JudgeScore = 0,MultipleScore = 0,RadioScore = 0,questionType,orders,radios,checks,judges,fillblanks,nowCons,hh = 0,mm = 0,ss = 0,idt,next_prv_index = 0,setData = '',noZuo = 0,loadSetInterval,loadTime = 3,loadNum = 0;
 
 	        ajax_url = ajaxUrl();
             exam_Url = examUrl();
@@ -16,6 +16,7 @@ var jQuery = $ || {};
             radios = [];//单选题
             checks = [];//多选题
             judges = [];//判断题
+            fillblanks = [];//填空题
             nowCons = [];//当前的试题  
         //导航渲染
         var navDom = function(data) {
@@ -173,13 +174,14 @@ var jQuery = $ || {};
                     if (data.data.lst_vtpquestions.length > 0) {
                         $(".loadShade").css('display','none');
                         question = data.data;
+                        FillBlankScore = question.vtestpaperlib.FillBlankScore;//填空
                         JudgeScore = question.vtestpaperlib.JudgeScore;//判断
                         MultipleScore = question.vtestpaperlib.MultipleScore;//多选
                         RadioScore = question.vtestpaperlib.RadioScore;//单选
                         $(".question_length").html('共'+question.vtestpaperlib.NumberOfTopics+'题');
                         $(".question_time").html('（'+question.vtestpaperlib.ExamDuration+'分钟）');
 
-                        order(question);//顺序单选题，多选，判断
+                        order(question);//顺序单选题，多选，判断,填空
                         tpquestions(question.lst_vtpquestions);//题库
                         questionCards(question.lst_vtpquestions);//答题卡
                         countdown(question.vtestpaperlib.ExamDuration);
@@ -226,7 +228,7 @@ var jQuery = $ || {};
         }
         //顺序单选题，多选，判断
         var order = function(data){
-            var html = '<li class="cursor active" data-type="0">顺序</li><li class="cursor" data-type="1">单选题（'+data.SingleCount+')</li><li class="cursor" data-type="2">多选题（'+data.MultipleCount+')</li><li class="cursor" data-type="3">判断题（'+data.DecideCount+')</li>';
+            var html = '<li class="cursor active" data-type="0">顺序</li><li class="cursor" data-type="1">单选题（'+data.SingleCount+')</li><li class="cursor" data-type="2">多选题（'+data.MultipleCount+')</li><li class="cursor" data-type="3">判断题（'+data.DecideCount+')</li><li class="cursor" data-type="4">填空题（'+data.FillBlankCount+')</li>';
             $('.start_test_order').html(html);
         }
         
@@ -245,6 +247,10 @@ var jQuery = $ || {};
                     case 3:
                         data[i].order = i+1;
                         judges.push(data[i]);
+                        break;
+                    case 4:
+                        data[i].order = i+1;
+                        fillblanks.push(data[i]);
                         break;
                     default :
                         break;
@@ -302,6 +308,10 @@ var jQuery = $ || {};
                     case 3:
                         selectCon = '<i>判断</i>';
                         thisScore = JudgeScore;
+                        break;
+                    case 4:
+                        selectCon = '<i>填空</i>';
+                        thisScore = FillBlankScore;
                         break;
                     default :
                         break;
@@ -393,6 +403,11 @@ var jQuery = $ || {};
                         case 3:
                             if(nowCons != judges){
                                 nowCons = judges;
+                            }
+                            break;
+                        case 4:
+                            if(nowCons != fillblanks){
+                                nowCons = fillblanks;
                             }
                             break;
                         default :
