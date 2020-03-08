@@ -20,12 +20,12 @@ var jQuery = $ || {};
                             $(".RealName").html(mydata.RealName);
                             reset();
                         }else{
-                            window.location.href = '/compoents/study/studyLogin.html';
+                            window.location.href = '/index.html';
                         }
                     }
                 })
             }else{
-                window.location.href = '/compoents/study/studyLogin.html';
+                window.location.href = '/index.html';
             }
 
         }
@@ -75,7 +75,7 @@ var jQuery = $ || {};
                         if (data.status_code == 200) {
                             $.cookie('userId', null,{path: '/'});
                             $.cookie('myData', null,{path: '/'});
-                            window.location.href = '/compoents/study/studyLogin.html';
+                            window.location.href = '/index.html';
                         }
                     }
                 })

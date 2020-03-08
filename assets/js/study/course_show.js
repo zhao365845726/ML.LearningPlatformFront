@@ -40,12 +40,12 @@ var jQuery = $ || {};
                         if(data.status_code == 200){
                             courseShow();
                         }else{
-                            window.location.href = '/compoents/study/studyLogin.html';
+                            window.location.href = '/index.html';
                         }
                     }
                 })
             }else{
-                window.location.href = '/compoents/study/studyLogin.html';
+                window.location.href = '/index.html';
             }
         }
         //课件详情

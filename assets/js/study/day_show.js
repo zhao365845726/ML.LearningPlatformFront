@@ -30,12 +30,12 @@ var jQuery = $ || {};
                             }
                             EverydayTest();
                         }else{
-                            window.location.href = '/compoents/study/studyLogin.html';
+                            window.location.href = '/index.html';
                         }
                     }
                 })
             }else{
-                window.location.href = '/compoents/study/studyLogin.html';
+                window.location.href = '/index.html';
             }
         }
         //题库
@@ -136,7 +136,8 @@ var jQuery = $ || {};
             });
             /*确定*/
             $(".closeTest_y").click(function(){
-                var urlId = $(".nav_study").attr('id_num');
+                //var urlId = $(".nav_study").attr('id_num');
+                var urlId = '6f8fded1-7613-4a0c-945f-ad16df733443';
                 window.location.href = '/compoents/study/study.html?id='+urlId+'&title=在线学习';
             });
             /*查看答案*/
@@ -195,7 +196,8 @@ var jQuery = $ || {};
                 success: function(data, type) {
                     //console.log(data);
                     if (data.status_code == 200) {
-                      var urlId = $(".nav_study").attr('id_num');
+                      //var urlId = $(".nav_study").attr('id_num');
+                      var urlId = '6f8fded1-7613-4a0c-945f-ad16df733443';
                       window.location.href = '/compoents/study/study.html?id='+urlId+'&title=在线学习';
                     }
                 }

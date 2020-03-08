@@ -19,12 +19,12 @@ var jQuery = $ || {};
                             $.cookie('myData', JSON.stringify(data.data),{path: '/'});
                             personalinfo();
                         }else{
-                            window.location.href = '/compoents/study/studyLogin.html';
+                            window.location.href = '/index.html';
                         }
                     }
                 })
             }else{
-                window.location.href = '/compoents/study/studyLogin.html';
+                window.location.href = '/index.html';
             }
         }
         //获取个人数据

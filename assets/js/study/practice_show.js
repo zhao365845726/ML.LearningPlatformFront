@@ -11,23 +11,20 @@ var jQuery = $ || {};
             hh = 0,mm = 0,ss = 0,idt,next_prv_index = 0,zoomArr = [],setData = '',noZuo = 0;
            
         var locationUrl = window.location.search.substr(1).split('=');
-        // console.log(window.location.search.substr(1).split('&')[0].split('=')[1]);
+        console.log(window.location.search.substr(1).split('&')[0].split('=')[1]);
         // var UserTPLibId = locationUrl[0].split('=')[1];
         // var UserTitle = locationUrl[1].split('=')[1];
         // var testType = locationUrl[2].split('=')[1];
         var CategoryId = window.location.search.substr(1).split('&')[0].split('=')[1];
-         // console.log(CategoryId);
+         console.log(CategoryId);
         var PageSize = Number(window.location.search.substr(1).split('&')[1].split('=')[1]);
-        // console.log(PageSize);
-        var Type = Number(window.location.search.substr(1).split('&')[2].split('=')[1]);
-        // console.log(Type);
+        console.log(PageSize);
         var storage = window.localStorage;
-        // console.log($.cookie());
         var questionType = 1;//1代表部分试题，2代表全部试题
         var JudgeScore = 0;//判断
         var MultipleScore = 0;//多选
         var RadioScore = 0;//单选
-        //storage.removeItem("saveAnswers"+$.cookie('userId')+UserTPLibId); //清除保存的答案
+ //storage.removeItem("saveAnswers"+$.cookie('userId')+UserTPLibId); //清除保存的答案
 
         //开始考试
         // var innerTest = function(id){
@@ -54,7 +51,7 @@ var jQuery = $ || {};
            setInterval(function(){
                saveAnswersFun();
            },15000);
-        };
+        }
         function saveAnswersFun(){
             var saveAnswersListData = '';
             var saveAnswersListQuestions = question.lst_vtpquestions;
@@ -93,11 +90,10 @@ var jQuery = $ || {};
             var param = {
                   "UserId": $.cookie("userId"),
                   "CategoryId": CategoryId,
-                    "type":Type,
                   "PageIndex": 1,
                   "PageSize": PageSize
-                };
-             // console.log(param);
+                }
+             console.log(param);    
             $.ajax({
                 type: "POST",
                 data: param,
@@ -105,7 +101,7 @@ var jQuery = $ || {};
                 url: practiseUrl() + url,
                 crossDomain: true == !(document.all),
                 success: function(data, type) {
-                    // console.log(data);
+                    console.log(data);
                     if (data.data.lst_vquestions.length > 0) {
                         $(".loadShade").css('display','none');
                         question = data.data;
@@ -263,15 +259,14 @@ var jQuery = $ || {};
                 var yesAnswers = '';
                 var yesAnswersStr = '';
                 $.each(data.ListViewTPQuesionOptions, function(index, item){
-                    if(item.IsAnswer === 1){
+                    if(item.IsAnswer == 1){
                         yesAnswers += orderA[index]+',';
-                        // console.log(yesAnswers);
                         yesAnswersStr += item.Id+'|';
                     }
                      if(zoomArr[data.order-1]){
                         var labelId = zoomArr[data.order-1].split('=')[1].split('|');
                             for(var i=0;i<labelId.length;i++){
-                                if(item.Id === labelId[i]){
+                                if(item.Id == labelId[i]){
                                     isActive = 'checked';
                                     break;
                                 }else{
@@ -280,7 +275,7 @@ var jQuery = $ || {};
                             }
                         multipleSubmitShow = '' ;
                         label1Class = 'label1'; 
-                        if(zoomArr[data.order-1].split('=')[1] === yesAnswersStr.slice(0,-1)){
+                        if(zoomArr[data.order-1].split('=')[1] == yesAnswersStr.slice(0,-1)){
                            showClass = 'displayNone'; 
                            showClass_y = '';
                         }else{
@@ -293,7 +288,7 @@ var jQuery = $ || {};
 
                     orderCon += '<li data-id="'+item.Id+'"><label for="answer_a" class="label '+label1Class+' '+multiple+' cursor '+isActive+'"><b>'+orderA[index]+'</b><span>'+item.OptionName+'</span></label></li>';
                 });
-                yesAnswers = yesAnswers.slice (0,-1);
+                yesAnswers = yesAnswers.slice(0,-1);
                 orderCon = '<ul class="container example_answer example_answer_practice"  data-answer="'+yesAnswersStr+'">'+orderCon+'</ul>';
                 answer = '<div class="showAnswer '+showClass+'"> <p>错误！</p>正确答案: <b>'+yesAnswers+'</b> </div>';
                 answer_y = '<div class="showAnswer_y '+showClass_y+'"><p>正确！</p></div>';
@@ -316,7 +311,7 @@ var jQuery = $ || {};
                     initquestions(nowCons[next_prv_index]);
                     $(".example_show_s").html('下一题');
 
-                }else if(next_prv_index === nowCons.length - 1){
+                }else if(next_prv_index == nowCons.length - 1){
 
                      initquestions(nowCons[next_prv_index]);
                     $(".example_show_s").html('最后一题');
@@ -326,7 +321,7 @@ var jQuery = $ || {};
                 }
 
             })
-        };
+        }
         var prv = function(){
             $(".example_show_x").click(function(){
                 next_prv_index--;
@@ -337,7 +332,7 @@ var jQuery = $ || {};
                     initquestions(nowCons[next_prv_index]);
                     $(".example_show_x").html('上一题');
 
-                }else if(next_prv_index === 0){
+                }else if(next_prv_index == 0){
 
                    initquestions(nowCons[next_prv_index]);
                    $(".example_show_x").html('第一题');
@@ -452,7 +447,6 @@ var jQuery = $ || {};
             var ele = $('.tpquestions .label');
             ele && ele.length > 0 && $.each(ele, function(index, item) {
                 var _t = this;
-                // console.log(_t);
                 $(_t).on('click', function () {
                     if(!$(_t).hasClass('label1')){
                         var index2 = $(_t).parent().parent().parent().attr('data-num');
@@ -648,7 +642,8 @@ var jQuery = $ || {};
                 $(".closeTestBox").hide();
             })
             $(".closeTest_y").click(function(){
-                var urlId = $(".nav_study").attr('id_num');
+                //var urlId = $(".nav_study").attr('id_num');
+                var urlId = '6f8fded1-7613-4a0c-945f-ad16df733443';
                 window.location.href = '/compoents/study/study.html?id='+urlId+'&title=在线学习';
             })
             
@@ -892,7 +887,8 @@ var jQuery = $ || {};
         
         //导入返回
        $(".loadShade b").click(function(){
-            var urlId = $(".nav_study").attr('id_num');
+            //var urlId = $(".nav_study").attr('id_num');
+            var urlId = '6f8fded1-7613-4a0c-945f-ad16df733443';
             window.location.href = '/compoents/study/study.html?id='+urlId+'&title=在线学习';
         })
     })

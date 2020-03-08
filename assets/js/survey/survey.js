@@ -21,7 +21,7 @@ var jQuery = $ || {};
 					$.each(data.data.lst_viewclass, function(index, item) {
 						var html = '';
 						html += '<div class="introductionListTop cursor"><div class="introductionListTop_l"><span class="introduction_title">'+item.Name+'</span><span class="introduction_time">'+item.StartTime+' - '+item.StopTime+'</span><span class="introduction_type">'+item.HeadMaster+'</span></div><b class="Dropdown cursor">> </b></div>';
-						html += surveyClassShow(item.Name, item.lst_viewquestionnaire, item.StartTime+' - '+item.StopTime);
+						html += surveyClassShow(item.lst_viewquestionnaire);
 						html = '<li class="introductionList">'+html+'</li>';
 						zoomHtml += html;
 					});
@@ -31,11 +31,10 @@ var jQuery = $ || {};
 			});
 		};
 		//班级下的问卷调查
-		var surveyClassShow = function(name, data, time){
-			console.log(name);
+		var surveyClassShow = function(data){
 			var html = '';
 			$.each(data, function(index, item) {
-				var url = '/compoents/survey/survey_show.html?id='+item.Id+'&type='+item.Type+'&className='+name+'&time='+time;
+				var url = '/compoents/survey/survey_show.html?id='+item.Id+'&type='+item.Type;
 				html += '<li><a href="'+url+'"><span class="introductionList_lists_l">'+item.Name+'</span><span class="introductionList_lists_r">'+item.StartTime+' - '+item.StopTime+'</span></a></li>';
 			});
 			html = '<ul class="container introductionList_lists displayNone">'+html+'</ul>';

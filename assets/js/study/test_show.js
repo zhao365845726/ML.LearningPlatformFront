@@ -1,7 +1,7 @@
 var jQuery = $ || {};
 (function(window, $, undefined) {
     $(document).ready(function() {
-    	var ajax_url,exam_Url,redis_Url,locationUrl,UserTitle,UserTPLibId,testType,storage = '',zoomArr = [],question = '',JudgeScore = 0,MultipleScore = 0,RadioScore = 0,questionType,orders,radios,checks,judges,nowCons,hh = 0,mm = 0,ss = 0,idt,next_prv_index = 0,setData = '',noZuo = 0,loadSetInterval,loadTime = 3,loadNum = 0,completeBtnsBackTime;
+    	var ajax_url,exam_Url,redis_Url,locationUrl,UserTitle,UserTPLibId,testType,storage = '',zoomArr = [],question = '',JudgeScore = 0,MultipleScore = 0,RadioScore = 0,questionType,orders,radios,checks,judges,nowCons,hh = 0,mm = 0,ss = 0,idt,next_prv_index = 0,setData = '',noZuo = 0,loadSetInterval,loadTime = 3,loadNum = 0;
 
 	        ajax_url = ajaxUrl();
             exam_Url = examUrl();
@@ -17,7 +17,6 @@ var jQuery = $ || {};
             checks = [];//多选题
             judges = [];//判断题
             nowCons = [];//当前的试题  
-            
         //导航渲染
         var navDom = function(data) {
             var html='',url = '',isActive = '',className = '',num = '';
@@ -93,10 +92,6 @@ var jQuery = $ || {};
             // }else{
             //     testCon();
             // }
-            if(!storage.getItem("remainingTime"+$.cookie('userId')+UserTPLibId)){
-                // 考试已用时间
-                storage.setItem("remainingTime"+$.cookie('userId')+UserTPLibId,0);
-            }
             testCon();
             if(IsPC()){
              funWindowScroll();   
@@ -174,12 +169,7 @@ var jQuery = $ || {};
                 url: exam_Url + url,
                 crossDomain: true == !(document.all),
                 success: function(data, type) {
-                    console.log(data);
-                    if(data.status_code == 201){                      
-                        funGoBack();
-                        return false;
-                    }
-
+                   // console.log(data);
                     if (data.data.lst_vtpquestions.length > 0) {
                         $(".loadShade").css('display','none');
                         question = data.data;
@@ -187,18 +177,12 @@ var jQuery = $ || {};
                         MultipleScore = question.vtestpaperlib.MultipleScore;//多选
                         RadioScore = question.vtestpaperlib.RadioScore;//单选
                         $(".question_length").html('共'+question.vtestpaperlib.NumberOfTopics+'题');
-                        // 倒计时
-                        var remainingTime1 = storage.getItem("remainingTime"+$.cookie('userId')+UserTPLibId);
-                        var remainingTime2 = Number(question.vtestpaperlib.ExamDuration) * 60;
-                        var remainingTime_v = (remainingTime2 - remainingTime1) / 60;
-                        $(".question_time").html('（'+remainingTime_v+'分钟）');
-                        $(".lookTestTitle").html(question.vtestpaperlib.Name);
-                        $(".mobile_now_testTitle").html(question.vtestpaperlib.Name);
+                        $(".question_time").html('（'+question.vtestpaperlib.ExamDuration+'分钟）');
 
                         order(question);//顺序单选题，多选，判断
                         tpquestions(question.lst_vtpquestions);//题库
                         questionCards(question.lst_vtpquestions);//答题卡
-                        countdown(remainingTime_v);
+                        countdown(question.vtestpaperlib.ExamDuration);
                         //保存答案
                         saveAnswers();
                         $("#questionSubmit").css('display','block');
@@ -567,7 +551,6 @@ var jQuery = $ || {};
             }
             //console.log(format(hh) + ":" + format(mm) + ":" + format(ss));
             $(".countdownTime").html(format(hh) + ":" + format(mm) + ":" + format(ss));
-            
             if (hh == 0 && mm == 0 && ss == 0) {
                 clearInterval(idt);
                 $(".countdownTime").html('交卷时间到');
@@ -575,9 +558,6 @@ var jQuery = $ || {};
                 $(".loadanswer_n").hide();
                 processAnswer();
                 assignment();
-            }else{
-                var remainingTimeVal = Number(storage.getItem("remainingTime"+$.cookie('userId')+UserTPLibId))+1;
-               storage.setItem("remainingTime"+$.cookie('userId')+UserTPLibId,remainingTimeVal); 
             }
         }
         function countTime(time){
@@ -693,10 +673,9 @@ var jQuery = $ || {};
                 $(".closeTestBox").hide();
             })
             $(".closeTest_y").click(function(){
-                funGoBack();
-            })
-            $(".completeBtnsBack").click(function(){
-                funGoBack();
+                //var urlId = $(".nav_study").attr('id_num');
+                var urlId = '6f8fded1-7613-4a0c-945f-ad16df733443';
+                window.location.href = '/compoents/study/study.html?id='+urlId+'&title=在线学习';
             })
             
             $(".loadanswerDel").click(function(){
@@ -741,8 +720,7 @@ var jQuery = $ || {};
                     //console.log(data);
                     $(".submit_answers").css('display','none');
                     if (data.status_code == 200) {
-                       storage.removeItem("saveAnswers"+$.cookie('userId')+UserTPLibId); //清除保存的答案缓存
-                       storage.removeItem("remainingTime"+$.cookie('userId')+UserTPLibId); //清除考试用时缓存
+                       storage.removeItem("saveAnswers"+$.cookie('userId')+UserTPLibId); //清除保存的答案
                         var urlId = $(".nav_study").attr('id_num');
                          $(".examTakingShadeCon1 span").html(data.data.SumScore);
                          var time = countTime(data.data.TestTime);
@@ -752,7 +730,6 @@ var jQuery = $ || {};
                         $(".examTakingShade").css('display','block');
                         $(".examTaking").addClass('activeH');
                         $(".start_test").hide();
-                        funCompleteBtnsBack();
                     }else{
                         alert("交卷失败，请重新交卷。");
                     }
@@ -801,36 +778,19 @@ var jQuery = $ || {};
        //      window.location.href = '/compoents/study/study.html?id='+urlId+'&title=在线学习';
        //  })
        var funWindowScroll = function(){
-          var maxScrollTop = $(".header").height();
-            $(window).scroll( maxScrollTop, function(event){
-                var $me = $(this);
-                var fixed1 = $(".scrollFixed");
-                var fixed2 = $(".scrollFixed2");
-                if( $me.scrollTop() > event.data ){
-                    fixed1.addClass('fixed0');
-                    fixed2.addClass('fixed2');
-                }else{
-                    fixed1.removeClass('fixed0');
-                    fixed2.removeClass('fixed2');
-                }
-            } );
-       }
-       //返回在线考试
-       funGoBack = function(){
-          var urlId = $(".nav_study").attr('id_num');
-          window.location.href = '/compoents/study/study.html?id='+urlId+'&title=在线学习';
-       }
-       // 考试完成倒计时返回
-       funCompleteBtnsBack = function(){
-            completeBtnsBackTime = setInterval(function(){
-                var time = Number($('.completeBtnsBack span').html());
-                time--;
-                $('.completeBtnsBack span').html(time);
-                if(time == 0){
-                  clearInterval(completeBtnsBackTime);
-                  funGoBack();
-                }
-            },1000)
+        var maxScrollTop = $(".header").height();
+        $(window).scroll( maxScrollTop, function(event){
+            var $me = $(this);
+            var fixed1 = $(".scrollFixed");
+            var fixed2 = $(".scrollFixed2");
+            if( $me.scrollTop() > event.data ){
+                fixed1.addClass('fixed0');
+                fixed2.addClass('fixed2');
+            }else{
+                fixed1.removeClass('fixed0');
+                fixed2.removeClass('fixed2');
+            }
+        } );
        }
 
     	//初始数据请求

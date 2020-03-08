@@ -171,7 +171,7 @@
     left:90px;*/   
     width: 128px;
     height: 1px;
-    background-color: #2B7CCB;
+    /* background-color: #2B7CCB; */
     position: absolute;
     top:0px;
     left:42px;
@@ -2057,7 +2057,7 @@ li.userPasBox b{
 }
 .introductionList_lists_l{
     float: left;
-    width: 60%;
+    width: 80%;
     height: 100%;
     font-size: 17px;
     line-height: 56px;
@@ -2078,14 +2078,7 @@ li.userPasBox b{
     overflow: hidden;
     background: #fff;
     margin: 30px auto;
-    margin-top: 0;
-    padding: 0 120px 30px 120px;
-}
-.intro_show .classInto{
-    padding: 10px 0 20px 0;
-}
-.intro_show .classInto span{
-    margin-left: 30px;
+    padding: 30px 120px;
 }
 .intro_show h3{
     font-size: 26px;
@@ -2566,13 +2559,6 @@ li.userPasBox b{
     /*border-color: #F07C21;*/
     /*color: #fff;*/
 /*}*/
-.lookTestTitle{
-    font-size: 26px;
-    font-weight: 700;
-    text-align: center;
-    border-bottom: 1px solid #f1f1f1;
-    padding: 20px;
-}
 .lookTestLeft{
     float: left;
     width: auto;
@@ -2945,14 +2931,8 @@ height: 100%;
     vertical-align: bottom;
     line-height: 93px;
 }
-.completeBtns{
-    width: 671px;
-    height: auto;
-    overflow: hidden;
-    margin: 0 auto;
-}
-.examTakingShadeHeft,.completeBtnsBack{
-    float: left;
+.examTakingShadeHeft{
+    display: block;
     width: 307px;
     height: 48px;
     border: 1px solid #ccc;
@@ -2963,12 +2943,6 @@ height: 100%;
     color: #01458E;
     margin: 0 auto;
     margin-top: 70px;
-}
-.completeBtnsBack{
-    float: right;
-}
-.completeBtnsBack span{
-    font-size: 22px;
 }
 .examTakingShadeHeft:hover{
     cursor: pointer;
@@ -3083,26 +3057,21 @@ height: 100%;
     margin-top:-25px;
 }
 .specialPracticelist{
-    width: 20% !important;
     display: inline-block;
-    /*width: auto;*/
+    width: auto;
     height: 40px;
-    background: #ffffff !important;
-    /*margin-right:20px;*/
+    background: #033A70;
+    margin-right:20px;
     margin-bottom:20px;
     padding: 0 15px;
-    /*text-align: center;*/
+    text-align: center;
     line-height: 40px;
     font-size: 16px;
-    border-bottom: 1px dashed #ccc !important;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow:ellipsis;
+    color: #fff;
 }
-
 .specialPracticelist a{
     font-size: 16px;
-    color: #000000;
+    color: #fff;
 }
 .specialPracticelist:hover,#specialPracticeButton:hover{
     cursor: pointer;
