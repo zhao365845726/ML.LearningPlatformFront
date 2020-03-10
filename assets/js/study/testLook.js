@@ -16,6 +16,7 @@ var jQuery = $ || {};
         var JudgeScore = 0;//判断
         var MultipleScore = 0;//多选
         var RadioScore = 0;//单选
+        var FillBlankScore = 0; //填空
         //是否登录
         var isLogin = function(){
             var falg = $.cookie('userId');
@@ -54,6 +55,7 @@ var jQuery = $ || {};
                 crossDomain: true == !(document.all),
                 success: function(data, type) {
                     if (data.data) {
+                        console.log(data.data);
                         var mydata = eval('(' + $.cookie('myData') + ')');
                         if(mydata.Photograph){
                          $(".personHeadImg").attr('src',mydata.Photograph);
@@ -68,7 +70,7 @@ var jQuery = $ || {};
                         JudgeScore = data.data.JudgeScore;//判断
                         MultipleScore = data.data.MultipleScore;//多选
                         RadioScore = data.data.RadioScore;//单选
-
+                        FillBlankScore = data.data.FillBlankScore;//填空
                         processData(data.data.lst_vtpquestions);
                     }
                 }
@@ -241,6 +243,10 @@ var jQuery = $ || {};
                         selectCon = '<i>判断</i>';
                         thisScore = JudgeScore;
                         break;
+                    case 4:
+                        selectCon = '<i>填空</i>';
+                        thisScore = FillBlankScore;
+                        break;    
                     default :
                         break;
 
@@ -257,26 +263,41 @@ var jQuery = $ || {};
                     UserAnswerIdArr = data.UserAnswerId.split('|');
                 }
                 var title = '<div class="lookTestQuestionsTitle">'+selectCon+'<span><strong>'+key+'.</strong>'+data.Title+' ['+thisScore+'分]</span></div>';
-                var orderA = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+                // 填空
                 var orderCon = '';
                 var yesAnswers = '';
-                var isSelectActive = '';
-                $.each(data.ListViewTPQuesionOptions, function(index, item){
-                    if(item.IsAnswer){
-                        yesAnswers += orderA[index]+',';
-                    }
-                    for(var j=0;j<UserAnswerIdArr.length;j++){
-
-                        if(item.Id == UserAnswerIdArr[j]){
-                            isSelectActive = 'checked';
-                            break;
-                        }else{
-                            isSelectActive = '';
+                if(data.Type != 4){
+                    var orderA = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+                    var isSelectActive = '';
+                    $.each(data.ListViewTPQuesionOptions, function(index, item){
+                        if(item.IsAnswer){
+                            yesAnswers += orderA[index]+',';
                         }
+                        for(var j=0;j<UserAnswerIdArr.length;j++){
+
+                            if(item.Id == UserAnswerIdArr[j]){
+                                isSelectActive = 'checked';
+                                break;
+                            }else{
+                                isSelectActive = '';
+                            }
+                        }
+                        orderCon += '<li data-id="'+item.Id+'"><label class="cursor '+isSelectActive+'"><b>'+orderA[index]+'</b><span>'+item.OptionName+'</span></label></li>';
+                    });
+                   yesAnswers = yesAnswers.slice(0,-1);
+                }else{
+                    // 填空
+                    if(data.Answer){
+                       yesAnswers = data.Answer; 
+                   }else{
+                    yesAnswers = '';
+                   }
+                    if(data.UserAnswerId){
+                        orderCon += '<textarea readonly="readonly" class="test_textarea">'+data.UserAnswerId+'</textarea>';
+                    }else{
+                        orderCon += '<textarea readonly="readonly" class="test_textarea"></textarea>';
                     }
-                    orderCon += '<li data-id="'+item.Id+'"><label class="cursor '+isSelectActive+'"><b>'+orderA[index]+'</b><span>'+item.OptionName+'</span></label></li>';
-                });
-                yesAnswers = yesAnswers.slice(0,-1);
+                }
                 orderCon = '<ul class="container lookTestQuestions_answer">'+orderCon+'</ul><div class="lookTestQuestionsVal">答案：'+yesAnswers+'</div>';
                 var html = '<li class="lookTestQuestionsList '+isActive+'">'+title+orderCon+'</li>';
                 return html;
