@@ -3134,3 +3134,13 @@ height: 100%;
 .example_answer_practice{
    border: 0!important;
 }
+
+/*考试填空*/
+.test_textarea{
+  width: 80%;
+  height: 120px;
+  border: 1px solid rgb(204, 204, 204);
+  margin-top: 20px;
+  resize:none;
+  padding: 10px;
+}

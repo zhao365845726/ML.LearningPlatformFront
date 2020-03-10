@@ -170,7 +170,7 @@ var jQuery = $ || {};
                 url: exam_Url + url,
                 crossDomain: true == !(document.all),
                 success: function(data, type) {
-                   // console.log(data);
+                    console.log(data);
                     if (data.data.lst_vtpquestions.length > 0) {
                         $(".loadShade").css('display','none');
                         question = data.data;
@@ -181,7 +181,7 @@ var jQuery = $ || {};
                         $(".question_length").html('共'+question.vtestpaperlib.NumberOfTopics+'题');
                         $(".question_time").html('（'+question.vtestpaperlib.ExamDuration+'分钟）');
 
-                        order(question);//顺序单选题，多选，判断,填空
+                        order(question);//顺序单选题，多选，判断, 填空
                         tpquestions(question.lst_vtpquestions);//题库
                         questionCards(question.lst_vtpquestions);//答题卡
                         countdown(question.vtestpaperlib.ExamDuration);
@@ -221,7 +221,7 @@ var jQuery = $ || {};
         //开始时若有存储答案把答案付给zoomArr
         var initZoomArr = function(){
             var details = JSON.parse(storage.getItem("saveAnswers"+$.cookie('userId')+UserTPLibId));
-            //console.log(details);
+            console.log(details);
             if(details){
                 zoomArr = details.saveAnswersListData.split(",");
             }
@@ -258,6 +258,7 @@ var jQuery = $ || {};
                 }
                 orders.push(data[i]);
             }
+            console.log(orders);
             nowCons = orders;
             switch(questionType){
                 case 1:
@@ -317,26 +318,38 @@ var jQuery = $ || {};
                         break;
                 }
                 var title = '<div class="example">'+selectCon+'<span><strong>'+data.order+'.</strong>'+data.Title+' ['+thisScore+'分]</span></div>';
-                var orderA = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
-                var orderCon = '';
-                var isActive = '';
-                var classNum = '';
-                $.each(data.ListViewTPQuesionOptions, function(index, item){
-                    if(zoomArr[data.order-1]){
-                        var labelId = zoomArr[data.order-1].split('=')[1].split('|');
-                            for(var i=0;i<labelId.length;i++){
-                                if(item.Id == labelId[i]){
-                                    isActive = 'checked';
-                                    break;
-                                }else{
-                                    isActive = '';
+                if(data.Type != 4){
+                    var orderA = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+                    var orderCon = '';
+                    var isActive = '';
+                    var classNum = '';
+                    $.each(data.ListViewTPQuesionOptions, function(index, item){
+                        if(zoomArr[data.order-1]){
+                            var labelId = zoomArr[data.order-1].split('=')[1].split('|');
+                                for(var i=0;i<labelId.length;i++){
+                                    if(item.Id == labelId[i]){
+                                        isActive = 'checked';
+                                        break;
+                                    }else{
+                                        isActive = '';
+                                    }
                                 }
-                            }
-                    }else{
-                        isActive = '';
-                    }
-                    orderCon += '<li data-id="'+item.Id+'"><label for="answer_a" class="'+multiple+' cursor '+isActive+'"><b>'+orderA[index]+'</b><span>'+item.OptionName+'</span></label></li>';
-                });
+                        }else{
+                            isActive = '';
+                        }
+                        orderCon += '<li data-id="'+item.Id+'"><label for="answer_a" class="'+multiple+' cursor '+isActive+'"><b>'+orderA[index]+'</b><span>'+item.OptionName+'</span></label></li>';
+                    });
+               }else{
+                // 填空
+                var orderCon = '';
+                var textarea_val = '';
+                // 判断是否已有值
+                if(zoomArr[data.order-1]){
+                   textarea_val = zoomArr[data.order-1].split('=')[1];
+                }
+                console.log(textarea_val);
+                orderCon += '<textarea data-id="'+data.Id+'" data-num="'+data.order+'" data-type="'+data.Type+'" class="test_textarea" οninput="OnInput(event)" onpropertychange="OnPropChanged(event)" placeholder="禁止输特殊符号, ，= |" p>'+textarea_val+'</textarea>';
+               }
                 classNum = "tpquestionsList"+data.order;
                 orderCon = '<ul class="container example_answer">'+orderCon+'</ul>';
                 var zoomCom = '<li class="tpquestionsList '+classNum+'" data-id="'+data.Id+'" data-num="'+data.order+'" data-type="'+data.Type+'">'+title+orderCon+'</li>';
@@ -372,6 +385,7 @@ var jQuery = $ || {};
                 }
             })
             saveAnswersListData = saveAnswersListData.slice(0,-1);
+            console.log(saveAnswersListData);
             var saveAnswersList = {"userId":$.cookie('userId'),"UserTPLibId":UserTPLibId,"saveAnswersListData":saveAnswersListData};
             storage.setItem("saveAnswers"+$.cookie('userId')+UserTPLibId,JSON.stringify(saveAnswersList));
         }
@@ -827,5 +841,22 @@ var jQuery = $ || {};
         };
         //初始数据
     	init();
+ 
+        //填空监听输入
+        $(document).on('input propertychange', '.test_textarea', function() {
+            var textareaVal = $(this).val();
+            var index = $(this).attr('data-num') - 1;
+            var ids = $(this).attr('data-id');
+            // 把值付给答案
+            zoomArr[index] = ids + '=' + textareaVal;
+            console.log(zoomArr);
+            // 若有值答题卡选中，若无值，答题卡去掉active
+            if(textareaVal){
+              $($(".questionCardsNum li")[index]).addClass('active');
+            }else{
+              $($(".questionCardsNum li")[index]).removeClass('active');
+            }
+            saveAnswersFun();//本地保存
+        });
     })
 })(window, jQuery);
