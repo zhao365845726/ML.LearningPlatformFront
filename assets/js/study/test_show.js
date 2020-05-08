@@ -344,11 +344,10 @@ var jQuery = $ || {};
                 var orderCon = '';
                 var textarea_val = '';
                 // 判断是否已有值
-                if(zoomArr[data.order-1]){
+                if(zoomArr[data.order-1] && zoomArr[data.order-1].split('=')[1]){
                    textarea_val = zoomArr[data.order-1].split('=')[1];
                 }
-                console.log(textarea_val);
-                orderCon += '<textarea data-id="'+data.Id+'" data-num="'+data.order+'" data-type="'+data.Type+'" class="test_textarea" οninput="OnInput(event)" onpropertychange="OnPropChanged(event)" placeholder="禁止输特殊符号, ，= |" p>'+textarea_val+'</textarea>';
+                orderCon += '<textarea data-id="'+data.Id+'" data-num="'+data.order+'" data-type="'+data.Type+'" class="test_textarea" οninput="OnInput(event)" onpropertychange="OnPropChanged(event)" placeholder="禁止输特殊符号, ，= " p>'+textarea_val+'</textarea>';
                }
                 classNum = "tpquestionsList"+data.order;
                 orderCon = '<ul class="container example_answer">'+orderCon+'</ul>';
