@@ -1,7 +1,7 @@
 var jQuery = $ || {};
 (function(window, $, undefined) {
     $(document).ready(function() {
-    	var ajax_url,exam_Url,redis_Url,locationUrl,UserTitle,UserTPLibId,testType,storage = '',zoomArr = [],question = '',JudgeScore = 0,MultipleScore = 0,RadioScore = 0,questionType,orders,radios,checks,judges,nowCons,hh = 0,mm = 0,ss = 0,idt,next_prv_index = 0,setData = '',noZuo = 0,loadSetInterval,loadTime = 3,loadNum = 0,completeBtnsBackTime;
+    	var ajax_url,exam_Url,redis_Url,locationUrl,UserTitle,UserTPLibId,testType,storage = '',zoomArr = [],question = '',FillBlankScore=0,JudgeScore = 0,MultipleScore = 0,RadioScore = 0,questionType,orders,radios,checks,judges,fillblanks,nowCons,hh = 0,mm = 0,ss = 0,idt,next_prv_index = 0,setData = '',noZuo = 0,loadSetInterval,loadTime = 3,loadNum = 0;
 
 	        ajax_url = ajaxUrl();
             exam_Url = examUrl();
@@ -16,8 +16,8 @@ var jQuery = $ || {};
             radios = [];//单选题
             checks = [];//多选题
             judges = [];//判断题
+            fillblanks = [];//填空题
             nowCons = [];//当前的试题  
-            
         //导航渲染
         var navDom = function(data) {
             var html='',url = '',isActive = '',className = '',num = '';
@@ -93,10 +93,6 @@ var jQuery = $ || {};
             // }else{
             //     testCon();
             // }
-            if(!storage.getItem("remainingTime"+$.cookie('userId')+UserTPLibId)){
-                // 考试已用时间
-                storage.setItem("remainingTime"+$.cookie('userId')+UserTPLibId,0);
-            }
             testCon();
             if(IsPC()){
              funWindowScroll();   
@@ -175,30 +171,20 @@ var jQuery = $ || {};
                 crossDomain: true == !(document.all),
                 success: function(data, type) {
                     console.log(data);
-                    if(data.status_code == 201){                      
-                        funGoBack();
-                        return false;
-                    }
-
                     if (data.data.lst_vtpquestions.length > 0) {
                         $(".loadShade").css('display','none');
                         question = data.data;
+                        FillBlankScore = question.vtestpaperlib.FillBlankScore;//填空
                         JudgeScore = question.vtestpaperlib.JudgeScore;//判断
                         MultipleScore = question.vtestpaperlib.MultipleScore;//多选
                         RadioScore = question.vtestpaperlib.RadioScore;//单选
                         $(".question_length").html('共'+question.vtestpaperlib.NumberOfTopics+'题');
-                        // 倒计时
-                        var remainingTime1 = storage.getItem("remainingTime"+$.cookie('userId')+UserTPLibId);
-                        var remainingTime2 = Number(question.vtestpaperlib.ExamDuration) * 60;
-                        var remainingTime_v = (remainingTime2 - remainingTime1) / 60;
-                        $(".question_time").html('（'+remainingTime_v+'分钟）');
-                        $(".lookTestTitle").html(question.vtestpaperlib.Name);
-                        $(".mobile_now_testTitle").html(question.vtestpaperlib.Name);
+                        $(".question_time").html('（'+question.vtestpaperlib.ExamDuration+'分钟）');
 
-                        order(question);//顺序单选题，多选，判断
+                        order(question);//顺序单选题，多选，判断, 填空
                         tpquestions(question.lst_vtpquestions);//题库
                         questionCards(question.lst_vtpquestions);//答题卡
-                        countdown(remainingTime_v);
+                        countdown(question.vtestpaperlib.ExamDuration);
                         //保存答案
                         saveAnswers();
                         $("#questionSubmit").css('display','block');
@@ -235,14 +221,14 @@ var jQuery = $ || {};
         //开始时若有存储答案把答案付给zoomArr
         var initZoomArr = function(){
             var details = JSON.parse(storage.getItem("saveAnswers"+$.cookie('userId')+UserTPLibId));
-            //console.log(details);
+            console.log(details);
             if(details){
                 zoomArr = details.saveAnswersListData.split(",");
             }
         }
         //顺序单选题，多选，判断
         var order = function(data){
-            var html = '<li class="cursor active" data-type="0">顺序</li><li class="cursor" data-type="1">单选题（'+data.SingleCount+')</li><li class="cursor" data-type="2">多选题（'+data.MultipleCount+')</li><li class="cursor" data-type="3">判断题（'+data.DecideCount+')</li>';
+            var html = '<li class="cursor active" data-type="0">顺序</li><li class="cursor" data-type="1">单选题（'+data.SingleCount+')</li><li class="cursor" data-type="2">多选题（'+data.MultipleCount+')</li><li class="cursor" data-type="3">判断题（'+data.DecideCount+')</li><li class="cursor" data-type="4">填空题（'+data.FillBlankCount+')</li>';
             $('.start_test_order').html(html);
         }
         
@@ -262,12 +248,17 @@ var jQuery = $ || {};
                         data[i].order = i+1;
                         judges.push(data[i]);
                         break;
+                    case 4:
+                        data[i].order = i+1;
+                        fillblanks.push(data[i]);
+                        break;
                     default :
                         break;
 
                 }
                 orders.push(data[i]);
             }
+            console.log(orders);
             nowCons = orders;
             switch(questionType){
                 case 1:
@@ -319,30 +310,46 @@ var jQuery = $ || {};
                         selectCon = '<i>判断</i>';
                         thisScore = JudgeScore;
                         break;
+                    case 4:
+                        selectCon = '<i>填空</i>';
+                        thisScore = FillBlankScore;
+                        break;
                     default :
                         break;
                 }
                 var title = '<div class="example">'+selectCon+'<span><strong>'+data.order+'.</strong>'+data.Title+' ['+thisScore+'分]</span></div>';
-                var orderA = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
-                var orderCon = '';
-                var isActive = '';
-                var classNum = '';
-                $.each(data.ListViewTPQuesionOptions, function(index, item){
-                    if(zoomArr[data.order-1]){
-                        var labelId = zoomArr[data.order-1].split('=')[1].split('|');
-                            for(var i=0;i<labelId.length;i++){
-                                if(item.Id == labelId[i]){
-                                    isActive = 'checked';
-                                    break;
-                                }else{
-                                    isActive = '';
+                if(data.Type != 4){
+                    var orderA = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+                    var orderCon = '';
+                    var isActive = '';
+                    var classNum = '';
+                    $.each(data.ListViewTPQuesionOptions, function(index, item){
+                        if(zoomArr[data.order-1]){
+                            var labelId = zoomArr[data.order-1].split('=')[1].split('|');
+                                for(var i=0;i<labelId.length;i++){
+                                    if(item.Id == labelId[i]){
+                                        isActive = 'checked';
+                                        break;
+                                    }else{
+                                        isActive = '';
+                                    }
                                 }
-                            }
-                    }else{
-                        isActive = '';
-                    }
-                    orderCon += '<li data-id="'+item.Id+'"><label for="answer_a" class="'+multiple+' cursor '+isActive+'"><b>'+orderA[index]+'</b><span>'+item.OptionName+'</span></label></li>';
-                });
+                        }else{
+                            isActive = '';
+                        }
+                        orderCon += '<li data-id="'+item.Id+'"><label for="answer_a" class="'+multiple+' cursor '+isActive+'"><b>'+orderA[index]+'</b><span>'+item.OptionName+'</span></label></li>';
+                    });
+               }else{
+                // 填空
+                var orderCon = '';
+                var textarea_val = '';
+                // 判断是否已有值
+                if(zoomArr[data.order-1]){
+                   textarea_val = zoomArr[data.order-1].split('=')[1];
+                }
+                console.log(textarea_val);
+                orderCon += '<textarea data-id="'+data.Id+'" data-num="'+data.order+'" data-type="'+data.Type+'" class="test_textarea" οninput="OnInput(event)" onpropertychange="OnPropChanged(event)" placeholder="禁止输特殊符号, ，= |" p>'+textarea_val+'</textarea>';
+               }
                 classNum = "tpquestionsList"+data.order;
                 orderCon = '<ul class="container example_answer">'+orderCon+'</ul>';
                 var zoomCom = '<li class="tpquestionsList '+classNum+'" data-id="'+data.Id+'" data-num="'+data.order+'" data-type="'+data.Type+'">'+title+orderCon+'</li>';
@@ -378,6 +385,7 @@ var jQuery = $ || {};
                 }
             })
             saveAnswersListData = saveAnswersListData.slice(0,-1);
+            console.log(saveAnswersListData);
             var saveAnswersList = {"userId":$.cookie('userId'),"UserTPLibId":UserTPLibId,"saveAnswersListData":saveAnswersListData};
             storage.setItem("saveAnswers"+$.cookie('userId')+UserTPLibId,JSON.stringify(saveAnswersList));
         }
@@ -409,6 +417,11 @@ var jQuery = $ || {};
                         case 3:
                             if(nowCons != judges){
                                 nowCons = judges;
+                            }
+                            break;
+                        case 4:
+                            if(nowCons != fillblanks){
+                                nowCons = fillblanks;
                             }
                             break;
                         default :
@@ -567,7 +580,6 @@ var jQuery = $ || {};
             }
             //console.log(format(hh) + ":" + format(mm) + ":" + format(ss));
             $(".countdownTime").html(format(hh) + ":" + format(mm) + ":" + format(ss));
-            
             if (hh == 0 && mm == 0 && ss == 0) {
                 clearInterval(idt);
                 $(".countdownTime").html('交卷时间到');
@@ -575,9 +587,6 @@ var jQuery = $ || {};
                 $(".loadanswer_n").hide();
                 processAnswer();
                 assignment();
-            }else{
-                var remainingTimeVal = Number(storage.getItem("remainingTime"+$.cookie('userId')+UserTPLibId))+1;
-               storage.setItem("remainingTime"+$.cookie('userId')+UserTPLibId,remainingTimeVal); 
             }
         }
         function countTime(time){
@@ -693,10 +702,9 @@ var jQuery = $ || {};
                 $(".closeTestBox").hide();
             })
             $(".closeTest_y").click(function(){
-                funGoBack();
-            })
-            $(".completeBtnsBack").click(function(){
-                funGoBack();
+                //var urlId = $(".nav_study").attr('id_num');
+                var urlId = '6f8fded1-7613-4a0c-945f-ad16df733443';
+                window.location.href = '/compoents/study/study.html?id='+urlId+'&title=在线学习';
             })
             
             $(".loadanswerDel").click(function(){
@@ -741,8 +749,7 @@ var jQuery = $ || {};
                     //console.log(data);
                     $(".submit_answers").css('display','none');
                     if (data.status_code == 200) {
-                       storage.removeItem("saveAnswers"+$.cookie('userId')+UserTPLibId); //清除保存的答案缓存
-                       storage.removeItem("remainingTime"+$.cookie('userId')+UserTPLibId); //清除考试用时缓存
+                       storage.removeItem("saveAnswers"+$.cookie('userId')+UserTPLibId); //清除保存的答案
                         var urlId = $(".nav_study").attr('id_num');
                          $(".examTakingShadeCon1 span").html(data.data.SumScore);
                          var time = countTime(data.data.TestTime);
@@ -752,7 +759,6 @@ var jQuery = $ || {};
                         $(".examTakingShade").css('display','block');
                         $(".examTaking").addClass('activeH');
                         $(".start_test").hide();
-                        funCompleteBtnsBack();
                     }else{
                         alert("交卷失败，请重新交卷。");
                     }
@@ -801,36 +807,19 @@ var jQuery = $ || {};
        //      window.location.href = '/compoents/study/study.html?id='+urlId+'&title=在线学习';
        //  })
        var funWindowScroll = function(){
-          var maxScrollTop = $(".header").height();
-            $(window).scroll( maxScrollTop, function(event){
-                var $me = $(this);
-                var fixed1 = $(".scrollFixed");
-                var fixed2 = $(".scrollFixed2");
-                if( $me.scrollTop() > event.data ){
-                    fixed1.addClass('fixed0');
-                    fixed2.addClass('fixed2');
-                }else{
-                    fixed1.removeClass('fixed0');
-                    fixed2.removeClass('fixed2');
-                }
-            } );
-       }
-       //返回在线考试
-       funGoBack = function(){
-          var urlId = $(".nav_study").attr('id_num');
-          window.location.href = '/compoents/study/study.html?id='+urlId+'&title=在线学习';
-       }
-       // 考试完成倒计时返回
-       funCompleteBtnsBack = function(){
-            completeBtnsBackTime = setInterval(function(){
-                var time = Number($('.completeBtnsBack span').html());
-                time--;
-                $('.completeBtnsBack span').html(time);
-                if(time == 0){
-                  clearInterval(completeBtnsBackTime);
-                  funGoBack();
-                }
-            },1000)
+        var maxScrollTop = $(".header").height();
+        $(window).scroll( maxScrollTop, function(event){
+            var $me = $(this);
+            var fixed1 = $(".scrollFixed");
+            var fixed2 = $(".scrollFixed2");
+            if( $me.scrollTop() > event.data ){
+                fixed1.addClass('fixed0');
+                fixed2.addClass('fixed2');
+            }else{
+                fixed1.removeClass('fixed0');
+                fixed2.removeClass('fixed2');
+            }
+        } );
        }
 
     	//初始数据请求
@@ -852,5 +841,22 @@ var jQuery = $ || {};
         };
         //初始数据
     	init();
+ 
+        //填空监听输入
+        $(document).on('input propertychange', '.test_textarea', function() {
+            var textareaVal = $(this).val();
+            var index = $(this).attr('data-num') - 1;
+            var ids = $(this).attr('data-id');
+            // 把值付给答案
+            zoomArr[index] = ids + '=' + textareaVal;
+            console.log(zoomArr);
+            // 若有值答题卡选中，若无值，答题卡去掉active
+            if(textareaVal){
+              $($(".questionCardsNum li")[index]).addClass('active');
+            }else{
+              $($(".questionCardsNum li")[index]).removeClass('active');
+            }
+            saveAnswersFun();//本地保存
+        });
     })
 })(window, jQuery);

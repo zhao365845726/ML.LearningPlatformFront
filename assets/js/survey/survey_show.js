@@ -3,19 +3,12 @@ var jQuery = $ || {};
 	$(document).ready(function() {
 		var ajax_url = ajaxUrl(),//统一的ajax请求地址
 		    nowArr = [];
-
-        var locations = window.location.search.substr(1).split('&');
-		var QuestionnaireId = locations[0].split('=')[1];
-		var type = locations[1].split('=')[1];
-		var className = decodeURI(locations[2].split('=')[1]);
-		var time = decodeURI(locations[3].split('=')[1]);
-
+		var type = window.location.search.split('=')[2];
+		var QuestionnaireId = window.location.search.substr(1).split('&')[0].split('=')[1];
 		var attrs = [['课程设置合理，符合循序渐进的规律','学时安排适当，重点难点有充分时间掌握','除日常授课外的其他课程丰富活跃了学习生活','整体课程安排能够更贴近实际工作，对工作有促进作用，很重要','逻辑层次分明，条理清理，结构严谨，概念清楚','各章节由浅到深，衔接较好，教学内容充实、实用','教材能反映本学科国内外科学研究和教学，具有学科发展的先进性','文字规范、简练，图文配合恰当，语言流畅、通俗易懂、叙述生动','按时上下课，不随便调课，缺课','作业安排适当，批改及时、认真','有责任感，能够经常耐心辅导学生，帮助解决实际问题','尊重学生意见，能够改进教学','班主任态度热情，有亲和力','教师讲授生动，富有启发性，课堂气氛活跃，互动性强','教学方法灵活，活动安排有序，行动效率较高','培训过程中的问题能够得到及时有效地解决','学习环境整洁、安静，学习氛围浓厚','食堂卫生干净，饭菜香甜可口','工作人员服务热情，态度和蔼','住宿安全、卫生、舒适、热水有保障','有丰富的课外生活'],['按时上下课，不随便调课，缺课','作业安排适当，批改及时、认真','有责任感，能够经常耐心辅导学生，帮助解决实际问题','尊重学生意见，能够改进教学','班主任态度热情，有亲和力','教师讲授生动，富有启发性，课堂气氛活跃，互动性强','教学方法灵活，活动安排有序，行动效率较高','培训过程中的问题能够得到及时有效地解决','逻辑层次分明，条理清理，结构严谨，概念清楚','各章节由浅到深，衔接较好，教学内容充实、实用','教材能反映本学科国内外科学研究和教学，具有学科发展的先进性','文字规范、简练，图文配合恰当，语言流畅、通俗易懂、叙述生动','通过一段时间的现场作业，你对课程安排是否满意','通过一段时间的现场作业，你对教师的教学能力和水平是否满意']];
 		var surveyShow = function(){
 			var url1 = $(".nav_investigation a").attr('href');
 			$(".article_title1 a").attr('href',url1);
-			var html = '班级名称：'+className+'<span>培训时间：'+time+'</span>';
-			$(".classInto").html(html);
 			switch (Number(type)){
 				case 1:
 					$(".article_title").html('学员满意度');

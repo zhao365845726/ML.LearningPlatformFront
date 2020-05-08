@@ -18,12 +18,12 @@ var jQuery = $ || {};
                         if(data.status_code == 200){
                             careShow();
                         }else{
-                            window.location.href = '/compoents/study/studyLogin.html';
+                            window.location.href = '/index.html';
                         }
                     }
                 })
             }else{
-                window.location.href = '/compoents/study/studyLogin.html';
+                window.location.href = '/index.html';
             }
         }
         //证件详情页
@@ -38,7 +38,8 @@ var jQuery = $ || {};
                 crossDomain: true == !(document.all),
                 success: function(data, type) {
                     if (data.data) {
-                        var parentId = $(".nav_study").attr('id_num');
+                        //var parentId = $(".nav_study").attr('id_num');
+                        var parentId = '6f8fded1-7613-4a0c-945f-ad16df733443';
                         $(".article_title1 a").attr('href','/compoents/study/study.html?id='+parentId+'&title=我的证件');
                         var mydata = eval('(' + $.cookie('myData') + ')');
                         if(mydata) {

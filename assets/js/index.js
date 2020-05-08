@@ -241,7 +241,6 @@ var jQuery = $ || {};
 				"PageIndex": 1,
 				"PageSize": 10
 			};
-			console.log(data_p);
 			$.ajax({
 				type: "POST",
 				data: data_p,
@@ -249,7 +248,6 @@ var jQuery = $ || {};
 				url: ajax_url + url,
 				crossDomain: true == !(document.all),
 				success: function(data, type) {
-					console.log(data);
 					if (data.data) {
 						dataTpl = data.data;
 						temlDomList(dataTpl);
@@ -267,7 +265,7 @@ var jQuery = $ || {};
 		//最新消息banner
 		var remmendnews = function(data) {
 			var url,html = '';
-			data && $.each(data, function(index, item) {
+			$.each(data, function(index, item) {
 				/*拼接dom*/
 				url = '/compoents/notice/notice_show.html?id='+item.Id+'&title=最新消息&parentId=';
 				html += '<li class="carousel-item"><a href="'+url+'"><img src="'+item.CoverPhoto+'" alt=""><div class="shade">'+item.Title+'</div></a></li>';
@@ -277,7 +275,7 @@ var jQuery = $ || {};
 		//通知公告
 		var notices = function(data) {
 			var url,html = '';
-			data && $.each(data, function(index, item) {
+			$.each(data, function(index, item) {
 				/*拼接dom*/
 				url = '/compoents/notice/notice_show.html?id='+item.Id+'&title=通知公告&parentId=1';
 				html +='<li><a href="'+url+'">'+item.Title+'</a></li>';
@@ -287,7 +285,7 @@ var jQuery = $ || {};
 		//安全培训
 		var safetytraining = function(data) {
 			var url,html = '';
-			data && $.each(data, function(index, item) {
+			$.each(data, function(index, item) {
 				/*拼接dom*/
 				url = 'compoents/file/file_show.html?id='+item.Id+'&title=安全培训&parentId='+safetytrain_navid;
 				html += '<li><a href="'+url+'">'+item.Title+'</a><b>'+item.CreateTime+'</b></li>';
@@ -299,7 +297,7 @@ var jQuery = $ || {};
 		//素质提升
 		var qualityimprovement = function(data) {
 			var url,html = '';
-			data && $.each(data, function(index, item) {
+			$.each(data, function(index, item) {
 				/*拼接dom*/
 				url = '/compoents/file/file_show.html?id='+item.Id+'&title=素质提升&parentId='+quality_navid;
 				html += '<li><a href="'+url+'">'+item.Title+'</a><b>'+item.CreateTime+'</b></li>';
@@ -311,7 +309,7 @@ var jQuery = $ || {};
 		//文件制度
 		var documentsystem = function(data) {
 			var url,html = '';
-			data && $.each(data, function(index, item) {
+			$.each(data, function(index, item) {
 				/*拼接dom*/
 				url = '/compoents/file/file_show.html?id='+item.Id+'&title=文件制度&parentId='+file_navid;
 				html += '<li><a href="'+url+'">'+item.Title+'</a><b>'+item.CreateTime+'</b></li>';
@@ -335,7 +333,7 @@ var jQuery = $ || {};
 				crossDomain: true == !(document.all),
 				dataType: 'json',
 				success: function(data, type) {
-					data.data.lst_activitylist && $.each(data.data.lst_activitylist, function(index, item) {
+					$.each(data.data.lst_activitylist, function(index, item) {
 						/*拼接dom*/
 						url = '/compoents/notice/notice_show.html?id='+item.Id+'&title=活动掠影&parentId=2';
 						html += '<li class="swiper-slide"><a href="'+url+'"><img src="'+item.CoverPhoto+'" alt=""><p>'+item.Title+'</p></a></li>';
@@ -370,7 +368,7 @@ var jQuery = $ || {};
 				crossDomain: true == !(document.all),
 				success: function(data, type) {
 					if (data.data) {
-						data.data.lst_course && $.each(data.data.lst_course, function(index, item) {
+						$.each(data.data.lst_course, function(index, item) {
 							/*拼接dom*/
 							url = '/compoents/study/course_show.html?id='+item.Id;
 							if(item.StudyOption == 1){
@@ -402,7 +400,7 @@ var jQuery = $ || {};
 				dataType: 'json',
 				crossDomain: true == !(document.all),
 				success: function(data, type) {
-					data.data.lst_navarticlelist && $.each(data.data.lst_navarticlelist, function(index, item) {
+					$.each(data.data.lst_navarticlelist, function(index, item) {
 						/*拼接dom*/
 						var url2 = '/compoents/file/file_show.html?id='+item.Id+'&title=大师工作室&parentId='+navid;
 						html += '<li class="fileList"><a href="'+url2+'">'+item.Title+'</a><b>'+item.CreateTime+'</b></li>';
@@ -430,7 +428,7 @@ var jQuery = $ || {};
 				dataType: 'json',
 				crossDomain: true == !(document.all),
 				success: function(data, type) {
-					data.data.lst_interrogativeanswerlist && $.each(data.data.lst_interrogativeanswerlist, function(index, item) {
+					$.each(data.data.lst_interrogativeanswerlist, function(index, item) {
 						/*拼接dom*/
 						var url2 = '/compoents/interanswers/interanswers_show.html?id='+item.Id;
 						html += '<li><a href="'+url2+'"><p class="ask"><img src="assets/images/ask.png" alt="">'+item.QuestionTitle+'？</p><p class="answer"><img src="assets/images/answer.png" alt="">'+item.AnswerContent+'</p></a></li>';
@@ -471,7 +469,7 @@ var jQuery = $ || {};
 				crossDomain: true == !(document.all),
 				success: function(data, type) {
 					if (data.data) {
-						data.data && $.each(data.data, function(index, item) {
+						$.each(data.data, function(index, item) {
 							html += '<a href="'+item.Url+'" target="_blank">'+item.Name+'</a>';
 						});
 						html = '友情链接： ' + html;
