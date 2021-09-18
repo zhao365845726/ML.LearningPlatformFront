@@ -3144,3 +3144,7 @@ height: 100%;
   resize:none;
   padding: 10px;
 }
+
+.hidden{
+    display: none;
+}

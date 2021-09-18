@@ -1,33 +1,36 @@
+// var api_domain = 'http://mlearning.api.milisx.com/';
+var api_domain = 'http://localhost:52118/';
+
 function ajaxUrl(){ //导航列表url
-    var url = 'http://localhost:52118/api/content/';
+    var url = api_domain + 'api/content/';
     return url;
 };
 function lecturerUrls(){ //导航列表url
-    var url = 'http://localhost:52118/api/lecturer/';
+    var url = api_domain + 'api/lecturer/';
     return url;
 };
 function isLoginUrl(){ //是否登陆
-    var url = 'http://localhost:52118/api/user/islogin';
+    var url = api_domain + 'api/user/islogin';
     return url;
 };
 function courseUrl(){ //课件
-    var url = 'http://localhost:52118/api/course/';
+    var url = api_domain + 'api/course/';
     return url;
 };
 function favoritecourseUrl(){ //赞，收藏
-    var url = 'http://localhost:52118/api/user/';
+    var url = api_domain + 'api/user/';
     return url;
 };
 function practiseUrl(){ //分项练习
-    var url = 'http://localhost:52118/api/practise/';
+    var url = api_domain + 'api/practise/';
     return url;
 };
 function examUrl(){ //考试
-    var url = 'http://localhost:52118/api/exam/';
+    var url = api_domain + 'api/exam/';
     return url;
 };
 
 function redisUrl(){ //清除缓存
-    var url = 'http://localhost:52118/api/common/';
+    var url = api_domain + 'api/common/';
     return url;
 };

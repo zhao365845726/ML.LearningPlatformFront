@@ -22,7 +22,6 @@ function login1(account,password){
         "Account":account,
         "Password":password
     };
-    console.log(param);
     $.ajax({
         type: "POST",
         data: param,
