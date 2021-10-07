@@ -276,6 +276,7 @@ var jQuery = $ || {};
 				dataType: 'json',
 				crossDomain: true == !(document.all),
 				success: function(data, type) {
+					console.log(JSON.stringify(data));
 					var curDate1 = new Date(Date.parse(data.obj.CurrentTime.replace(/-/g,"/"))); //当前时间
 					if(data.data) {
 						$.each(data.data, function (index, item) {
