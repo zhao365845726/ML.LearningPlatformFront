@@ -3,11 +3,11 @@
 var api_domain = 'http://kxny.learn-api.milisx.com/';
 
 function ajaxUrl(){ //导航列表url
-    var url = api_domain + 'api/content/';
+    var url = api_domain + 'api/content/v1/';
     return url;
 };
 function lecturerUrls(){ //导航列表url
-    var url = api_domain + 'api/lecturer/';
+    var url = api_domain + 'api/lecturer/v1/';
     return url;
 };
 function isLoginUrl(){ //是否登陆
@@ -15,23 +15,23 @@ function isLoginUrl(){ //是否登陆
     return url;
 };
 function courseUrl(){ //课件
-    var url = api_domain + 'api/course/';
+    var url = api_domain + 'api/course/v1/';
     return url;
 };
 function favoritecourseUrl(){ //赞，收藏
-    var url = api_domain + 'api/user/';
+    var url = api_domain + 'api/user/v1/';
     return url;
 };
 function practiseUrl(){ //分项练习
-    var url = api_domain + 'api/practise/';
+    var url = api_domain + 'api/practise/v1/';
     return url;
 };
 function examUrl(){ //考试
-    var url = api_domain + 'api/exam/';
+    var url = api_domain + 'api/exam/v1/';
     return url;
 };
 
 function redisUrl(){ //清除缓存
-    var url = api_domain + 'api/common/';
+    var url = api_domain + 'api/common/v1/';
     return url;
 };
