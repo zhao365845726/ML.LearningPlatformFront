@@ -1,6 +1,6 @@
 // var api_domain = 'http://mlearning.api.milisx.com/';
 // var api_domain = 'http://localhost:52118/';
-var api_domain = 'http://kxny.learn-api.milisx.com/';
+var api_domain = 'http://mkcloud.api.milisx.com/';
 
 function ajaxUrl(){ //导航列表url
     var url = api_domain + 'api/content/v1/';
