@@ -6,11 +6,11 @@ var jQuery = $ || {};
         var getid = window.location.search.substr(1).split('=')[1];//获取？后面的参数，并防止乱码
         //是否登录
         var isLogin = function(){
-            var falg = $.cookie('userId');
+            var falg = $.cookie('Token');
             if(falg){
                 $.ajax({
                     type: "POST",
-                    data: {userId:falg},
+                    data: {Token:falg},
                     dataType: 'json',
                     url: isLoginUrl(),
                     crossDomain: true == !(document.all),

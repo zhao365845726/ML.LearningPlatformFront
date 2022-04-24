@@ -9,30 +9,30 @@ var jQuery = $ || {};
         var Id = locationUrl[1];
         var param = { //课件详情参数
             Id : Id,
-            UserId : $.cookie("userId"),
+            Token : $.cookie("token"),
             commentPage : {
                 pageindex : 1,
                 pagesize : 5
             }
         };
         var param_course = { //赞，收藏参数
-            UserId:'',
+            Token:'',
             CourseId:'',
             Type:0,
             SureOrCancel:0
         };
         var param_comment = { //提交评论,笔记参数
-            UserId:'',
+            Token:'',
             CourseId:'',
             Content:''
         };
         //是否登录
         var isogin = function(){
-            var falg = $.cookie("userId");
+            var falg = $.cookie("token");
             if(falg){
                 $.ajax({
                     type: "POST",
-                    data: {userId:falg},
+                    data: {Token:falg},
                     dataType: 'json',
                     url: isLoginUrl(),
                     crossDomain: true == !(document.all),
@@ -100,9 +100,9 @@ var jQuery = $ || {};
         }
         //赞，收藏
         var favoritecourse = function(){
-            var UserId = $.cookie("userId");
+            var Token = $.cookie("token");
             var CourseId = $('#courseId').val();
-            param_course.UserId = UserId;
+            param_course.Token = Token;
             param_course.CourseId = CourseId;
             var ele = $('.bravo label');
             ele && ele.length > 0 && $.each(ele, function(index, item) {
@@ -173,9 +173,9 @@ var jQuery = $ || {};
             if(!commentCon){
                 return false;
             }
-            var UserId = $.cookie("userId");
+            var Token = $.cookie("token");
             var CourseId = $('#courseId').val();
-            param_comment.UserId = UserId;
+            param_comment.Token = Token;
             param_comment.CourseId = CourseId;
             param_comment.Content = commentCon;
             var url = "commentcourse";
@@ -234,9 +234,9 @@ var jQuery = $ || {};
             if(!commentCon){
                 return false;
             }
-            var UserId = $.cookie("userId");
+            var Token = $.cookie("token");
             var CourseId = $('#courseId').val();
-            param_comment.UserId = UserId;
+            param_comment.Token = Token;
             param_comment.CourseId = CourseId;
             param_comment.Content = commentCon;
             var url = "docoursenote";

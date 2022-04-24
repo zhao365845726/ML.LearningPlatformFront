@@ -24,7 +24,7 @@ var jQuery = $ || {};
         var JudgeScore = 0;//判断
         var MultipleScore = 0;//多选
         var RadioScore = 0;//单选
- //storage.removeItem("saveAnswers"+$.cookie('userId')+UserTPLibId); //清除保存的答案
+ //storage.removeItem("saveAnswers"+$.cookie('Token')+UserTPLibId); //清除保存的答案
 
         //开始考试
         // var innerTest = function(id){
@@ -64,14 +64,14 @@ var jQuery = $ || {};
                 }
             })
             saveAnswersListData = saveAnswersListData.slice(0,-1);
-            var saveAnswersList = {"userId":$.cookie('userId'),"UserTPLibId":UserTPLibId,"saveAnswersListData":saveAnswersListData};
-            storage.setItem("saveAnswers"+$.cookie('userId')+UserTPLibId,JSON.stringify(saveAnswersList));
-            //var details = JSON.parse(storage.getItem("saveAnswers"+$.cookie('userId')+UserTPLibId));
+            var saveAnswersList = {"Token":$.cookie('Token'),"UserTPLibId":UserTPLibId,"saveAnswersListData":saveAnswersListData};
+            storage.setItem("saveAnswers"+$.cookie('Token')+UserTPLibId,JSON.stringify(saveAnswersList));
+            //var details = JSON.parse(storage.getItem("saveAnswers"+$.cookie('Token')+UserTPLibId));
             //console.log(details);
         }
         //开始时若有存储答案把答案付给zoomArr
         var initZoomArr = function(){
-            var details = JSON.parse(storage.getItem("saveAnswers"+$.cookie('userId')+UserTPLibId));
+            var details = JSON.parse(storage.getItem("saveAnswers"+$.cookie('Token')+UserTPLibId));
             console.log(details);
             if(details){
                 //console.log(details.saveAnswersListData);
@@ -88,7 +88,7 @@ var jQuery = $ || {};
             //     UserTPLibId:UserTPLibId
             // }
             var param = {
-                  "UserId": $.cookie("userId"),
+                  "Token": $.cookie("token"),
                   "CategoryId": CategoryId,
                   "PageIndex": 1,
                   "PageSize": PageSize
@@ -522,7 +522,7 @@ var jQuery = $ || {};
         var doerrors = function(Id1){
             $.ajax({
                 type: 'POST',
-                data: {UserId: $.cookie('userId'),QuestionId:Id1},
+                data: {Token: $.cookie('Token'),QuestionId:Id1},
                 url: practiseUrl() + 'doerror',
                 dataType: 'json',
                 crossDomain: true == !(document.all),
@@ -693,11 +693,11 @@ var jQuery = $ || {};
                 success: function(data, type) {
                     //console.log(data);
                     $(".submit_answers").css('display','none');
-                    storage.removeItem("saveAnswers"+$.cookie('userId')+UserTPLibId); //清除保存的答案
-                    //console.log(storage.getItem("saveAnswers"+$.cookie('userId')+UserTPLibId));
+                    storage.removeItem("saveAnswers"+$.cookie('Token')+UserTPLibId); //清除保存的答案
+                    //console.log(storage.getItem("saveAnswers"+$.cookie('Token')+UserTPLibId));
                     if (data.status_code == 200) {
-                       // storage.removeItem("saveAnswers"+$.cookie('userId')+UserTPLibId); //清除保存的答案
-                       // console.log(storage.getItem("saveAnswers"+$.cookie('userId')+UserTPLibId));
+                       // storage.removeItem("saveAnswers"+$.cookie('Token')+UserTPLibId); //清除保存的答案
+                       // console.log(storage.getItem("saveAnswers"+$.cookie('Token')+UserTPLibId));
                         var urlId = $(".nav_study").attr('id_num');
                          //$(".loadanswerBox").hide();
                         // var timeM = parseInt(data.data.TestTime / 60);
@@ -874,7 +874,7 @@ var jQuery = $ || {};
         var init_second = function(){
             // if(Number(UserTitle)){
             //     //console.log('开始考试');
-            //     storage.removeItem("saveAnswers"+$.cookie('userId')+UserTPLibId); //清除保存的答案
+            //     storage.removeItem("saveAnswers"+$.cookie('Token')+UserTPLibId); //清除保存的答案
             //     innerTest(UserTPLibId);
             // }else{
             //     testCon();

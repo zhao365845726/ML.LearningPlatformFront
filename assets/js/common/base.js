@@ -148,9 +148,9 @@ function mobilelogin1(account,password){
             if(data.status_code == 200){
                 $(".loginBox_mobile_out .login_Account span").html(data.data.Account);
                 $(".loginBox_mobile_out .login_RealName span").html(data.data.RealName);
-                $.cookie('userId', data.data.UserId,{path: '/'});
+                $.cookie('Token', data.data.Token,{path: '/'});
                 $.cookie('myData', JSON.stringify(data.data),{path: '/'});
-                //console.log($.cookie('userId'));
+                //console.log($.cookie('Token'));
                 $(".mobilelogin_err").css('visibility','hidden');
                 $(".loginBox_mobile_in").hide();
                 $(".loginBox_mobile_out").hide();
@@ -176,9 +176,9 @@ function mobileidcardlogin(IDCard,password){
             if(data.status_code == 200){
                 $(".loginBox_mobile_out .login_Account span").html(data.data.Account);
                 $(".loginBox_mobile_out .login_RealName span").html(data.data.RealName);
-                $.cookie('userId', data.data.UserId,{path: '/'});
+                $.cookie('Token', data.data.Token,{path: '/'});
                 $.cookie('myData', JSON.stringify(data.data),{path: '/'});
-                //console.log($.cookie('userId'));
+                //console.log($.cookie('Token'));
                 $(".mobilelogin_err").css('visibility','hidden');
                 $(".loginBox_mobile_in").hide();
                 $(".loginBox_mobile_out").hide();
@@ -191,18 +191,18 @@ function mobileidcardlogin(IDCard,password){
     })
 }
 function moblieloginOut(){
-    if(!$.cookie('userId')){
+    if(!$.cookie('Token')){
         return false;
     }
     $.ajax({
         type: "POST",
-        data: {"userId":$.cookie('userId')},
+        data: {"Token":$.cookie('Token')},
         dataType: 'json',
         url: favorite_Url+'signout',
         crossDomain: true == !(document.all),
         success: function(data, type) {
             if(data.status_code == 200){
-                $.cookie('userId', null,{path: '/'});
+                $.cookie('Token', null,{path: '/'});
                 $.cookie('myData', null,{path: '/'});
                 window.location.href = '/compoents/study/studyLogin.html';
             }
@@ -220,11 +220,11 @@ $(function(){
     }
     /*指纹登录*/
     $(".FingerPrintBtn").click(function(){
-        var falg = $.cookie('userId');
+        var falg = $.cookie('Token');
         if(falg){
             $.ajax({
                 type: "POST",
-                data: {userId:falg},
+                data: {Token:falg},
                 dataType: 'json',
                 url: isLoginUrl(),
                 crossDomain: true == !(document.all),
@@ -250,11 +250,11 @@ $(function(){
     })
     /*账号登录*/
     $(".loginBtn").click(function(){
-        var falg = $.cookie('userId');
+        var falg = $.cookie('Token');
         if(falg){
             $.ajax({
                 type: "POST",
-                data: {userId:falg},
+                data: {Token:falg},
                 dataType: 'json',
                 url: isLoginUrl(),
                 crossDomain: true == !(document.all),
@@ -285,11 +285,11 @@ $(function(){
     })
        //登录显示
     $(".mobileNavR").click(function(){
-        var falg = $.cookie('userId');
+        var falg = $.cookie('Token');
         if(falg){
             $.ajax({
                 type: "POST",
-                data: {userId:falg},
+                data: {Token:falg},
                 dataType: 'json',
                 url: isLoginUrl(),
                 crossDomain: true == !(document.all),

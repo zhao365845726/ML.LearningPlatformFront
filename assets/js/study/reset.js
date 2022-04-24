@@ -5,11 +5,11 @@ var jQuery = $ || {};
             ajax_url = ajaxUrl();
         //是否登录
         var isLogin = function(){
-            var falg = $.cookie("userId");
+            var falg = $.cookie("token");
             if(falg){
                 $.ajax({
                     type: "POST",
-                    data: {userId:falg},
+                    data: {Token:falg},
                     dataType: 'json',
                     url: isLoginUrl(),
                     crossDomain: true == !(document.all),
@@ -61,7 +61,7 @@ var jQuery = $ || {};
                 }
                 var url = "modifypassword";
                 var param = {
-                    UserId:$.cookie("userId"),
+                    Token:$.cookie("token"),
                     NewPassword:newPass2
                 }
                 $.ajax({
@@ -73,7 +73,7 @@ var jQuery = $ || {};
                     success: function(data, type) {
                         //console.log(data);
                         if (data.status_code == 200) {
-                            $.cookie('userId', null,{path: '/'});
+                            $.cookie('Token', null,{path: '/'});
                             $.cookie('myData', null,{path: '/'});
                             window.location.href = '/index.html';
                         }

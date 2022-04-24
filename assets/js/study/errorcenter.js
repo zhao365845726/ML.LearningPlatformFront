@@ -94,7 +94,7 @@ var errorCenterQuestions = {
         var that = this;
         $(".example_show").click(function(){
             if(that.yesData.sort().toString() == that.zoomArr.sort().toString()){
-                var userId = $.cookie('userId');
+                var Token = $.cookie('Token');
                 var questionId = $(".eqquestionsList").attr('data-id');
                 var questionNum = $(".eqquestionsList").attr('data-num');
                 that.next_index++;
@@ -105,7 +105,7 @@ var errorCenterQuestions = {
                 }
                 $.ajax({
                     type: 'POST',
-                    data: {'UserId':userId,'QuestionId':questionId},
+                    data: {'Token':Token,'QuestionId':questionId},
                     url: ajaxUrl()+'deleteerrordata',
                     dataType: 'json',
                     crossDomain: true == !(document.all),

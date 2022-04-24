@@ -4,7 +4,7 @@ var jQuery = $ || {};
         var favoriteUrl = favoritecourseUrl(),
             ajax_url = ajaxUrl();
         var param = {
-            UserId:'',
+            Token:'',
             QuestionTitle:'',
             QuestionContent:''
         };
@@ -26,14 +26,14 @@ var jQuery = $ || {};
                alert('请写入内容！');
                return false;
            }
-           if($.cookie("userId")){
+           if($.cookie("token")){
                if($(".nimingLabel").hasClass('active')){//匿名
-                   param.UserId = '';
+                   param.Token = '';
                }else{
-                   param.UserId = $.cookie("userId");
+                   param.Token = $.cookie("token");
                }
            }else{
-               param.UserId = '';
+               param.Token = '';
            }
            param.QuestionTitle = askTitle;
            param.QuestionContent = askCon;

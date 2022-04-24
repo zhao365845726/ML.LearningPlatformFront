@@ -97,8 +97,8 @@ function fingerLogin(obj){
         crossDomain: true == !(document.all),
         success: function(data, type) {
             if(data.status_code == 200){
-                 var userId = get_cookie('userId');
-                 if(data.data.UserId === userId){
+                 var Token = get_cookie('Token');
+                 if(data.data.Token === Token){
                     testAlert.style.display = 'none';
                      $(".FingerPrintError").css('display','none');
                     window.location.href = "/compoents/study/test_show.html"+title;

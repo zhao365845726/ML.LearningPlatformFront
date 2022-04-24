@@ -100,7 +100,7 @@ function fingerLogin(obj){
             if(data.status_code == 200){
                 $(".login_Account span").html(data.data.Account);
                 $(".login_RealName span").html(data.data.RealName);
-                $.cookie('userId', data.data.UserId,{path: '/'});
+                $.cookie('Token', data.data.Token,{path: '/'});
                 $.cookie('myData', JSON.stringify(data.data),{path: '/'});
                 var urlid = $(".nav_study").attr('id_num');
                  $(".FingerPrintError").css('display','none');

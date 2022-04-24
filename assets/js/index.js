@@ -480,11 +480,11 @@ var jQuery = $ || {};
 		}
 		//是否登录
 		var isLogin = function(){
-			var falg = $.cookie('userId');
+			var falg = $.cookie('Token');
 			if(falg){
 				$.ajax({
 					type: "POST",
-					data: {userId:falg},
+					data: {Token:falg},
 					dataType: 'json',
 					url: isLoginUrl(),
 					crossDomain: true == !(document.all),
@@ -500,7 +500,7 @@ var jQuery = $ || {};
 							}else{
 								$(".loginBox_mobile_out .login_Account span").html(data.data.Account);
 								$(".loginBox_mobile_out .login_RealName span").html(data.data.RealName);
-								$.cookie('userId', data.data.UserId);
+								$.cookie('Token', data.data.Token);
 								$.cookie('myData', JSON.stringify(data.data));
 							}
 						}

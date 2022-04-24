@@ -11,12 +11,12 @@ var jQuery = $ || {};
         var EverydayQuestionId = window.location.search.substr(1).split('&')[0].split('=')[1];
         //是否登录
         var isLogin = function(){
-            var falg = $.cookie('userId');
-            //console.log($.cookie('userId'));
+            var falg = $.cookie('Token');
+            //console.log($.cookie('Token'));
             if(falg){
                 $.ajax({
                     type: "POST",
-                    data: {userId:falg},
+                    data: {Token:falg},
                     dataType: 'json',
                     url: isLoginUrl(),
                     crossDomain: true == !(document.all),

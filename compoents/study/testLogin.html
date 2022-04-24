@@ -180,7 +180,7 @@
             console.log(data);
             if(data.status_code == 200){
                 $(".login_err2").css('visibility','hidden');
-                 if(data.data.UserId === $.cookie('userId')){
+                 if(data.data.Token === $.cookie('Token')){
                     $("#testAlert").hide();
                     window.location.href = "/compoents/study/test_show.html"+title;
                  }else{
@@ -217,7 +217,7 @@
             console.log(data);
             if(data.status_code == 200){
                 $(".login_err1").css('visibility','hidden');
-                if(data.data.UserId === $.cookie('userId')){
+                if(data.data.Token === $.cookie('Token')){
                     $("#testAlert").hide();
                     window.location.href = "/compoents/study/test_show.html"+title;
                  }else{

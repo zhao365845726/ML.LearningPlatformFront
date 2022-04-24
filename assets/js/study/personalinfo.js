@@ -4,18 +4,18 @@ var jQuery = $ || {};
         var ajax_url = ajaxUrl();//ajax请求地址
         //是否登录
         var isLogin = function(){
-            var falg = $.cookie("userId");
+            var falg = $.cookie("token");
             if(falg){
                 $.ajax({
                     type: "POST",
-                    data: {userId:falg},
+                    data: {Token:falg},
                     dataType: 'json',
                     url: isLoginUrl(),
                     crossDomain: true == !(document.all),
                     success: function(data, type) {
                         //console.log(data);
                         if(data.status_code == 200){
-                            $.cookie('userId', data.data.UserId,{path: '/'});
+                            $.cookie('Token', data.data.Token,{path: '/'});
                             $.cookie('myData', JSON.stringify(data.data),{path: '/'});
                             personalinfo();
                         }else{

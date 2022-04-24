@@ -69,11 +69,11 @@ var jQuery = $ || {};
         }
         //是否登录
         var isLogin = function(){
-            var falg = $.cookie("userId");
+            var falg = $.cookie("token");
             if(falg){
                 $.ajax({
                     type: "POST",
-                    data: {userId:falg},
+                    data: {Token:falg},
                     dataType: 'json',
                     url: isLoginUrl(),
                     crossDomain: true == !(document.all),
@@ -103,7 +103,7 @@ var jQuery = $ || {};
             $(".Gender").val(mydata.Gender);
             $(".IDCard").val(mydata.IDCard);
             $(".Mobile").val(mydata.Mobile);
-            $("#UserId").val($.cookie('userId'));
+            $("#Token").val($.cookie('Token'));
             var src1 = '';
             if(mydata.Photograph){
                 src1 = mydata.Photograph;

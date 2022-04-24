@@ -87,7 +87,7 @@ var jQuery = $ || {};
             // console.log(UserTitle);
             // if(Number(UserTitle)){ //1代表是进入考试
             // 	//清除保存的答案
-            //     storage.removeItem("saveAnswers"+$.cookie('userId')+UserTPLibId); 
+            //     storage.removeItem("saveAnswers"+$.cookie('Token')+UserTPLibId); 
             //     //修改考试状态
             //     innerTest();
             // }else{
@@ -220,7 +220,7 @@ var jQuery = $ || {};
         }
         //开始时若有存储答案把答案付给zoomArr
         var initZoomArr = function(){
-            var details = JSON.parse(storage.getItem("saveAnswers"+$.cookie('userId')+UserTPLibId));
+            var details = JSON.parse(storage.getItem("saveAnswers"+$.cookie('Token')+UserTPLibId));
             console.log(details);
             if(details){
                 zoomArr = details.saveAnswersListData.split(",");
@@ -385,8 +385,8 @@ var jQuery = $ || {};
             })
             saveAnswersListData = saveAnswersListData.slice(0,-1);
             console.log(saveAnswersListData);
-            var saveAnswersList = {"userId":$.cookie('userId'),"UserTPLibId":UserTPLibId,"saveAnswersListData":saveAnswersListData};
-            storage.setItem("saveAnswers"+$.cookie('userId')+UserTPLibId,JSON.stringify(saveAnswersList));
+            var saveAnswersList = {"Token":$.cookie('Token'),"UserTPLibId":UserTPLibId,"saveAnswersListData":saveAnswersListData};
+            storage.setItem("saveAnswers"+$.cookie('Token')+UserTPLibId,JSON.stringify(saveAnswersList));
         }
          //初始单，多，判点击事件
         var orderClick = function(){
@@ -748,7 +748,7 @@ var jQuery = $ || {};
                     //console.log(data);
                     $(".submit_answers").css('display','none');
                     if (data.status_code == 200) {
-                       storage.removeItem("saveAnswers"+$.cookie('userId')+UserTPLibId); //清除保存的答案
+                       storage.removeItem("saveAnswers"+$.cookie('Token')+UserTPLibId); //清除保存的答案
                         var urlId = $(".nav_study").attr('id_num');
                          $(".examTakingShadeCon1 span").html(data.data.SumScore);
                          var time = countTime(data.data.TestTime);

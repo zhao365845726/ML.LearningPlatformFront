@@ -20,14 +20,14 @@ var jQuery = $ || {};
 			};
 		//是否登录
 		var isLogin = function(){
-			//var falg = $.cookie('userId');
+			//var falg = $.cookie('Token');
 			//debugger
 			BreadCrumbs();
 			sildeNav();
 			// if(falg){
 			// 	$.ajax({
 			// 		type: "POST",
-			// 		data: {userId:falg},
+			// 		data: {Token:falg},
 			// 		dataType: 'json',
 			// 		url: isLoginUrl(),
 			// 		crossDomain: true == !(document.all),
@@ -135,7 +135,7 @@ var jQuery = $ || {};
 					var url = 'minecourselist';
 					zoomUrl = favorite_courseUrl + url;
 					param = {
-						UserId : $.cookie("userId"),
+						Token : $.cookie("token"),
 						PageIndex : 1,
 						PageSize : 8
 					};
@@ -145,7 +145,7 @@ var jQuery = $ || {};
 					var url = 'formalexamlist';
 					zoomUrl = exam_Url + url;
 					param = {
-						UserId : $.cookie("userId"),
+						Token : $.cookie("token"),
 						PageIndex : 1,
 						PageSize : 8
 					};
@@ -155,7 +155,7 @@ var jQuery = $ || {};
 					url = 'monitorexamlist';
 					zoomUrl = exam_Url + url;
 					param = {
-						UserId : $.cookie("userId"),
+						Token : $.cookie("token"),
 						PageIndex : 1,
 						PageSize : 8
 					};
@@ -168,7 +168,7 @@ var jQuery = $ || {};
 					var url = 'mineeverydayquestionlist';
 					zoomUrl = favorite_courseUrl + url;
 					param = {
-						UserId : $.cookie("userId"),
+						Token : $.cookie("token"),
 						PageIndex : 1,
 						PageSize : 8
 					};
@@ -194,7 +194,7 @@ var jQuery = $ || {};
 					url = 'minecertificateslist';
 					zoomUrl = favorite_courseUrl + url;
 					param = {
-						UserId : $.cookie("userId"),
+						Token : $.cookie("token"),
 						PageIndex : 1,
 						PageSize : 8
 					};
@@ -204,7 +204,7 @@ var jQuery = $ || {};
 					var url = 'lookresult';
 					zoomUrl = exam_Url + url;
 					param = {
-						UserId : $.cookie("userId"),
+						Token : $.cookie("token"),
 						PageIndex : 1,
 						PageSize : 8
 					};
@@ -214,6 +214,7 @@ var jQuery = $ || {};
 					var url = 'speciallist';
 					zoomUrl = practiseUrl() + url;
 					param = {
+						Token : $.cookie("token"),
 						"CategoryName": "",
 						PageIndex : 1,
 						PageSize : 20
@@ -678,7 +679,7 @@ var jQuery = $ || {};
 		var errorcenterlist= function(){
 			$.ajax({
 				type: 'POST',
-				data: {UserId: $.cookie('userId')},
+				data: {Token: $.cookie('Token')},
 				url: zoomUrl,
 				dataType: 'json',
 				crossDomain: true == !(document.all),
@@ -1080,7 +1081,7 @@ function isFinger(obj){
 		var isMockExamination = locationStr[2].split('=')[1];
 		if(status == 1){
 			var UserTPLibId = locationStr[0].split('=')[1];
-			window.localStorage.removeItem("saveAnswers"+$.cookie('userId')+UserTPLibId); 
+			window.localStorage.removeItem("saveAnswers"+$.cookie('Token')+UserTPLibId); 
 		}
 		if(Number(isMockExamination) == 1){ //模拟考试
 	      window.location.href = href;
