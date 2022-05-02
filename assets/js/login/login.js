@@ -26,7 +26,7 @@ function login1(account, password) {
         type: "POST",
         data: param,
         dataType: 'json',
-        url: favorite_Url + 'login',
+        url: favorite_Url + 'offlineLogin',
         crossDomain: true == !(document.all),
         success: function (data, type) {
             console.log(data);

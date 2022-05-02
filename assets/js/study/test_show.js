@@ -160,7 +160,8 @@ var jQuery = $ || {};
             initZoomArr();
             var url = "examdetail";
             var param = {
-                UserTPLibId:UserTPLibId
+                UserTPLibId:UserTPLibId,
+                Token : $.cookie("token")
             }
            // console.log(param);
             $.ajax({
