@@ -11,7 +11,7 @@ function lecturerUrls(){ //导航列表url
     return url;
 };
 function isLoginUrl(){ //是否登陆
-    var url = api_domain + 'api/user/islogin';
+    var url = api_domain + 'api/user/v1/getuserinfo';
     return url;
 };
 function courseUrl(){ //课件
@@ -33,5 +33,10 @@ function examUrl(){ //考试
 
 function redisUrl(){ //清除缓存
     var url = api_domain + 'api/common/v1/';
+    return url;
+};
+
+function errorUrl(){ //清除缓存
+    var url = api_domain + 'api/practise/v1/errorquestionlist';
     return url;
 };

@@ -679,8 +679,8 @@ var jQuery = $ || {};
 		var errorcenterlist= function(){
 			$.ajax({
 				type: 'POST',
-				data: {Token: $.cookie('Token')},
-				url: zoomUrl,
+				data: {Token: $.cookie('Token'),PageIndex:1,PageSize:100},
+				url: errorUrl(),
 				dataType: 'json',
 				crossDomain: true == !(document.all),
 				success: function(data, type) {
