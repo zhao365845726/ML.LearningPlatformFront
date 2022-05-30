@@ -4,7 +4,7 @@ var jQuery = $ || {};
         var ajax_url = ajaxUrl();//ajax请求地址
         //是否登录
         var isLogin = function(){
-            var falg = $.cookie("token");
+            var falg = $.cookie("Token");
             if(falg){
                 $.ajax({
                     type: "POST",

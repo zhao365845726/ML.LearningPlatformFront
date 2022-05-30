@@ -5,7 +5,7 @@ var jQuery = $ || {};
             ajax_url = ajaxUrl();
         //是否登录
         var isLogin = function(){
-            var falg = $.cookie("token");
+            var falg = $.cookie("Token");
             if(falg){
                 $.ajax({
                     type: "POST",
@@ -61,7 +61,7 @@ var jQuery = $ || {};
                 }
                 var url = "modifypassword";
                 var param = {
-                    Token:$.cookie("token"),
+                    Token:$.cookie("Token"),
                     NewPassword:newPass2
                 }
                 $.ajax({

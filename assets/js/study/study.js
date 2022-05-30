@@ -135,7 +135,7 @@ var jQuery = $ || {};
 					var url = 'minecourselist';
 					zoomUrl = favorite_courseUrl + url;
 					param = {
-						Token : $.cookie("token"),
+						Token : $.cookie("Token"),
 						PageIndex : 1,
 						PageSize : 8
 					};
@@ -145,7 +145,7 @@ var jQuery = $ || {};
 					var url = 'formalexamlist';
 					zoomUrl = exam_Url + url;
 					param = {
-						Token : $.cookie("token"),
+						Token : $.cookie("Token"),
 						PageIndex : 1,
 						PageSize : 8
 					};
@@ -155,7 +155,7 @@ var jQuery = $ || {};
 					url = 'monitorexamlist';
 					zoomUrl = exam_Url + url;
 					param = {
-						Token : $.cookie("token"),
+						Token : $.cookie("Token"),
 						PageIndex : 1,
 						PageSize : 8
 					};
@@ -168,7 +168,7 @@ var jQuery = $ || {};
 					var url = 'mineeverydayquestionlist';
 					zoomUrl = favorite_courseUrl + url;
 					param = {
-						Token : $.cookie("token"),
+						Token : $.cookie("Token"),
 						PageIndex : 1,
 						PageSize : 8
 					};
@@ -194,7 +194,7 @@ var jQuery = $ || {};
 					url = 'minecertificateslist';
 					zoomUrl = favorite_courseUrl + url;
 					param = {
-						Token : $.cookie("token"),
+						Token : $.cookie("Token"),
 						PageIndex : 1,
 						PageSize : 8
 					};
@@ -204,7 +204,7 @@ var jQuery = $ || {};
 					var url = 'lookresult';
 					zoomUrl = exam_Url + url;
 					param = {
-						Token : $.cookie("token"),
+						Token : $.cookie("Token"),
 						PageIndex : 1,
 						PageSize : 8
 					};
@@ -214,7 +214,7 @@ var jQuery = $ || {};
 					var url = 'speciallist';
 					zoomUrl = practiseUrl() + url;
 					param = {
-						Token : $.cookie("token"),
+						Token : $.cookie("Token"),
 						"CategoryName": "",
 						PageIndex : 1,
 						PageSize : 20

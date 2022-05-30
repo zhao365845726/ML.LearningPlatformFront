@@ -9,7 +9,7 @@ var jQuery = $ || {};
         var Id = locationUrl[1];
         var param = { //课件详情参数
             Id : Id,
-            Token : $.cookie("token"),
+            Token : $.cookie("Token"),
             commentPage : {
                 pageindex : 1,
                 pagesize : 5
@@ -28,7 +28,7 @@ var jQuery = $ || {};
         };
         //是否登录
         var isogin = function(){
-            var falg = $.cookie("token");
+            var falg = $.cookie("Token");
             if(falg){
                 $.ajax({
                     type: "POST",
@@ -100,7 +100,7 @@ var jQuery = $ || {};
         }
         //赞，收藏
         var favoritecourse = function(){
-            var Token = $.cookie("token");
+            var Token = $.cookie("Token");
             var CourseId = $('#courseId').val();
             param_course.Token = Token;
             param_course.CourseId = CourseId;
@@ -173,7 +173,7 @@ var jQuery = $ || {};
             if(!commentCon){
                 return false;
             }
-            var Token = $.cookie("token");
+            var Token = $.cookie("Token");
             var CourseId = $('#courseId').val();
             param_comment.Token = Token;
             param_comment.CourseId = CourseId;
@@ -234,7 +234,7 @@ var jQuery = $ || {};
             if(!commentCon){
                 return false;
             }
-            var Token = $.cookie("token");
+            var Token = $.cookie("Token");
             var CourseId = $('#courseId').val();
             param_comment.Token = Token;
             param_comment.CourseId = CourseId;

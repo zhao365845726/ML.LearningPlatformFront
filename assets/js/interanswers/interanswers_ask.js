@@ -26,11 +26,11 @@ var jQuery = $ || {};
                alert('请写入内容！');
                return false;
            }
-           if($.cookie("token")){
+           if($.cookie("Token")){
                if($(".nimingLabel").hasClass('active')){//匿名
                    param.Token = '';
                }else{
-                   param.Token = $.cookie("token");
+                   param.Token = $.cookie("Token");
                }
            }else{
                param.Token = '';

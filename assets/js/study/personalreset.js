@@ -69,7 +69,7 @@ var jQuery = $ || {};
         }
         //是否登录
         var isLogin = function(){
-            var falg = $.cookie("token");
+            var falg = $.cookie("Token");
             if(falg){
                 $.ajax({
                     type: "POST",

@@ -33,7 +33,7 @@ function login1(account, password) {
             if (data.status_code == 200) {
                 $(".login_Account span").html(data.data.Account);
                 $(".login_RealName span").html(data.data.RealName);
-                $.cookie('token', data.data.Token, { path: '/' });
+                $.cookie('Token', data.data.Token, { path: '/' });
                 $.cookie('myData', JSON.stringify(data.data), { path: '/' });
                 window.location.href = '/compoents/study/study.html?id=6f8fded1-7613-4a0c-945f-ad16df733443&title=在线学习';
                 // var urlid = $(".nav_study").attr('id_num');

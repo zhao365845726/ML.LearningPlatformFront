@@ -88,7 +88,7 @@ var jQuery = $ || {};
             //     UserTPLibId:UserTPLibId
             // }
             var param = {
-                  "Token": $.cookie("token"),
+                  "Token": $.cookie("Token"),
                   "CategoryId": CategoryId,
                   "PageIndex": 1,
                   "PageSize": PageSize
