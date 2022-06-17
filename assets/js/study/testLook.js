@@ -11,6 +11,7 @@ var jQuery = $ || {};
         var locationUrl = window.location.search.substr(1);
         var UserTPAchievementId = locationUrl.split('=')[1];
         var param = {
+            Token: $.cookie('Token'),
             UserTPAchievementId:UserTPAchievementId
         };
         var JudgeScore = 0;//判断
