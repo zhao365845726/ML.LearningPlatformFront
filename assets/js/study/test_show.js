@@ -160,6 +160,7 @@ var jQuery = $ || {};
             initZoomArr();
             var url = "examdetail";
             var param = {
+                Token:$.cookie("Token"),
                 UserTPLibId:UserTPLibId
             }
            // console.log(param);
@@ -734,9 +735,11 @@ var jQuery = $ || {};
             $(".submit_answers").css('display','block');
             var url = "assignment";
             var param = {
+                Token: $.cookie('Token'),
                 TestType:Number(testType),
                 UserAnswerCollection:setData,
-                UserTPAchievementId:question.vtestpaperlib.Id
+                UserTPAchievementId:question.vtestpaperlib.Id,
+                AssignmentType:0
             };
             $.ajax({
                 type: "POST",

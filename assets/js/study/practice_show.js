@@ -682,7 +682,8 @@ var jQuery = $ || {};
                 Token: $.cookie('Token'),
                 TestType: Number(testType),
                 UserAnswerCollection: setData,
-                UserTPAchievementId: question.vtestpaperlib.Id
+                UserTPAchievementId: question.vtestpaperlib.Id,
+                AssignmentType:0
             };
             //console.log(param);
             $.ajax({
