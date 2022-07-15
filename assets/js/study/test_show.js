@@ -1,7 +1,7 @@
 var jQuery = $ || {};
 (function(window, $, undefined) {
     $(document).ready(function() {
-    	var ajax_url,exam_Url,redis_Url,locationUrl,UserTitle,UserTPLibId,testType,storage = '',zoomArr = [],question = '',FillBlankScore=0,JudgeScore = 0,MultipleScore = 0,RadioScore = 0,questionType,orders,radios,checks,judges,fillblanks,nowCons,hh = 0,mm = 0,ss = 0,idt,next_prv_index = 0,setData = '',noZuo = 0,loadSetInterval,loadTime = 3,loadNum = 0;
+    	var ajax_url,exam_Url,redis_Url,locationUrl,UserTitle,UserTPLibId,testType,rest,storage = '',zoomArr = [],question = '',FillBlankScore=0,JudgeScore = 0,MultipleScore = 0,RadioScore = 0,questionType,orders,radios,checks,judges,fillblanks,nowCons,hh = 0,mm = 0,ss = 0,idt,next_prv_index = 0,setData = '',noZuo = 0,loadSetInterval,loadTime = 3,loadNum = 0;
 
 	        ajax_url = ajaxUrl();
             exam_Url = examUrl();
@@ -9,7 +9,8 @@ var jQuery = $ || {};
 		    locationUrl = window.location.search.substr(1).split('&');
 	        UserTPLibId = locationUrl[0].split('=')[1];
 	        UserTitle = locationUrl[1].split('=')[1];
-	        testType = locationUrl[2].split('=')[1]; 
+	        testType = locationUrl[2].split('=')[1];
+            rest = locationUrl[3].split('=')[1]
 	        storage = window.localStorage;
 	        questionType = 2;//1代表部分试题，2代表全部试题
 	        orders = [];//区分考试题，总题
@@ -18,6 +19,8 @@ var jQuery = $ || {};
             judges = [];//判断题
             fillblanks = [];//填空题
             nowCons = [];//当前的试题  
+
+            
         //导航渲染
         var navDom = function(data) {
             var html='',url = '',isActive = '',className = '',num = '';
@@ -846,7 +849,9 @@ var jQuery = $ || {};
         };
         //初始数据
     	init();
- 
+        if(rest == 1){
+            clearRedis(UserTPLibId);
+        }
         //填空监听输入
         $(document).on('input propertychange', '.test_textarea', function() {
             var textareaVal = $(this).val();

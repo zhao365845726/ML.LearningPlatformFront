@@ -308,12 +308,12 @@ var jQuery = $ || {};
 		                                  if(item.StopTestTime){
 		                                  	var stopTestTime = new Date(Date.parse(item.StopTestTime.replace(/-/g,"/")));
 	                                        if(stopTestTime > curDate1){
-												state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=2" class="test_href" data-Finger="' + IsFingerprintLogin + '" onclick="isFinger(this);">'+statusV.name+'</a>';
+												state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=2&rest=0" class="test_href" data-Finger="' + IsFingerprintLogin + '" onclick="isFinger(this);">'+statusV.name+'</a>';
 			                                }else{
 			                                     state = '考试过期';
 			                                }
 		                                  }else{
-											state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=2" class="test_href" data-Finger="' + IsFingerprintLogin + '" onclick="isFinger(this);">'+statusV.name+'</a>';
+											state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=2&rest=0" class="test_href" data-Finger="' + IsFingerprintLogin + '" onclick="isFinger(this);">'+statusV.name+'</a>';
 		                                }
 		                            }
 		                        }
@@ -388,7 +388,7 @@ var jQuery = $ || {};
 									IsFingerprintLogin = "0";
 								}
 								if(item.TestState == 2){
-                                  state = '<a href="/compoents/study/testLook.html?UserTPLibId=' + item.Id + '" class="test_href new_btn" target="_blank">查看试卷</a><a class="new_btn1" href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title=0&testType=1" onclick="isFinger(this);">再考一次</a>';
+                                  state = '<a href="/compoents/study/testLook.html?UserTPLibId=' + item.Id + '" class="test_href new_btn" target="_blank">查看试卷</a><a class="new_btn1" href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title=0&testType=1&rest=1" onclick="isFinger(this);">再考一次</a>';
                                }else{
                                    var statusTest = true;//开始考试时间大于现在时间，或者开考时间没值
                                   if(item.StartTestTime){
@@ -403,12 +403,12 @@ var jQuery = $ || {};
 	                                   if(item.StopTestTime){
 	                                   	var stopTestTime = new Date(Date.parse(item.StopTestTime.replace(/-/g,"/")));
 		                                if(stopTestTime > curDate1){
-											state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1" onclick="isFinger(this);">'+statusV.name+'</a>';
+											state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1&rest=0" onclick="isFinger(this);">'+statusV.name+'</a>';
 		                                }else{
 		                                     state = '考试过期';
 		                                }
 	                                   }else{
-                                          state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1" onclick="isFinger(this);">'+statusV.name+'</a>';
+                                          state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1&rest=0" onclick="isFinger(this);">'+statusV.name+'</a>';
 	                                   }
 	                                }   
                                }
@@ -467,7 +467,7 @@ var jQuery = $ || {};
 									IsFingerprintLogin = "0";
 								}
 								if(item.TestState == 2){
-                                  state = '<a href="/compoents/study/testLook.html?UserTPLibId=' + item.Id + '" class="test_href new_btn" target="_blank">查看试卷</a><a class="new_btn1" href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title=0&testType=1" onclick="isFinger(this);">再考一次</a>';
+                                  state = '<a href="/compoents/study/testLook.html?UserTPLibId=' + item.Id + '" class="test_href new_btn" target="_blank">查看试卷</a><a class="new_btn1" href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title=0&testType=1&rest=1" onclick="isFinger(this);">再考一次</a>';
                                 }else{
 	                                var statusTest = true;//开始考试时间大于现在时间，或者开考时间没值
                                   if(item.StartTestTime){
@@ -482,12 +482,12 @@ var jQuery = $ || {};
 	                                   if(item.StopTestTime){
 	                                   	var stopTestTime = new Date(Date.parse(item.StopTestTime.replace(/-/g,"/")));
 		                                if(stopTestTime > curDate1){
-											state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1" onclick="isFinger(this);">'+statusV.name+'</a>';
+											state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1&rest=0" onclick="isFinger(this);">'+statusV.name+'</a>';
 		                                }else{
 		                                     state = '考试过期';
 		                                }
 	                                   }else{
-                                          state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1" onclick="isFinger(this);">'+statusV.name+'</a>';
+                                          state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1&rest=0" onclick="isFinger(this);">'+statusV.name+'</a>';
 	                                   }
 	                                }   
                                 }
@@ -633,12 +633,12 @@ var jQuery = $ || {};
 	                                   if(item.StopTestTime){
 	                                   	var stopTestTime = new Date(Date.parse(item.StopTestTime.replace(/-/g,"/")));
 		                                if(stopTestTime > curDate1){
-											state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1" onclick="isFinger(this);">'+statusV.name+'</a>';
+											state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1&rest=0" onclick="isFinger(this);">'+statusV.name+'</a>';
 		                                }else{
 		                                     state = '考试过期';
 		                                }
 	                                   }else{
-                                          state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1" onclick="isFinger(this);">'+statusV.name+'</a>';
+                                          state = '<a href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title='+statusV.title+'&testType=1&rest=0" onclick="isFinger(this);">'+statusV.name+'</a>';
 	                                   }
 	                                }   
                                 }
