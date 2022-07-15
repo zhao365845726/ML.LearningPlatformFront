@@ -292,7 +292,7 @@ var jQuery = $ || {};
 								}
 
                                if(item.TestState == 2){
-                                  state = '<a href="/compoents/study/testLook.html?UserTPLibId=' + item.Id + '" class="test_href" target="_blank">查看试卷1</a>';
+                                  state = '<a href="/compoents/study/testLook.html?UserTPLibId=' + item.Id + '" class="test_href" target="_blank">查看试卷</a>';
                                }else{
 	                                 var statusTest = true;//开始考试时间大于现在时间，或者开考时间没值
                                       if(item.StartTestTime){
@@ -467,7 +467,7 @@ var jQuery = $ || {};
 									IsFingerprintLogin = "0";
 								}
 								if(item.TestState == 2){
-                                  state = '<a href="/compoents/study/testLook.html?UserTPLibId=' + item.Id + '" class="test_href" target="_blank">查看试卷</a>';
+                                  state = '<a href="/compoents/study/testLook.html?UserTPLibId=' + item.Id + '" class="test_href new_btn" target="_blank">查看试卷</a><a class="new_btn1" href="javascript:;" data-href="/compoents/study/test_show.html?UserTPLibId=' + item.Id + '&title=0&testType=1" onclick="isFinger(this);">再考一次</a>';
                                 }else{
 	                                var statusTest = true;//开始考试时间大于现在时间，或者开考时间没值
                                   if(item.StartTestTime){
@@ -846,7 +846,7 @@ var jQuery = $ || {};
 		}
 		//查看成绩
 		var lookexamlist = function(){
-			html_con = '<li class="course_title"><span class="mytests1"><i></i>试卷名称</span><span class="mytests2">考试类型</span><span class="mytests3">开始考试时间</span><span class="mytests4">结束考试时间</span><span class="mytests2">分数</span><span class="mytests2">用时</span><span class="mytests5">查看试卷1</span></li>';
+			html_con = '<li class="course_title"><span class="mytests1"><i></i>试卷名称</span><span class="mytests2">考试类型</span><span class="mytests3">开始考试时间</span><span class="mytests4">结束考试时间</span><span class="mytests2">分数</span><span class="mytests2">用时</span><span class="mytests5">查看试卷</span></li>';
 			$.ajax({
 				type: 'POST',
 				data: param,
@@ -863,7 +863,7 @@ var jQuery = $ || {};
 								}else{
 									examType = '模拟考试';
 								}
-								var state = '<a href="/compoents/study/testLook.html?UserTPLibId=' + item.Id + '" target="_blank">查看试卷1</a>';
+								var state = '<a href="/compoents/study/testLook.html?UserTPLibId=' + item.Id + '" target="_blank">查看试卷</a>';
 								var whentime = 0;
                                 if(item.ExamDuration*60 <= item.TestTime){
                                 	whentime = item.ExamDuration+'分0秒';
