@@ -402,7 +402,8 @@ li.userPasBox b{
     font-size: 15px;
 }
 .myCourse li .monitest1{
-    width: 120px;
+    width: 280px;
+    /* width: 120px; */
 }
 .myCourse li .monitest2,.myCourse li .monitest3,.myCourse li .monitest4{
     width: 70px;
@@ -413,11 +414,11 @@ li.userPasBox b{
     text-align: center;
 }
 .myCourse li .monitest6{
-    width: 160px;
+    width: 180px;
     text-align: center;
 }
 .myCourse li .monitest7{
-    width: 100px;
+    width: 180px;
     text-align: center;
 }
 .myCourse li .courselist1{
@@ -3155,4 +3156,16 @@ height: 100%;
 
 .new_btn1{
     margin-left: 10px;
+}
+
+.monitest2{
+    display: none;
+}
+
+.monitest3{
+    display: none;
+}
+
+.monitest4{
+    display: none;
 }

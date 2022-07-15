@@ -173,6 +173,7 @@ var jQuery = $ || {};
                 success: function(data, type) {
                     console.log(data);
                     if (data.data.lst_vtpquestions.length > 0) {
+                       
                         $(".loadShade").css('display','none');
                         question = data.data;
                         FillBlankScore = question.vtestpaperlib.FillBlankScore;//填空
@@ -190,7 +191,9 @@ var jQuery = $ || {};
                         saveAnswers();
                         $("#questionSubmit").css('display','block');
                     }else{
+                        alert(data.data)
                         clearRedis(UserTPLibId);
+                        window.history.go(-1);
                         // loadNum++;
                         // if(loadNum > 3){
                         //     clearInterval(loadSetInterval);
