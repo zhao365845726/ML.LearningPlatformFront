@@ -308,8 +308,8 @@ li.userPasBox b{
     margin-left: 10px;
 }
 .sideBar_con_study{
-    width: 930px;
-    margin-left: 85px;
+    width: 980px;
+    margin-left: 35px;
 }
 .studyTitle{
     font-size: 22px;
@@ -409,7 +409,7 @@ li.userPasBox b{
     text-align: center;
 }
 .myCourse li .monitest5{
-    width: 110px;
+    width: 160px;
     text-align: center;
 }
 .myCourse li .monitest6{
@@ -3147,4 +3147,12 @@ height: 100%;
 
 .hidden{
     display: none;
+}
+
+.new_btn{
+    font-size: 15px !important;
+}
+
+.new_btn1{
+    margin-left: 10px;
 }
