@@ -1,7 +1,9 @@
 var jQuery = $ || {};
 (function(window, $, undefined) {
     $(document).ready(function() {
-    	var ajax_url,exam_Url,redis_Url,locationUrl,UserTitle,UserTPLibId,testType,rest,storage = '',zoomArr = [],question = '',FillBlankScore=0,JudgeScore = 0,MultipleScore = 0,RadioScore = 0,questionType,orders,radios,checks,judges,fillblanks,nowCons,hh = 0,mm = 0,ss = 0,idt,next_prv_index = 0,setData = '',noZuo = 0,loadSetInterval,loadTime = 3,loadNum = 0;
+    	var ajax_url,exam_Url,redis_Url,locationUrl,UserTitle,UserTPLibId,testType,rest,storage = '',zoomArr = [],question = '',
+        FillBlankScore=0,JudgeScore = 0,MultipleScore = 0,RadioScore = 0,questionType,orders,radios,checks,judges,fillblanks,nowCons,
+        hh = 0,mm = 0,ss = 0,idt,next_prv_index = 0,setData = '',noZuo = 0,loadSetInterval,loadTime = 3,loadNum = 0,isStartExam = false;
 
 	        ajax_url = ajaxUrl();
             exam_Url = examUrl();
@@ -96,7 +98,9 @@ var jQuery = $ || {};
             // }else{
             //     testCon();
             // }
-            testCon();
+            if(!isStartExam){
+                testCon();
+             }
             if(IsPC()){
              funWindowScroll();   
             }
@@ -144,7 +148,9 @@ var jQuery = $ || {};
                             if(loadTime < 0){
                              loadTime = 3;
                              clearInterval(loadSetInterval);
-                             testCon();
+                             if(!isStartExam){
+                                testCon();
+                             }
                             }
                             $(".loadShade b").html(loadTime); 
                              loadTime--;
@@ -176,7 +182,7 @@ var jQuery = $ || {};
                 success: function(data, type) {
                     console.log(data);
                     if (data.data.lst_vtpquestions.length > 0) {
-                       
+                        isStartExam = true;
                         $(".loadShade").css('display','none');
                         question = data.data;
                         FillBlankScore = question.vtestpaperlib.FillBlankScore;//填空
@@ -194,6 +200,7 @@ var jQuery = $ || {};
                         saveAnswers();
                         $("#questionSubmit").css('display','block');
                     }else{
+                        isStartExam = false;
                         alert(data.data)
                         clearRedis(UserTPLibId);
                         window.history.go(-1);
