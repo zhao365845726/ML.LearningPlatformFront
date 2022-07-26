@@ -649,6 +649,7 @@ var jQuery = $ || {};
         //确认交卷点击事件
         var assignmentClick = function(){
             $(".loadanswer_y").click(function(){
+                clearInterval(loadSetInterval);
                 assignment();
             })
         }
