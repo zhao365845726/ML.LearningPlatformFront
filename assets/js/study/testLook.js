@@ -1,6 +1,6 @@
 var jQuery = $ || {};
-(function(window, $, undefined) {
-    $(document).ready(function() {
+(function (window, $, undefined) {
+    $(document).ready(function () {
         var ajax_url = ajaxUrl(),//统一的ajax请求地址
             exam_Url = examUrl(),
             oldData = [],//全部数据
@@ -12,41 +12,41 @@ var jQuery = $ || {};
         var UserTPAchievementId = locationUrl.split('=')[1];
         var param = {
             Token: $.cookie('Token'),
-            UserTPAchievementId:UserTPAchievementId
+            UserTPAchievementId: UserTPAchievementId
         };
         var JudgeScore = 0;//判断
         var MultipleScore = 0;//多选
         var RadioScore = 0;//单选
         var FillBlankScore = 0; //填空
         //是否登录
-        var isLogin = function(){
+        var isLogin = function () {
             var falg = $.cookie('Token');
-            if(falg){
+            if (falg) {
                 $.ajax({
                     type: "POST",
-                    data: {Token:falg},
+                    data: { Token: falg },
                     dataType: 'json',
                     url: isLoginUrl(),
                     crossDomain: true == !(document.all),
-                    success: function(data, type) {
-                        if(data.status_code == 200){
+                    success: function (data, type) {
+                        if (data.status_code == 200) {
                             lookresultdetail();
-                            $(".lookTestRight").on('click',function(){
+                            $(".lookTestRight").on('click', function () {
                                 //var urlId = $(".nav_study").attr('id_num');
                                 var urlId = '6f8fded1-7613-4a0c-945f-ad16df733443';
-                                window.location.href = '/compoents/study/study.html?id='+urlId+'&title=在线学习';
+                                window.location.href = '/compoents/study/study.html?id=' + urlId + '&title=在线学习';
                             })
-                        }else{
+                        } else {
                             window.location.href = '/index.html';
                         }
                     }
                 })
-            }else{
+            } else {
                 window.location.href = '/index.html';
             }
         }
         //获取成绩
-        var lookresultdetail = function(){
+        var lookresultdetail = function () {
             var url = "lookresultdetail";
             $.ajax({
                 type: "POST",
@@ -54,19 +54,19 @@ var jQuery = $ || {};
                 dataType: 'json',
                 url: exam_Url + url,
                 crossDomain: true == !(document.all),
-                success: function(data, type) {
+                success: function (data, type) {
                     if (data.data) {
                         console.log(data.data);
                         var mydata = eval('(' + $.cookie('myData') + ')');
-                        if(mydata.Photograph){
-                         $(".personHeadImg").attr('src',mydata.Photograph);
+                        if (mydata.Photograph) {
+                            $(".personHeadImg").attr('src', mydata.Photograph);
                         }
-                        $(".personal_name").html('考生：'+mydata.RealName);
-                        $(".personal_num").html('账户：'+mydata.Account);
-                        
+                        $(".personal_name").html('考生：' + mydata.RealName);
+                        $(".personal_num").html('账户：' + mydata.Account);
+
                         var time = countTime(data.data.ConsumingTime);
-                        $(".lookTestOverN").html('分数：'+data.data.SumScore);
-                        $(".lookTestOverT").html('用时：'+time);
+                        $(".lookTestOverN").html('分数：' + data.data.SumScore);
+                        $(".lookTestOverT").html('用时：' + time);
 
                         JudgeScore = data.data.JudgeScore;//判断
                         MultipleScore = data.data.MultipleScore;//多选
@@ -77,64 +77,76 @@ var jQuery = $ || {};
                 }
             })
         }
-         //计算时间
-        function countTime(time){
-             var a = time;
-             var d = parseInt(a/86400);
-             var h = parseInt((a%86400)/3600);
-             var m = parseInt((a%86400%3600)/60);
-             var s = a%86400%360%60;
-             var str= '';
-             if(d > 0){
-                str = d + '天'+ h + '小时'+ m +'分钟' + s + '秒';
-             }else{
-                if(h > 0){
-                    str = h + '小时'+ m +'分钟' + s + '秒';
-                 }else{
-                    if(m > 0){
-                        str = m +'分钟' + s + '秒';
-                     }else{
+        //计算时间
+        function countTime(time) {
+            var a = time;
+            var d = parseInt(a / 86400);
+            var h = parseInt((a % 86400) / 3600);
+            var m = parseInt((a % 86400 % 3600) / 60);
+            var s = a % 86400 % 360 % 60;
+            var str = '';
+            if (d > 0) {
+                str = d + '天' + h + '小时' + m + '分钟' + s + '秒';
+            } else {
+                if (h > 0) {
+                    str = h + '小时' + m + '分钟' + s + '秒';
+                } else {
+                    if (m > 0) {
+                        str = m + '分钟' + s + '秒';
+                    } else {
                         str = s + '秒';
-                     }
-                 }
-             }
-             return str;
+                    }
+                }
+            }
+            return str;
         }
         //处理数据
-        var processData = function(data){
+        var processData = function (data) {
             oldData = data;
-            $.each(data, function(index, item) {
-                if(!item.UserAnswerId){
+            $.each(data, function (index, item) {
+                if (!item.UserAnswerId) {
                     nullData.push(item);
-                }else if(item.AnswerId != item.UserAnswerId){
-                    noData.push(item);
-                }else{
-                    yesData.push(item);
+                } else {
+                    if (item.Type == 2) {
+                        const answerArr = item.AnswerId.split('|')
+                        const userAnswerArr = item.UserAnswerId.split('|')
+                        if (answerArr.sort().toString() == userAnswerArr.sort().toString()) {
+                            yesData.push(item);
+                        } else {
+                            noData.push(item);
+                        }
+                    } else {
+                        if (item.AnswerId == item.UserAnswerId) {
+                            yesData.push(item);
+                        } else {
+                            noData.push(item);
+                        }
+                    }
                 }
             })
             nowData = oldData;
             //总数
-            $(".zoomNum").html('( '+data.length+' )');
+            $(".zoomNum").html('( ' + data.length + ' )');
             //错题数
-            $(".errorNum").html('( '+noData.length+' )');
+            $(".errorNum").html('( ' + noData.length + ' )');
             //未做题数
-            $(".noNum").html('( '+nullData.length+' )');
+            $(".noNum").html('( ' + nullData.length + ' )');
             //左侧百分比
-             chart(yesData.length,noData.length,nullData.length);
+            chart(yesData.length, noData.length, nullData.length);
             //右侧试题
-             rightTest(nowData);
+            rightTest(nowData);
             //初始点击事件
             lookClick();
         }
         //初始点击事件
-        var lookClick = function(){
+        var lookClick = function () {
             var ele = $('.lookTestLeft li');
-            ele && ele.length > 0 && $.each(ele, function(index, item) {
+            ele && ele.length > 0 && $.each(ele, function (index, item) {
                 var _t = this;
-                $(_t).on('click', function() {
+                $(_t).on('click', function () {
                     $(_t).addClass('active').siblings().removeClass('active');
                     var num = Number($(_t).attr('data-num'));
-                    switch (num){
+                    switch (num) {
                         case 1:
                             nowData = oldData;
                             break;
@@ -143,8 +155,8 @@ var jQuery = $ || {};
                             break;
                         case 3:
                             nowData = nullData;
-                            break;    
-                        default :
+                            break;
+                        default:
                             break;
                     }
                     rightTest(nowData);
@@ -152,54 +164,57 @@ var jQuery = $ || {};
             })
         }
         //左侧百分比
-        var chart = function(a,b,c){
+        var chart = function (a, b, c) {
             /*初始化echarts实例*/
             var myChart = echarts.init(document.getElementById('myChart'));
             var option = {
-                title : {
+                title: {
                     text: '',
                     subtext: '',
-                    x:'center'
+                    x: 'center'
                 },
-                tooltip : {
+                tooltip: {
                     trigger: 'item',
                     formatter: "{a} <br/>{b} : {c}题 ({d}%)"
                 },
                 legend: {
                     bottom: 10,
                     left: 30,
-                    data: ['做对','做错','未做']
+                    data: ['做对', '做错', '未做']
                 },
-                series : [{
+                series: [{
                     name: '',
                     type: 'pie',
-                    radius : '40%',
+                    radius: '40%',
                     center: ['40%', '50%'],
-                    data:[
-                        {value:a,
-                            name:'做对',
-                            itemStyle:{
-                                normal:{
-                                    color:'rgb(45,173,108)',
-                                    shadowBlur:'90',
-                                    shadowColor:'rgba(45,173,108,0.8)',
-                                    shadowOffsetY:'10'
+                    data: [
+                        {
+                            value: a,
+                            name: '做对',
+                            itemStyle: {
+                                normal: {
+                                    color: 'rgb(45,173,108)',
+                                    shadowBlur: '90',
+                                    shadowColor: 'rgba(45,173,108,0.8)',
+                                    shadowOffsetY: '10'
                                 }
                             }
                         },
-                        {value:b,
-                            name:'做错',
-                            itemStyle:{
-                                normal:{
-                                    color:'rgb(227,57,70)'
+                        {
+                            value: b,
+                            name: '做错',
+                            itemStyle: {
+                                normal: {
+                                    color: 'rgb(227,57,70)'
                                 }
                             }
                         },
-                        {value:c,
-                            name:'未做',
-                            itemStyle:{
-                                normal:{
-                                    color:'rgb(3,67,134)'
+                        {
+                            value: c,
+                            name: '未做',
+                            itemStyle: {
+                                normal: {
+                                    color: 'rgb(3,67,134)'
                                 }
                             }
                         }
@@ -217,21 +232,21 @@ var jQuery = $ || {};
             myChart.setOption(option);
         }
         //右侧试题
-        var rightTest = function(data){
+        var rightTest = function (data) {
             var zoomCon = '';
-            $.each(data, function(index, item) {
-                var html = initquestions(index,item);
+            $.each(data, function (index, item) {
+                var html = initquestions(index, item);
                 zoomCon += html;
             })
             $('.lookTestQuestions').html(zoomCon);
         }
         //初始题库
-        var initquestions = function(key,data){
-            var key = Number(key)+1;
-            if(data){
+        var initquestions = function (key, data) {
+            var key = Number(key) + 1;
+            if (data) {
                 var selectCon = '';
                 var thisScore = 0;
-                switch (data.Type){
+                switch (data.Type) {
                     case 1:
                         selectCon = '<i>单选</i>';
                         thisScore = RadioScore;
@@ -247,67 +262,81 @@ var jQuery = $ || {};
                     case 4:
                         selectCon = '<i>填空</i>';
                         thisScore = FillBlankScore;
-                        break;    
-                    default :
+                        break;
+                    default:
                         break;
 
                 }
                 var isActive = '';
                 var UserAnswerIdArr = '';
-                if(!data.UserAnswerId){
+                if (!data.UserAnswerId) {
                     isActive = 'null';
-                }else if(data.AnswerId != data.UserAnswerId){
-                    isActive = 'no';
-                    UserAnswerIdArr = data.UserAnswerId.split('|');
-                }else{
-                    isActive = 'yes';
-                    UserAnswerIdArr = data.UserAnswerId.split('|');
+                } else {
+                    if (data.Type == 2) {
+                        const answerArr = data.AnswerId.split('|')
+                        const userAnswerArr = data.UserAnswerId.split('|')
+                        if (answerArr.sort().toString() == userAnswerArr.sort().toString()) {
+                            isActive = 'yes';
+                            UserAnswerIdArr = data.UserAnswerId.split('|');
+                        } else {
+                            isActive = 'no';
+                            UserAnswerIdArr = data.UserAnswerId.split('|');
+                        }
+                    } else {
+                        if (data.AnswerId == data.UserAnswerId) {
+                            isActive = 'yes';
+                            UserAnswerIdArr = data.UserAnswerId.split('|');
+                        } else {
+                            isActive = 'no';
+                            UserAnswerIdArr = data.UserAnswerId.split('|');
+                        }
+                    }
                 }
-                var title = '<div class="lookTestQuestionsTitle">'+selectCon+'<span><strong>'+key+'.</strong>'+data.Title+' ['+thisScore+'分]</span></div>';
+                var title = '<div class="lookTestQuestionsTitle">' + selectCon + '<span><strong>' + key + '.</strong>' + data.Title + ' [' + thisScore + '分]</span></div>';
                 // 填空
                 var orderCon = '';
                 var yesAnswers = '';
-                if(data.Type != 4){
-                    var orderA = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+                if (data.Type != 4) {
+                    var orderA = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
                     var isSelectActive = '';
-                    $.each(data.ListViewTPQuesionOptions, function(index, item){
-                        if(item.IsAnswer){
-                            yesAnswers += orderA[index]+',';
+                    $.each(data.ListViewTPQuesionOptions, function (index, item) {
+                        if (item.IsAnswer) {
+                            yesAnswers += orderA[index] + ',';
                         }
-                        for(var j=0;j<UserAnswerIdArr.length;j++){
+                        for (var j = 0; j < UserAnswerIdArr.length; j++) {
 
-                            if(item.Id == UserAnswerIdArr[j]){
+                            if (item.Id == UserAnswerIdArr[j]) {
                                 isSelectActive = 'checked';
                                 break;
-                            }else{
+                            } else {
                                 isSelectActive = '';
                             }
                         }
-                        orderCon += '<li data-id="'+item.Id+'"><label class="cursor '+isSelectActive+'"><b>'+orderA[index]+'</b><span>'+item.OptionName+'</span></label></li>';
+                        orderCon += '<li data-id="' + item.Id + '"><label class="cursor ' + isSelectActive + '"><b>' + orderA[index] + '</b><span>' + item.OptionName + '</span></label></li>';
                     });
-                   yesAnswers = yesAnswers.slice(0,-1);
-                }else{
+                    yesAnswers = yesAnswers.slice(0, -1);
+                } else {
                     // 填空
-                    if(data.Answer){
-                       yesAnswers = data.Answer; 
-                   }else{
-                    yesAnswers = '';
-                   }
-                    if(data.UserAnswerId){
-                        orderCon += '<textarea readonly="readonly" class="test_textarea">'+data.UserAnswerId+'</textarea>';
-                    }else{
+                    if (data.Answer) {
+                        yesAnswers = data.Answer;
+                    } else {
+                        yesAnswers = '';
+                    }
+                    if (data.UserAnswerId) {
+                        orderCon += '<textarea readonly="readonly" class="test_textarea">' + data.UserAnswerId + '</textarea>';
+                    } else {
                         orderCon += '<textarea readonly="readonly" class="test_textarea"></textarea>';
                     }
                 }
-                orderCon = '<ul class="container lookTestQuestions_answer">'+orderCon+'</ul><div class="lookTestQuestionsVal">答案：'+yesAnswers+'</div>';
-                var html = '<li class="lookTestQuestionsList '+isActive+'">'+title+orderCon+'</li>';
+                orderCon = '<ul class="container lookTestQuestions_answer">' + orderCon + '</ul><div class="lookTestQuestionsVal">答案：' + yesAnswers + '</div>';
+                var html = '<li class="lookTestQuestionsList ' + isActive + '">' + title + orderCon + '</li>';
                 return html;
             }
         }
         //导航渲染
-        var navDom = function(data) {
-            var html='',url = '',isActive,className = '',num = '';
-            $.each(data, function(index, item) {
+        var navDom = function (data) {
+            var html = '', url = '', isActive, className = '', num = '';
+            $.each(data, function (index, item) {
                 //设定href值
                 switch (item.Name) {
                     case '首页':
@@ -358,18 +387,18 @@ var jQuery = $ || {};
                         num = item.Id;
                         url = '/compoents/contact/contact.html?title=' + item.Name;
                         break;
-                    default :
+                    default:
                         break;
                 }
                 isActive = item.Name == '在线学习' ? 'active' : '';
                 //拼接dom;
-                html +='<li class="'+isActive+' '+className+'" id_num="'+num+'"><a href="'+url+'">' + item.Name + '</a></li>';
+                html += '<li class="' + isActive + ' ' + className + '" id_num="' + num + '"><a href="' + url + '">' + item.Name + '</a></li>';
             });
             $('.nav').html(html);
             $(".mobileNavLists").html(html);
         }
         //初始数据请求
-        var init = function() {
+        var init = function () {
             var url = "homenavigation";
             $.ajax({
                 type: "POST",
@@ -377,7 +406,7 @@ var jQuery = $ || {};
                 dataType: 'json',
                 url: ajax_url + url,
                 crossDomain: true == !(document.all),
-                success: function(data, type) {
+                success: function (data, type) {
                     if (data.status_code == 200) {
                         navDom(data.data);
                         init_second();
@@ -385,7 +414,7 @@ var jQuery = $ || {};
                 }
             })
         };
-        var init_second = function(){
+        var init_second = function () {
             isLogin();
             $('.footer').load('/compoents/common/footer.html');
             Friendlink();
